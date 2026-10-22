@@ -1,12 +1,14 @@
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
 <div class="announcement">{{ config().announcement }}</div>
 <header class="site-header" [class.scrolled]="scrolled()">
   <div class="page-shell header-inner">
     <button class="icon-button mobile-toggle" type="button" [attr.aria-label]="mobileOpen() ? 'Cerrar menú' : 'Abrir menú'" [attr.aria-expanded]="mobileOpen()" (click)="mobileOpen.set(!mobileOpen())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'">{{ config().name }}</a>
+    <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'">{{ config().name }}<small>BOUTIQUE INFANTIL</small></a>
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Inicio</a>
-      <a routerLink="/catalogo" [queryParams]="{genero:'mujer'}" routerLinkActive="active">Mujer</a>
-      <a routerLink="/catalogo" [queryParams]="{genero:'hombre'}" routerLinkActive="active">Hombre</a>
+      <a routerLink="/catalogo" [queryParams]="{genero:'bebes'}" routerLinkActive="active">Bebés</a>
+      <a routerLink="/catalogo" [queryParams]="{genero:'ninas'}" routerLinkActive="active">Niñas</a>
+      <a routerLink="/catalogo" [queryParams]="{genero:'ninos'}" routerLinkActive="active">Niños</a>
       <a routerLink="/catalogo" [queryParams]="{orden:'novedades'}">Colecciones</a>
       <a routerLink="/catalogo" [queryParams]="{ofertas:'si'}">Ofertas</a>
       <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
@@ -17,22 +19,22 @@
     </div>
   </div>
   @if (searchOpen()) { <form class="search-bar page-shell" (ngSubmit)="submitSearch()" role="search"><label class="sr-only" for="header-search">Buscar prendas</label><input id="header-search" name="search" [(ngModel)]="searchTerm" placeholder="¿Qué estás buscando?" autocomplete="off" /><button type="submit">Buscar ↗</button></form> }
-  @if (mobileOpen()) { <nav class="mobile-nav" aria-label="Navegación móvil"><a routerLink="/" (click)="closeNavigation()">Inicio</a><a routerLink="/catalogo" [queryParams]="{genero:'mujer'}" (click)="closeNavigation()">Mujer</a><a routerLink="/catalogo" [queryParams]="{genero:'hombre'}" (click)="closeNavigation()">Hombre</a><a routerLink="/catalogo" (click)="closeNavigation()">Colecciones</a><a routerLink="/catalogo" [queryParams]="{ofertas:'si'}" (click)="closeNavigation()">Ofertas</a><a routerLink="/contacto" (click)="closeNavigation()">Contacto</a></nav> }
+  @if (mobileOpen()) { <nav class="mobile-nav" aria-label="Navegación móvil"><a routerLink="/" (click)="closeNavigation()">Inicio</a><a routerLink="/catalogo" [queryParams]="{genero:'bebes'}" (click)="closeNavigation()">Bebés</a><a routerLink="/catalogo" [queryParams]="{genero:'ninas'}" (click)="closeNavigation()">Niñas</a><a routerLink="/catalogo" [queryParams]="{genero:'ninos'}" (click)="closeNavigation()">Niños</a><a routerLink="/catalogo" (click)="closeNavigation()">Colecciones</a><a routerLink="/catalogo" [queryParams]="{ofertas:'si'}" (click)="closeNavigation()">Ofertas</a><a routerLink="/contacto" (click)="closeNavigation()">Contacto</a></nav> }
 </header>
-<main id="main-content"><router-outlet /></main>
+<main id="main-content" tabindex="-1"><router-outlet /></main>
 <footer class="site-footer">
   <div class="page-shell footer-main">
-    <div class="footer-brand"><a class="wordmark" routerLink="/">{{ config().name }}</a><p>Prendas pensadas para acompañar cada momento. Una selección contemporánea, cercana y sin prisa.</p><span class="eyebrow">{{ config().location }}</span></div>
-    <div><h3>Explora</h3><a routerLink="/catalogo">Todas las prendas</a><a routerLink="/catalogo" [queryParams]="{genero:'mujer'}">Mujer</a><a routerLink="/catalogo" [queryParams]="{genero:'hombre'}">Hombre</a><a routerLink="/catalogo" [queryParams]="{ofertas:'si'}">Ofertas</a></div>
+    <div class="footer-brand"><a class="wordmark" routerLink="/">{{ config().name }}</a><p>Pequeñas prendas, grandes historias. Un universo de detalles delicados para acompañar el encanto de crecer.</p><span class="eyebrow">{{ config().location }}</span></div>
+    <div><h3>Explora</h3><a routerLink="/catalogo">Todas las prendas</a><a routerLink="/catalogo" [queryParams]="{genero:'bebes'}">Bebés</a><a routerLink="/catalogo" [queryParams]="{genero:'ninas'}">Niñas</a><a routerLink="/catalogo" [queryParams]="{genero:'ninos'}">Niños</a><a routerLink="/catalogo" [queryParams]="{ofertas:'si'}">Ofertas</a></div>
     <div><h3>Ayuda</h3><a routerLink="/contacto">Contacto</a><a routerLink="/contacto" fragment="preguntas">Preguntas frecuentes</a><a routerLink="/carrito">Mi carrito</a><a routerLink="/checkout">Cómo comprar</a></div>
     <div><h3>Conecta</h3>@if (config().instagramUrl) { <a [href]="config().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram ↗</a> }@if (config().email) { <a [href]="'mailto:' + config().email">{{ config().email }}</a> }<span>Atención personalizada</span></div>
-  </div><div class="page-shell footer-bottom"><span>© 2026 {{ config().name }}. Todos los derechos reservados.</span><span>Hecho para vestir tu historia.</span></div>
+  </div><div class="page-shell footer-bottom"><span>© 2026 {{ config().name }}. Todos los derechos reservados.</span><span>La magia está en los pequeños momentos.</span></div>
 </footer>
 @if (cart.drawerOpen()) {
   <div class="drawer-backdrop" (click)="cart.drawerOpen.set(false)" aria-hidden="true"></div>
-  <aside class="cart-drawer" role="dialog" aria-modal="true" aria-label="Tu carrito">
+  <aside appFocusTrap class="cart-drawer" role="dialog" aria-modal="true" aria-label="Tu carrito">
     <div class="drawer-head"><div><span class="eyebrow">Tu selección</span><h2 class="font-editorial">Mi carrito <small>({{ cart.count() }})</small></h2></div><button class="icon-button" type="button" aria-label="Cerrar carrito" (click)="cart.drawerOpen.set(false)">✕</button></div>
-    @if (cart.items().length === 0) { <div class="drawer-empty"><span class="font-editorial">Tu próxima pieza favorita te espera.</span><p>Explora nuestra selección y empieza a crear tu pedido.</p><a class="button-dark" routerLink="/catalogo" (click)="cart.drawerOpen.set(false)">Explorar catálogo</a></div> }
+    @if (cart.items().length === 0) { <div class="drawer-empty"><span class="font-editorial">Sus próximos favoritos te esperan.</span><p>Explora nuestra selección y empieza a crear tu pedido.</p><a class="button-dark" routerLink="/catalogo" (click)="cart.drawerOpen.set(false)">Explorar catálogo</a></div> }
     @else {
       <div class="drawer-items">@for (item of cart.items(); track item.productId + item.colorId + item.size) { @if (productFor(item); as product) {
         <article class="drawer-item"><a [routerLink]="['/producto', product.id]" [queryParams]="{color:item.colorId}" (click)="cart.drawerOpen.set(false)">@if (imageFor(item); as image) { <app-product-photo [image]="image" /> }</a><div><a class="item-name" [routerLink]="['/producto', product.id]" [queryParams]="{color:item.colorId}" (click)="cart.drawerOpen.set(false)">{{ product.name }}</a><p>{{ colorFor(item) }} · Talla {{ item.size }}</p><strong>{{ money(product.price * item.quantity) }}</strong><div class="drawer-item-bottom"><div class="mini-stepper"><button type="button" [attr.aria-label]="'Quitar una unidad de ' + product.name" (click)="changeQuantity(item,-1)">−</button><span>{{ item.quantity }}</span><button type="button" [attr.aria-label]="'Añadir una unidad de ' + product.name" (click)="changeQuantity(item,1)">+</button></div><button class="remove-button" type="button" (click)="cart.remove(item)">Eliminar</button></div></div></article>

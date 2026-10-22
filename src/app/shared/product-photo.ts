@@ -4,11 +4,12 @@ import { ProductImage } from '../models/store.models';
 @Component({
   selector: 'app-product-photo',
   standalone: true,
-  template: `@if (image().quadrant && image().atlasShape) { <span class="photo" role="img" [attr.aria-label]="image().alt" [style.background-image]="'url(' + image().url + ')'" [style.background-size]="size()" [style.background-position]="position()"></span> } @else { <img class="photo" [src]="image().url" [alt]="image().alt" loading="lazy" /> }`,
-  styles: `:host{display:block;overflow:hidden;background:#e9e5dc}.photo{display:block;width:100%;height:100%;background-repeat:no-repeat;background-color:#e9e5dc}img.photo{object-fit:cover}`,
+  template: `@if (image().quadrant && image().atlasShape) { <span class="photo" role="img" [attr.aria-label]="image().alt" [style.background-image]="'url(' + image().url + ')'" [style.background-size]="size()" [style.background-position]="position()"></span> } @else { <img class="photo" [class.demo-detail]="image().view==='detail' && image().url.startsWith('/images/')" [src]="image().url" [alt]="image().alt" loading="lazy" decoding="async" (error)="onError($event)" /> }`,
+  styles: `:host{display:block;overflow:hidden;background:#EDE5DA}.photo{display:block;width:100%;height:100%;background-repeat:no-repeat;background-color:#EDE5DA}img.photo{object-fit:contain}.demo-detail{transform:scale(1.2)}`,
 })
 export class ProductPhoto {
   readonly image = input.required<ProductImage>();
+  onError(event: Event): void { const image = event.target as HTMLImageElement; if (!image.src.endsWith('image-fallback.svg')) image.src = '/image-fallback.svg'; }
   readonly size = computed(() => {
     const image = this.image();
     if (image.atlasShape === 'tall') return image.view === 'detail' ? '260% auto' : '200% auto';

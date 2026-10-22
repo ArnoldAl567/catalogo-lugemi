@@ -11,13 +11,13 @@ export class CartService {
   private readonly state = signal<CartItem[]>(this.restore());
   readonly items = this.state.asReadonly();
   readonly count = computed(() => this.items().reduce((count, item) => count + item.quantity, 0));
-  readonly total = computed(() => this.items().reduce((total, item) => total + (this.catalog.getById(item.productId)?.price ?? 0) * item.quantity, 0));
+  readonly total = computed(() => this.items().reduce((total, item) => total + Math.round((this.catalog.getById(item.productId)?.price ?? 0) * 100) * item.quantity, 0) / 100);
   readonly drawerOpen = signal(false);
   readonly feedback = signal('');
 
   constructor() {
     effect(() => {
-      if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items()));
+      try { if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items())); } catch { /* The cart remains usable when browser storage is unavailable. */ }
     });
     effect(() => {
       if (!['demo', 'ready'].includes(this.catalog.status())) return;
@@ -42,6 +42,7 @@ export class CartService {
   }
 
   add(product: Product, colorId: string, size: string, quantity: number): boolean {
+    if (!validateQuantity(product, colorId, size, quantity)) return false;
     const existing = this.items().find(item => item.productId === product.id && item.colorId === colorId && item.size === size);
     const nextQuantity = (existing?.quantity ?? 0) + quantity;
     if (!validateQuantity(product, colorId, size, nextQuantity)) return false;

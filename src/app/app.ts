@@ -6,8 +6,9 @@ import { CatalogService } from './core/catalog.service';
 import { mainImageForColor, money } from './core/store.utils';
 import { CartItem } from './models/store.models';
 import { ProductPhoto } from './shared/product-photo';
+import { FocusTrap } from './shared/focus-trap';
 
-@Component({ selector: 'app-root', standalone: true, imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ProductPhoto], templateUrl: './app.html', styleUrl: './app.css' })
+@Component({ selector: 'app-root', standalone: true, imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ProductPhoto, FocusTrap], templateUrl: './app.html', styleUrl: './app.css' })
 export class App {
   readonly cart = inject(CartService);
   readonly catalog = inject(CatalogService);

@@ -1,23 +1,50 @@
-<section class="hero relative min-h-[680px] flex items-center text-white overflow-hidden">
-  <img class="hero-image absolute inset-0 w-full h-full object-cover" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="2000" height="1200" fetchpriority="high" (error)="imageError($event)" />
-  <div class="hero-shade absolute inset-0"></div>
-  <div class="page-shell relative z-10 hero-content fade-in"><span class="eyebrow">{{ settings().heroEyebrow }}</span><h1 class="font-editorial">{{ settings().heroTitle }}<br/><em>{{ settings().heroAccent }}</em></h1><p>{{ settings().heroDescription }}</p><div class="flex flex-wrap gap-3 mt-9"><a class="button-dark !bg-white !text-charcoal hover:!bg-cream" routerLink="/catalogo">Explorar colección <span aria-hidden="true">↗</span></a><a class="button-outline !border-white !text-white hover:!bg-white hover:!text-charcoal" routerLink="/catalogo" [queryParams]="{genero:'mujer'}">Descubrir mujer</a></div></div>
-  <div class="hero-index absolute bottom-8 right-8 z-10 text-[11px] tracking-[.2em]">01 / {{ settings().name }}</div>
+<section class="hero">
+  <div class="hero-copy fade-in">
+    <span class="eyebrow"><span class="tiny-star" aria-hidden="true">✧</span> {{ settings().heroEyebrow }}</span>
+    <h1>{{ settings().heroTitle }}<br><em>{{ settings().heroAccent }}</em></h1>
+    <p>{{ settings().heroDescription }}</p>
+    <div class="hero-actions"><a class="button-dark" routerLink="/catalogo">Explorar colección <span aria-hidden="true">↗</span></a><a class="text-link" routerLink="/catalogo" [queryParams]="{coleccion:'nueva'}">Ver novedades <span aria-hidden="true">→</span></a></div>
+    <div class="hero-footnote"><span class="fine-line"></span> Una infancia para recordar.</div>
+  </div>
+  <div class="hero-visual">
+    <img [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1536" height="1024" fetchpriority="high" (error)="imageError($event)" />
+    <span class="photo-caption">Un pequeño mundo. Infinitas historias.</span>
+    <div class="editorial-seal" aria-hidden="true"><span>HECHO DE</span><i>pequeños<br>momentos</i><span>MAISON MODE</span></div>
+  </div>
 </section>
-<div class="story-strip"><div class="page-shell flex flex-wrap justify-between gap-3 py-5 text-[10px] uppercase tracking-[.2em]"><span>Selección contemporánea</span><span>Diseñada para durar</span><span>Compra personalizada</span><span>Hecha para ti</span></div></div>
-@if (catalog.status() === 'loading') { <div class="page-shell py-8 text-sm" role="status">Cargando la colección…</div> }
-@else if (catalog.status() === 'error') { <div class="page-shell py-8 text-sm" role="alert">No pudimos cargar la colección. <button type="button" class="underline" (click)="catalog.refresh()">Reintentar</button></div> }
+<div class="story-strip"><div class="page-shell"><span>Diseños cuidadosamente seleccionados</span><i>✧</i><span>Para crecer con comodidad</span><i>✧</i><span>Atención personalizada</span></div></div>
 
-<section class="page-shell section-spacing"><div class="section-heading"><div><span class="eyebrow text-olive">Tu estilo, tu elección</span><h2 class="font-editorial">Explora a tu manera</h2></div><a routerLink="/catalogo" class="section-link">Ver todo el catálogo ↗</a></div><div class="category-grid">
-  <a class="category-card" routerLink="/catalogo" [queryParams]="{genero:'mujer'}"><img src="https://images.unsplash.com/photo-1747817330507-3d008dc5b324?auto=format&fit=crop&w=900&q=82" alt="Colección para mujer" width="700" height="900" loading="lazy" (error)="imageError($event)" /><div><span class="eyebrow">01 / Colección</span><h3 class="font-editorial">Mujer</h3><span>Descubrir ↗</span></div></a>
-  <a class="category-card" routerLink="/catalogo" [queryParams]="{genero:'hombre'}"><img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?auto=format&fit=crop&w=900&q=82" alt="Colección para hombre" width="700" height="900" loading="lazy" (error)="imageError($event)" /><div><span class="eyebrow">02 / Colección</span><h3 class="font-editorial">Hombre</h3><span>Descubrir ↗</span></div></a>
-  <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'accesorios'}"><img src="https://images.unsplash.com/photo-1691480250099-a63081ecfcb8?auto=format&fit=crop&w=900&q=82" alt="Accesorios de moda" width="700" height="900" loading="lazy" (error)="imageError($event)" /><div><span class="eyebrow">03 / Detalles</span><h3 class="font-editorial">Accesorios</h3><span>Descubrir ↗</span></div></a>
-  </div></section>
+<section class="page-shell section-spacing category-section">
+  <div class="section-heading"><div><span class="eyebrow">Un universo para cada etapa</span><h2>Pequeños, a su manera.</h2></div><p>Desde sus primeros abrazos<br>hasta sus grandes aventuras.</p></div>
+  <div class="category-grid">
+    @for (audience of audiences; track audience.id; let i = $index) {
+      <a class="category-card" routerLink="/catalogo" [queryParams]="{genero:audience.id}">
+        <div class="category-photo"><img [src]="'/images/categoria-' + audience.id + '.webp'" [alt]="'Moda infantil para ' + audience.name" width="600" height="760" loading="lazy" (error)="imageError($event)" /><span class="category-number">0{{ i + 1 }}</span></div>
+        <div class="category-caption"><div><h3>{{ audience.name }}</h3><p>{{ audience.age }}</p></div><span class="round-arrow" aria-hidden="true">↗</span></div>
+      </a>
+    }
+  </div>
+</section>
 
-<section class="featured-section"><div class="page-shell section-spacing"><div class="section-heading"><div><span class="eyebrow text-olive">La selección Maison</span><h2 class="font-editorial">Piezas para recordar</h2></div><a routerLink="/catalogo" class="section-link">Ver todas las prendas ↗</a></div><div class="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-9 md:gap-x-6">@for (product of featured(); track product.id) { <app-product-card [product]="product" /> }</div></div></section>
+<section class="featured-section">
+  <div class="page-shell section-spacing">
+    <div class="section-heading"><div><span class="eyebrow">La selección de la boutique</span><h2>Sus próximos favoritos</h2></div><div class="carousel-actions"><a routerLink="/catalogo" class="text-link">Ver toda la colección ↗</a><div><button type="button" class="round-arrow" aria-label="Prendas anteriores" (click)="slide(featuredRail,-1)">←</button><button type="button" class="round-arrow" aria-label="Más prendas destacadas" (click)="slide(featuredRail,1)">→</button></div></div></div>
+    @if (catalog.status() === 'loading') { <div class="product-skeletons" role="status" aria-label="Cargando colección"><span></span><span></span><span></span><span></span></div> }
+    @else if (catalog.status() === 'error') { <div class="load-error" role="alert"><p>No pudimos cargar la colección.</p><button class="button-outline" type="button" (click)="catalog.refresh()">Reintentar</button></div> }
+    <div class="featured-rail" #featuredRail tabindex="0" aria-label="Prendas destacadas, desplaza para ver más">@for (product of featured(); track product.id) { <app-product-card [product]="product" /> }</div>
+    @if (catalog.status() === 'demo') { <p class="demo-note">Colección de demostración · Fotografías ilustrativas, precios y existencias referenciales.</p> }
+  </div>
+</section>
 
-<section class="editorial relative overflow-hidden"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1800&q=85" alt="Prendas cuidadosamente seleccionadas" width="1800" height="900" loading="lazy" (error)="imageError($event)" /><div class="editorial-copy"><span class="eyebrow">Editorial · {{ settings().name }}</span><h2 class="font-editorial">Menos prisa.<br/><em>Más esencia.</em></h2><p>Creemos en prendas que se sienten tan bien como se ven. Atemporales, versátiles y siempre tuyas.</p><a class="button-outline !border-white !text-white hover:!bg-white hover:!text-charcoal" routerLink="/catalogo">Conoce la colección ↗</a></div></section>
+<section class="page-shell editorial-section">
+  <div class="editorial-photo"><img src="/images/infancia-editorial.webp" alt="Pequeños compartiendo un paseo en el jardín" width="1536" height="1024" loading="lazy"><span>EL ARTE DE CRECER</span></div>
+  <div class="editorial-copy"><span class="eyebrow">Mucho más que vestir</span><h2>Diseñado para<br>sus momentos<br><em>más especiales</em></h2><p>Las primeras veces. Las tardes sin prisa. Ese abrazo que lo dice todo. Hay prendas que se convierten en parte de su historia.</p><a class="text-link" routerLink="/catalogo" [queryParams]="{coleccion:'ocasiones'}">Descubrir ocasiones especiales <span>↗</span></a><span class="editorial-flower" aria-hidden="true">✳</span></div>
+</section>
 
-<section class="page-shell section-spacing"><div class="section-heading"><div><span class="eyebrow text-olive">Recién llegados</span><h2 class="font-editorial">Lo nuevo en {{ settings().name }}</h2></div><a routerLink="/catalogo" [queryParams]="{orden:'novedades'}" class="section-link">Descubrir novedades ↗</a></div><div class="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-9 md:gap-x-6">@for (product of newArrivals(); track product.id) { <app-product-card [product]="product" /> }</div></section>
+<section class="page-shell section-spacing arrivals">
+  <div class="section-heading"><div><span class="eyebrow">Nuevas historias por estrenar</span><h2>Lo último en llegar</h2></div><a routerLink="/catalogo" [queryParams]="{coleccion:'nueva'}" class="text-link">Ver novedades ↗</a></div>
+  <div class="arrival-grid">@for (product of newArrivals(); track product.id) { <app-product-card [product]="product" /> }</div>
+</section>
 
-<section class="benefits"><div class="page-shell grid gap-8 md:grid-cols-3"><div><span class="benefit-icon">✧</span><h3 class="font-editorial">Elige con calma</h3><p>Explora prendas pensadas para acompañarte temporada tras temporada.</p></div><div><span class="benefit-icon">↗</span><h3 class="font-editorial">Pide por WhatsApp</h3><p>Tu selección llega a nuestra tienda en un mensaje claro y personalizado.</p></div><div><span class="benefit-icon">♡</span><h3 class="font-editorial">Atención cercana</h3><p>Te ayudamos con tallas, disponibilidad y entrega antes de confirmar.</p></div></div></section>
+<section class="season-banner page-shell"><div><span class="eyebrow">Días de sol, recuerdos para siempre</span><h2>Un verano muy suyo.</h2><p>Colores suaves y pequeños detalles para salir a descubrir.</p></div><a class="button-outline" routerLink="/catalogo" [queryParams]="{coleccion:'verano'}">Explorar temporada ↗</a></section>
+<section class="benefits page-shell"><div><span aria-hidden="true">✧</span><h3>Elegido con cariño</h3><p>Diseños cuidadosamente seleccionados para cada etapa.</p></div><div><span aria-hidden="true">☁</span><h3>Libertad para jugar</h3><p>La comodidad de los más pequeños, siempre presente.</p></div><div><span aria-hidden="true">↗</span><h3>Así de sencillo</h3><p>Prepara tu pedido y coordina los detalles por WhatsApp.</p></div><div><span aria-hidden="true">♡</span><h3>Estamos para ayudarte</h3><p>Atención personalizada para elegir tallas y prendas.</p></div></section>

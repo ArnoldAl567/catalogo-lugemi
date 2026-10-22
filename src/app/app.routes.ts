@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', title: 'MAISON MODE | Boutique contemporánea', loadComponent: () => import('./features/home/home').then(m => m.Home) },
+  { path: '', title: 'MAISON MODE | Boutique infantil', loadComponent: () => import('./features/home/home').then(m => m.Home) },
   { path: 'catalogo', title: 'Catálogo | MAISON MODE', loadComponent: () => import('./features/catalog/catalog').then(m => m.Catalog) },
   { path: 'producto/:id', loadComponent: () => import('./features/product/product').then(m => m.ProductPage) },
   { path: 'carrito', title: 'Mi carrito | MAISON MODE', loadComponent: () => import('./features/cart/cart').then(m => m.CartPage) },

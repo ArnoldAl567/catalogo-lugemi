@@ -5,8 +5,9 @@ import { CartService } from '../../core/cart.service';
 import { getVariant, imagesForColor, money } from '../../core/store.utils';
 import { ProductCard } from '../../shared/product-card';
 import { ProductPhoto } from '../../shared/product-photo';
+import { FocusTrap } from '../../shared/focus-trap';
 
-@Component({ selector: 'app-product', standalone: true, imports: [RouterLink, ProductCard, ProductPhoto], templateUrl: './product.html', styleUrl: './product.css' })
+@Component({ selector: 'app-product', standalone: true, imports: [RouterLink, ProductCard, ProductPhoto, FocusTrap], templateUrl: './product.html', styleUrl: './product.css' })
 export class ProductPage {
   readonly catalog = inject(CatalogService);
   readonly cart = inject(CartService);

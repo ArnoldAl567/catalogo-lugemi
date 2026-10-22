@@ -54,11 +54,15 @@ export class CatalogService implements OnDestroy {
       const {fetchSanityCatalog} = await import('./sanity.repository');
       const data = await fetchSanityCatalog(options);
       if (currentRequestId !== this.requestId) return;
-      this.productState.set(data.products);
-      this.categoryState.set(data.categories);
-      this.settingsState.set({...STORE_CONFIG, ...data.settings});
+      const hasChildren = data.products.length > 0;
+      this.productState.set(hasChildren ? data.products : PRODUCTS);
+      this.categoryState.set(hasChildren ? data.categories.filter(category => data.products.some(product => product.categoryId === category.id)) : CATEGORIES);
+      const settings = Object.fromEntries(Object.entries(data.settings).filter(([, value]) => value != null));
+      // Preserve real contact details. Legacy adult editorial content is not reused.
+      const contact = Object.fromEntries(['name', 'whatsappNumber', 'email', 'location', 'instagramUrl'].filter(key => key in settings).map(key => [key, settings[key]]));
+      this.settingsState.set({...STORE_CONFIG, ...(data.settings.useChildrenEditorial ? settings : contact)});
       this.syncTags = data.syncTags;
-      this.status.set('ready');
+      this.status.set(hasChildren ? 'ready' : 'demo');
     } catch (error) {
       console.error('No se pudo cargar el catálogo de Sanity.', error);
       if (currentRequestId === this.requestId && !this.products().length) this.status.set('error');

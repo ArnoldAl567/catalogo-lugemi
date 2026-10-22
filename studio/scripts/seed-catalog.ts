@@ -11,7 +11,7 @@ type DemoVariant = {colorId: string; colorName: string; hex: string; size: strin
 type DemoProduct = {
   id: string; name: string; categoryId: string; audience: string; price: number; previousPrice?: number;
   badge?: string; description: string; material: string; details: string[]; featured?: boolean;
-  variants: DemoVariant[]; images: DemoImage[]
+  variants: DemoVariant[]; images: DemoImage[]; collections?: string[]; demo?: boolean
 }
 type DemoCategory = {id: string; name: string; description: string}
 
@@ -58,16 +58,17 @@ async function main(): Promise<void> {
       for (const colorId of [...new Set(product.variants.map(variant => variant.colorId))]) {
         const variants = product.variants.filter(variant => variant.colorId === colorId)
         const photo = product.images.find(image => image.colorId === colorId && image.view === 'full')
-        if (!photo?.quadrant) throw new Error(`Falta fotografía de ${product.id} en ${colorId}`)
+        if (!photo) throw new Error(`Falta fotografía de ${product.id} en ${colorId}`)
         const filename = `${product.id}-${colorId}.webp`
-        const croppedPath = join(tempDirectory, filename)
-        cropPhoto(join(root, 'public', photo.url.replace(/^\//, '')), croppedPath, photo.quadrant)
+        const sourcePath = join(root, 'public', photo.url.replace(/^\//, ''))
+        const croppedPath = photo.quadrant ? join(tempDirectory, filename) : sourcePath
+        if (photo.quadrant) cropPhoto(sourcePath, croppedPath, photo.quadrant)
         const asset = await client.assets.upload('image', createReadStream(croppedPath), {filename})
         colors.push({
           _key: colorId, _type: 'colorVariant', code: colorId,
           name: variants[0].colorName, hex: variants[0].hex,
           photos: [{_key: 'main', _type: 'image', alt: photo.alt, asset: {_type: 'reference', _ref: asset._id}}],
-          sizes: variants.map(variant => ({_key: variant.size.toLowerCase(), _type: 'sizeStock', size: variant.size, stock: variant.stock})),
+          sizes: variants.map(variant => ({_key: 'size-' + variants.indexOf(variant), _type: 'sizeStock', size: variant.size, stock: variant.stock})),
         })
       }
       await client.createIfNotExists({
@@ -75,16 +76,16 @@ async function main(): Promise<void> {
         slug: {_type: 'slug', current: product.id}, category: {_type: 'reference', _ref: `category-${product.categoryId}`},
         audience: product.audience, price: product.price, previousPrice: product.previousPrice,
         badge: product.badge, description: product.description, material: product.material,
-        details: product.details, featured: !!product.featured, active: true, colors,
+        collections: product.collections, demo: product.demo, details: product.details, featured: !!product.featured, active: true, colors,
       })
       console.log(`Producto listo: ${product.name}`)
     }
     await client.createIfNotExists({
       _id: 'storeSettings', _type: 'storeSettings', name: 'MAISON MODE',
       whatsappNumber: '51902586908', email: '', instagramUrl: '', location: 'Lima, Perú',
-      announcement: 'Una forma más personal de vestir · Asesoría por WhatsApp',
-      heroEyebrow: 'Nueva temporada · 2026', heroTitle: 'El estilo de', heroAccent: 'ser tú.',
-      heroDescription: 'Diseños para vestir cada versión de ti. Prendas esenciales, detalles que permanecen.',
+      announcement: 'Pequeños detalles, momentos inolvidables · Atención por WhatsApp',
+      heroEyebrow: 'El encanto de crecer', heroTitle: 'Pequeños estilos,', heroAccent: 'grandes momentos',
+      heroDescription: 'Descubre prendas únicas diseñadas para acompañar cada aventura de su infancia',
     })
     console.log('Datos de la tienda listos. La portada y las categorías pueden recibir fotos propias desde el panel.')
   } finally {

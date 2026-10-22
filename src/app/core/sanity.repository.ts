@@ -11,7 +11,7 @@ interface SanityColor {
 interface SanityProduct {
   id?: string; name?: string; categoryId?: string; audience?: Product['audience']; price?: number;
   previousPrice?: number; badge?: ProductBadge; description?: string; material?: string;
-  details?: string[]; featured?: boolean; createdAt?: string; colors?: SanityColor[];
+  details?: string[]; featured?: boolean; createdAt?: string; colors?: SanityColor[]; collections?: string[]; demo?: boolean;
 }
 interface SanityCategory {id?: string; name?: string; description?: string; image?: ImageDocument}
 interface SanitySettings extends Partial<Omit<StoreSettings, 'currency' | 'heroImageUrl' | 'heroImageAlt'>> {heroImage?: ImageDocument}
@@ -23,13 +23,13 @@ const CATALOG_QUERY = `{
   },
   "products": *[_type == "product" && active != false && defined(slug.current)] | order(_createdAt desc) {
     "id": slug.current, name, "categoryId": category->slug.current, audience,
-    price, previousPrice, badge, description, material, details, featured,
+    price, previousPrice, badge, description, material, details, featured, collections, demo,
     "createdAt": _createdAt,
     colors[]{code, name, hex, photos[], sizes[]{size, stock}}
   },
   "settings": *[_type == "storeSettings" && _id == "storeSettings"][0]{
     name, whatsappNumber, email, instagramUrl, location, announcement,
-    heroEyebrow, heroTitle, heroAccent, heroDescription, heroImage
+    heroEyebrow, heroTitle, heroAccent, heroDescription, heroImage, useChildrenEditorial
   }
 }`;
 
@@ -57,7 +57,7 @@ export async function fetchSanityCatalog(options: {fresh?: boolean; lastLiveEven
     id: item.id, name: item.name, description: item.description ?? '', image: imageUrl(item.image, 900) || '/image-fallback.svg',
   }));
   const products = (response.products ?? []).flatMap((item): Product[] => {
-    if (!item.id || !item.name || !item.categoryId || !['mujer', 'hombre', 'unisex'].includes(item.audience ?? '') || typeof item.price !== 'number') return [];
+    if (!item.id || !item.name || !item.categoryId || !['bebes', 'ninas', 'ninos'].includes(item.audience ?? '') || typeof item.price !== 'number' || !Number.isFinite(item.price) || item.price < 0) return [];
     const variants: ProductVariant[] = [];
     const images: ProductImage[] = [];
     for (const color of item.colors ?? []) {
@@ -75,7 +75,7 @@ export async function fetchSanityCatalog(options: {fresh?: boolean; lastLiveEven
     return [{
       id: item.id, name: item.name, categoryId: item.categoryId, audience: item.audience!, price: item.price,
       previousPrice: item.previousPrice, badge: item.badge, description: item.description ?? '', material: item.material ?? '',
-      details: item.details ?? [], featured: !!item.featured, createdAt: Date.parse(item.createdAt ?? '') || Date.now(), variants, images,
+      details: item.details ?? [], collections: item.collections ?? [], demo: !!item.demo, featured: !!item.featured, createdAt: Date.parse(item.createdAt ?? '') || Date.now(), variants, images,
     }];
   });
   const rawSettings = response.settings ?? {};

@@ -10,6 +10,7 @@ export const storeSettingsType = defineType({
     defineField({name: 'email', title: 'Correo de contacto', type: 'string', validation: (rule) => rule.email()}),
     defineField({name: 'instagramUrl', title: 'Instagram', type: 'url'}),
     defineField({name: 'location', title: 'Ubicación', type: 'string'}),
+    defineField({name: 'useChildrenEditorial', title: 'Publicar esta portada infantil', description: 'Activa cuando hayas reemplazado los textos y la foto anteriores por contenido infantil. Mientras tanto se muestra la nueva portada de la boutique.', type: 'boolean', initialValue: false}),
     defineField({name: 'announcement', title: 'Mensaje superior', type: 'string'}),
     defineField({name: 'heroEyebrow', title: 'Texto pequeño de portada', type: 'string'}),
     defineField({name: 'heroTitle', title: 'Título de portada', type: 'string'}),
