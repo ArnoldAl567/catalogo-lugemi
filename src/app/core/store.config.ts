@@ -9,10 +9,10 @@ export const STORE_CONFIG: StoreSettings = {
   tiktokUrl: 'https://www.tiktok.com/@lugemi.kids',
   facebookUrl: 'https://www.facebook.com/share/18fjWTNhp1/?mibextid=wwXIfr',
   currency: 'PEN',
-  heroEyebrow: 'Moda infantil para hoy y siempre',
-  heroTitle: 'Estilo para imaginar, crecer',
+  heroEyebrowLines: ['Moda infantil', 'para hoy', 'y siempre'],
+  heroTitleLines: ['Estilo para', 'imaginar,', 'crecer'],
   heroAccent: 'y explorar.',
   heroDescription: 'Prendas cómodas, detalles especiales y calidad para cada aventura.',
-  heroImageUrl: '/images/brand/lugemi-portada-campo.png',
+  heroImageUrl: '/images/brand/lugemi-portada-campo.webp',
   heroImageAlt: 'Dos niños con ropa cómoda corren juntos por el campo al atardecer',
 };

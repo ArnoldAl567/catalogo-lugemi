@@ -1,9 +1,9 @@
 <section class="hero">
   <img class="hero-photo" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1494" height="1053" fetchpriority="high" (error)="imageError($event)">
   <div class="hero-copy">
-    <span class="eyebrow">{{ settings().heroEyebrow }}</span>
-    <h1>{{ settings().heroTitle }}<br><em>{{ settings().heroAccent }}</em></h1>
-    <p>{{ settings().heroDescription }}</p>
+    <p class="hero-eyebrow">@for (line of settings().heroEyebrowLines; track line) { <span>{{ line }}</span> }</p>
+    <h1>@for (line of settings().heroTitleLines; track line) { <span>{{ line }}</span> }<em>{{ settings().heroAccent }}</em></h1>
+    <p class="hero-description">{{ settings().heroDescription }}</p>
     <a class="button-dark" routerLink="/catalogo">Ver colección <span aria-hidden="true">→</span></a>
   </div>
 </section>
@@ -14,9 +14,9 @@
 </div></div>
 <section class="page-shell category-section" aria-label="Explora por tipo de prenda">
   <div class="category-grid">
-    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'camisetas'}"><div class="category-photo"><img src="/images/conjunto-milo-celeste.webp" alt="Polo infantil" width="600" height="760" loading="lazy"></div><div class="category-caption"><h2>Polos</h2><span aria-hidden="true">→</span></div></a>
-    <a class="category-card" routerLink="/catalogo" [queryParams]="{buscar:'short'}"><div class="category-photo shorts-photo"><img src="/images/brand/lugemi-portada-moda.png" alt="Short de jean infantil, fotografía ilustrativa" width="1536" height="1024" loading="lazy"></div><div class="category-caption"><h2>Jeans y shorts</h2><span aria-hidden="true">→</span></div></a>
-    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'conjuntos'}"><div class="category-photo"><img src="/images/conjunto-olivia-salvia.webp" alt="Conjunto infantil de blusa y pantalón" width="600" height="760" loading="lazy"></div><div class="category-caption"><h2>Conjuntos</h2><span aria-hidden="true">→</span></div></a>
+    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'camisetas'}"><div class="category-photo"><img src="/images/brand/categoria-polos.webp" alt="Niño con polo marfil y detalles azul marino" width="800" height="800" loading="lazy" decoding="async"></div><div class="category-caption"><h2>Polos</h2><span aria-hidden="true">→</span></div></a>
+    <a class="category-card" routerLink="/catalogo" [queryParams]="{buscar:'short'}"><div class="category-photo"><img src="/images/brand/categoria-jeans.webp" alt="Detalle de un short cargo de jean azul" width="800" height="800" loading="lazy" decoding="async"></div><div class="category-caption"><h2>Jeans y shorts</h2><span aria-hidden="true">→</span></div></a>
+    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'conjuntos'}"><div class="category-photo"><img src="/images/brand/categoria-conjuntos.webp" alt="Niña con una sudadera marfil con capucha" width="800" height="800" loading="lazy" decoding="async"></div><div class="category-caption"><h2>Conjuntos</h2><span aria-hidden="true">→</span></div></a>
   </div>
 </section>
 

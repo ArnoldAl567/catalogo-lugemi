@@ -15,7 +15,7 @@ export interface Product {
 }
 export interface StoreSettings {
   name: string; whatsappNumber: string; email: string; location: string; instagramUrl: string; tiktokUrl?: string; facebookUrl: string; currency: 'PEN';
-  heroEyebrow: string; heroTitle: string; heroAccent: string; heroDescription: string;
+  heroEyebrowLines: string[]; heroTitleLines: string[]; heroAccent: string; heroDescription: string;
   heroImageUrl: string; heroImageAlt: string;
 }
 export interface CartItem { productId: string; colorId: string; size: string; quantity: number; }
