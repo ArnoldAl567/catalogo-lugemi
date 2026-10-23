@@ -1,22 +1,29 @@
 @if (visible()) {
-  <div #shell class="mascot-shell" [class.ready]="ready()" [class.blocked]="blocked()" [class.travelling]="travelling()" [class.dragging]="dragging()" [class.still]="paused() || reduced() || open()" [attr.data-pose]="pose()" [style.--travel-time]="travelMs() + 'ms'" [style.width.px]="size()" [style.height.px]="size()" [style.transform]="'translate3d(' + x() + 'px,' + y() + 'px,0)'" (focusin)="onFocus()" (focusout)="onBlur($event)">
+  <div #shell class="mascot-shell" [class.ready]="ready()" [class.blocked]="blocked()" [class.still]="paused() || reduced()" [attr.data-pose]="pose()" (focusin)="onFocus()" (focusout)="onBlur($event)">
     @if (open()) {
-      <section class="mascot-bubble" [style.left.px]="bubbleLeft()" [style.top.px]="bubbleTop()" aria-label="Saludo del osito Lugemi">
+      <section class="mascot-bubble" aria-label="Saludo del osito Lugemi">
         <button class="close-bubble" type="button" aria-label="Cerrar saludo" (click)="close()">×</button>
         <span class="mascot-eyebrow">Tu compañero de aventuras</span>
         <h2>¡Hola, soy el osito Lugemi! <span aria-hidden="true">✦</span></h2>
-        <p>¿Descubrimos tus próximos favoritos? Puedes arrastrarme para llevarme contigo.</p>
+        <p>¿Te ayudo a elegir? El botón verde de abajo te lleva al WhatsApp de la tienda.</p>
         <a routerLink="/catalogo" (click)="close()" class="mascot-explore">Explorar la colección <span aria-hidden="true">↗</span></a>
         <div class="mascot-controls">
-          <button type="button" [disabled]="reduced()" (click)="togglePause()">{{ reduced() ? 'Movimiento reducido' : paused() ? 'Reanudar paseo' : 'Pausar paseo' }}</button>
+          <button type="button" [disabled]="reduced()" (click)="togglePause()">{{ reduced() ? 'Movimiento reducido' : paused() ? 'Reanudar animación' : 'Pausar animación' }}</button>
           <button type="button" (click)="hide()">Ocultar osito</button>
         </div>
       </section>
     }
-    <button class="mascot-character" type="button" aria-label="Saludar al osito Lugemi. Puedes arrastrarlo o moverlo con las flechas del teclado" [attr.aria-expanded]="open()" title="¡Hola! Tócame o arrástrame" (pointerdown)="startDrag($event)" (pointermove)="drag($event)" (pointerup)="endDrag($event)" (pointercancel)="endDrag($event)" (lostpointercapture)="endDrag($event)" (click)="greet()" (keydown)="moveWithKeyboard($event)">
-      <span class="mascot-sprite" aria-hidden="true" [style.background-position]="spritePosition()" [class.opposite-step]="mirroredStep()"></span>
+    <button class="mascot-character" type="button" aria-label="Saludar al osito Lugemi" [attr.aria-expanded]="open()" title="¡Hola! Tócame para saludar" (click)="greet()">
+      @if (pose() === 'pointing') {
+        <img class="mascot-pointing" src="/images/brand/lugemi-mascota-senala.png" alt="" width="1024" height="1024" draggable="false">
+      } @else {
+        <span class="mascot-sprite" aria-hidden="true" [style.background-position]="spritePosition()"></span>
+      }
       <span class="mascot-spark" aria-hidden="true">✦</span>
     </button>
+    @if (pose() === 'pointing' && !open()) {
+      <span class="whatsapp-cue" aria-hidden="true">¿Te ayudamos? <span>↓</span></span>
+    }
   </div>
 } @else {
   <button type="button" class="mascot-restore" [class.blocked]="blocked()" (click)="show()">Mostrar osito</button>
