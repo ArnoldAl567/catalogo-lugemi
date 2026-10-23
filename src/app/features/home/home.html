@@ -1,5 +1,7 @@
 <section class="hero">
-  <img class="hero-photo" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1494" height="1053" fetchpriority="high" (error)="imageError($event)">
+  <div class="hero-visual">
+    <img class="hero-photo" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1494" height="1053" fetchpriority="high" (error)="imageError($event)">
+  </div>
   <div class="hero-copy">
     <p class="hero-eyebrow">@for (line of settings().heroEyebrowLines; track line) { <span>{{ line }}</span> }</p>
     <h1>@for (line of settings().heroTitleLines; track line) { <span>{{ line }}</span> }<em>{{ settings().heroAccent }}</em></h1>

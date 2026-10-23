@@ -3,13 +3,25 @@
   display: grid;
   grid-template-columns: minmax(0, .85fr) minmax(0, 1.35fr);
   align-items: center;
-  gap: clamp(20px, 3vw, 56px);
-  padding: clamp(32px, 5vw, 72px) max(24px, calc((100vw - 1440px) / 2));
+  gap: 0;
+  padding: 0;
   background: #fcf7f0;
 }
-.hero-photo {
+.hero-visual {
   grid-column: 2;
   grid-row: 1;
+  position: relative;
+  min-width: 0;
+}
+/* Fade only the empty field at the left edge, before either child. */
+.hero-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #fcf7f0 0%, #fcf7f0c7 5%, #fcf7f061 10%, transparent 18%);
+}
+.hero-photo {
   display: block;
   width: 100%;
   height: auto;
@@ -20,7 +32,7 @@
   grid-column: 1;
   grid-row: 1;
   min-width: 0;
-  padding: 0;
+  padding: clamp(32px, 4vw, 64px) 12px clamp(32px, 4vw, 64px) clamp(24px, 4vw, 64px);
   color: #082b47;
 }
 .hero-eyebrow {
@@ -101,8 +113,10 @@
 /* The photograph keeps its full frame; text never overlaps either child. */
 @media (max-width: 700px) {
   .hero { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0; }
-  .hero-photo { grid-column: 1; grid-row: 1; width: 100%; height: auto; object-fit: contain; }
-  .hero-copy { grid-column: 1; grid-row: 2; width: auto; padding: 26px 22px 32px; }
+  .hero-visual { grid-column: 1; grid-row: 1; }
+  .hero-visual::after { background: linear-gradient(180deg, transparent 88%, #fcf7f050 94%, #fcf7f0 100%); }
+  .hero-photo { width: 100%; height: auto; object-fit: contain; }
+  .hero-copy { grid-column: 1; grid-row: 2; width: auto; padding: 18px 22px 32px; }
   .hero-eyebrow { font-size: 12px; line-height: 1.5; letter-spacing: .12em; }
   .hero-eyebrow span { display: inline; }
   .hero-eyebrow span + span::before { content: ' '; }
