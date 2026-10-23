@@ -14,7 +14,7 @@ export interface Product {
   collections?: string[]; demo?: boolean;
 }
 export interface StoreSettings {
-  name: string; whatsappNumber: string; email: string; location: string; instagramUrl: string; tiktokUrl?: string; currency: 'PEN';
+  name: string; whatsappNumber: string; email: string; location: string; instagramUrl: string; tiktokUrl?: string; facebookUrl: string; currency: 'PEN';
   heroEyebrow: string; heroTitle: string; heroAccent: string; heroDescription: string;
   heroImageUrl: string; heroImageAlt: string;
 }

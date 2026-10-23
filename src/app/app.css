@@ -35,3 +35,6 @@
 .mobile-nav a{padding:.75rem 0;border-bottom:1px solid #e5e0d6;font-family:var(--font-serif);font-size:1.25rem}
 @media(max-width:700px){.header-inner{width:calc(100% - 24px);min-height:88px;gap:5px}.header-inner>.wordmark{gap:7px}.brand-symbol{width:58px;height:64px;background-size:250% auto;background-position:50% 38%}.wordmark .brand-name{font-size:1.05rem;letter-spacing:.11em}.wordmark small{font-size:.39rem;letter-spacing:.12em}.header-actions{gap:3px}.header-actions .icon-button,.mobile-toggle{width:32px;height:44px}.header-actions svg,.mobile-toggle svg{width:25px;height:25px}}
 @media(max-width:370px){.brand-symbol{width:44px;height:54px}.wordmark .brand-name{font-size:.88rem}.wordmark small{font-size:.33rem}.header-inner>.wordmark{gap:4px}.header-actions .icon-button,.mobile-toggle{width:28px}}
+.header-inner>.wordmark .brand-name{border-left:1px solid #c8ac7c;padding-left:20px}
+.facebook-action{background:#a47939;color:#fff;border-color:#a47939}
+@media(max-width:700px){.header-inner>.wordmark .brand-name{padding-left:8px}}

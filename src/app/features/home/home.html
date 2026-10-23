@@ -1,5 +1,5 @@
 <section class="hero">
-  <img class="hero-photo" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1536" height="1024" fetchpriority="high" (error)="imageError($event)">
+  <img class="hero-photo" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1494" height="1053" fetchpriority="high" (error)="imageError($event)">
   <div class="hero-copy">
     <span class="eyebrow">{{ settings().heroEyebrow }}</span>
     <h1>{{ settings().heroTitle }}<br><em>{{ settings().heroAccent }}</em></h1>
@@ -8,9 +8,9 @@
   </div>
 </section>
 <div class="story-strip" aria-label="El mundo Lugemi"><div class="page-shell">
-  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28V16m0 8-6-6m6 6 6-6M8 24C0 23 2 13 7 12 5 4 14 1 17 7c6-4 12 1 10 7 7 6 1 13-11 11Z"/></svg>Detalles especiales</span>
+  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28V16m0 8-6-6m6 6 6-6M8 24C0 23 2 13 7 12 5 4 14 1 17 7c6-4 12 1 10 7 7 6 1 13-11 11Z"/></svg>Calidad en cada detalle</span>
   <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 26 24 7M7 23C0 8 18 8 28 3c0 18-7 25-21 20Z"/></svg>Diseños versátiles</span>
-  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28S2 19 2 10C2 1 13 0 16 8c3-8 14-7 14 2 0 9-14 18-14 18Z"/></svg>Atención en Perú</span>
+  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28S2 19 2 10C2 1 13 0 16 8c3-8 14-7 14 2 0 9-14 18-14 18Z"/></svg>Hecho en Perú</span>
 </div></div>
 <section class="page-shell category-section" aria-label="Explora por tipo de prenda">
   <div class="category-grid">
@@ -38,6 +38,6 @@
   <div class="arrival-grid">@for (product of newArrivals(); track product.id) { <app-product-card [product]="product" /> }</div>
 </section>
 
-<section class="community-section page-shell" aria-labelledby="community-title"><div><span class="eyebrow">Sigamos imaginando juntos</span><h2 id="community-title">El mundo Lugemi, más cerca.</h2><p>Novedades, inspiración y pequeños momentos para compartir.</p></div><div class="community-links"><a [href]="settings().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram <span>↗</span></a><a [href]="settings().tiktokUrl" target="_blank" rel="noopener noreferrer">TikTok <span>↗</span></a></div></section>
+<section class="community-section page-shell" aria-labelledby="community-title"><div><span class="eyebrow">Sigamos imaginando juntos</span><h2 id="community-title">El mundo Lugemi, más cerca.</h2><p>Novedades, inspiración y pequeños momentos para compartir.</p></div><div class="community-links"><a [href]="settings().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram <span>↗</span></a><a [href]="settings().tiktokUrl" target="_blank" rel="noopener noreferrer">TikTok <span>↗</span></a><a [href]="settings().facebookUrl" target="_blank" rel="noopener noreferrer">Facebook <span>↗</span></a></div></section>
 <section class="season-banner page-shell"><div><span class="eyebrow">Días de sol, recuerdos para siempre</span><h2>Un verano muy suyo.</h2><p>Colores suaves y pequeños detalles para salir a descubrir.</p></div><a class="button-outline" routerLink="/catalogo" [queryParams]="{coleccion:'verano'}">Explorar temporada ↗</a></section>
 <section class="benefits page-shell"><div><span aria-hidden="true">✧</span><h3>Elegido con cariño</h3><p>Diseños cuidadosamente seleccionados para cada etapa.</p></div><div><span aria-hidden="true">☁</span><h3>Libertad para jugar</h3><p>La comodidad de los más pequeños, siempre presente.</p></div><div><span aria-hidden="true">↗</span><h3>Así de sencillo</h3><p>Prepara tu pedido y coordina los detalles por WhatsApp.</p></div><div><span aria-hidden="true">♡</span><h3>Estamos para ayudarte</h3><p>Atención personalizada para elegir tallas y prendas.</p></div></section>
