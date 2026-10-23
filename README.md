@@ -1,32 +1,21 @@
 # LUGEMI KIDS · Catálogo infantil
 
-Catálogo Angular existente, renovado para bebés, niñas y niños. Conserva Sanity, las rutas, el carrito en almacenamiento local y los pedidos por WhatsApp. No incorpora pagos ni un backend de pedidos.
+Catálogo Angular para bebés, niñas y niños. Usa datos e imágenes locales, conserva el carrito en el navegador y prepara pedidos por WhatsApp. No incorpora pagos ni un backend de pedidos.
 
 ## Vista previa y comprobaciones
 
 - `npm start`: http://localhost:4200
 - `npm run build`: salida `dist/maison-mode/browser`
 - `npm test -- --watch=false`: pruebas de filtros, variantes, stock, importes, carrito y mensaje.
-- `npm --prefix studio run typecheck`
-- `npm run studio:build`
 - `vercel.json` incluye salida y reescritura de las rutas de Angular.
 
-## Datos reales y demostración
+## Catálogo local de demostración
 
-Se mantiene el proyecto Sanity configurado en `sanity.project.json`. La tienda acepta productos publicados con colección `bebes`, `ninas` o `ninos`. No modifica ni elimina los documentos anteriores.
+La tienda muestra exclusivamente la colección definida en `src/app/data/catalog.data.ts`. No hace consultas de catálogo a servicios externos ni mantiene conexiones en vivo. Las fotografías, los precios y las existencias son ilustrativos; la interfaz y el mensaje de WhatsApp los identifican como demostración.
 
-Si Sanity no contiene prendas infantiles válidas o no responde, se muestra una colección local de demostración. Sus fotografías, precios y existencias son ilustrativos y se identifican como tales en la interfaz y en el mensaje de WhatsApp. Cuando publiques productos infantiles válidos, sustituirán la colección local completa.
+La identidad Lugemi Kids, sus redes sociales y el WhatsApp `+51 982 226 022` se fijan en `src/app/core/store.config.ts`.
 
-La identidad Lugemi Kids, sus redes sociales y el WhatsApp `+51 982 226 022` se fijan en la configuración de la tienda. Los textos y la foto anteriores de portada solo se vuelven a usar al activar **Publicar esta portada infantil** en el panel, después de actualizarlos.
-
-Para vender:
-1. Publica el esquema actualizado del Studio.
-2. Crea las prendas infantiles con fotografías reales por color, tallas, composición, precios y existencias confirmados.
-3. Desactiva **Producto de demostración** únicamente en prendas reales.
-4. Completa datos comerciales, entregas y cambios con información verificada.
-5. Revisa el dominio final en los orígenes autorizados de Sanity.
-
-El script de importación de muestras sigue usando `createIfNotExists`; no se ha ejecutado ninguna escritura sobre Sanity durante esta transformación. Puede cargar las nuevas fotos locales y conserva el indicador de demostración.
+Antes de vender, reemplaza los modelos ilustrativos con fotografías, tallas, composición, precios y existencias confirmados. Desactiva el indicador `demo` únicamente en prendas reales y completa las condiciones de entrega y cambios.
 
 ## Experiencia implementada
 
@@ -44,10 +33,9 @@ El script de importación de muestras sigue usando `createIfNotExists`; no se ha
 - `src/app/app.*` y `src/styles.css`: navegación, pie, carrito lateral y estilo global.
 - `src/app/shared/product-card.ts`, `product-photo.ts`, `focus-trap.ts`: componentes reutilizables.
 - `src/app/features/catalog/*` y `product/*`: catálogo y ficha.
-- `src/app/core/catalog.service.ts`, `sanity.repository.ts`: lectura de datos y separación de la demostración.
+- `src/app/core/catalog.service.ts`: acceso al catálogo local.
 - `src/app/core/cart.service.ts`, `store.utils.ts`: carrito y WhatsApp.
 - `src/app/data/catalog.data.ts`: colección infantil ilustrativa.
-- `studio/schemaTypes/*`: categorías infantiles, colecciones y contenido editorial.
 - `public/images/`: fotografías optimizadas.
 
 ## Imágenes de demostración

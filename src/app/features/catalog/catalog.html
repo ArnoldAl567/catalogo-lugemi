@@ -1,5 +1,5 @@
 <section class="catalog-intro"><div class="page-shell"><span class="eyebrow text-olive">Un pequeño mundo de posibilidades</span><div class="flex flex-wrap items-end justify-between gap-4"><div><h1 class="font-editorial">La colección</h1><p>Detalles delicados para bebés, niñas y niños. Encuentra sus próximos favoritos.</p></div><span class="text-xs tracking-[.1em] text-[#78695F]">{{ results().length }} prendas encontradas</span></div></div></section>
-@if (catalog.status() === 'demo') { <div class="page-shell"><p class="demo-disclosure">Colección de demostración: fotografías ilustrativas, precios y existencias referenciales. Consulta la disponibilidad real con la tienda.</p></div> }<div class="page-shell catalog-layout">
+<div class="page-shell"><p class="demo-disclosure">Colección de demostración: fotografías ilustrativas, precios y existencias referenciales. Consulta la disponibilidad real con la tienda.</p></div><div class="page-shell catalog-layout">
   <aside class="filters" [class.filters-open]="filtersOpen()" aria-label="Filtros del catálogo">
     <div class="filters-mobile-head"><h2 class="font-editorial text-2xl">Filtros</h2><button type="button" aria-label="Cerrar filtros" (click)="filtersOpen.set(false)">✕</button></div>
     <div class="filter-group"><h3>Buscar</h3><label class="sr-only" for="catalog-search">Buscar productos</label><input id="catalog-search" class="field" type="search" [ngModel]="query()" (ngModelChange)="query.set($event)" placeholder="Nombre o prenda" /></div>
@@ -12,9 +12,7 @@
     <button class="clear-filters" type="button" (click)="reset()">Limpiar filtros ↗</button><button class="button-dark mobile-apply" type="button" (click)="filtersOpen.set(false)">Ver {{ results().length }} prendas</button>
   </aside>
   <div class="catalog-results"><div class="catalog-toolbar"><button class="filter-toggle" type="button" (click)="filtersOpen.set(true)">☷ &nbsp; Filtros</button><span class="text-xs text-[#78695F]">{{ results().length }} resultados</span><label>Ordenar por <select [ngModel]="sort()" (ngModelChange)="sort.set($event)"><option value="newest">Novedades</option><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="name">Nombre</option></select></label></div>
-    @if (catalog.status() === 'loading') { <div class="empty-results"><span class="font-editorial">Cargando la colección...</span></div> }
-    @else if (catalog.status() === 'error') { <div class="empty-results"><span class="font-editorial">No pudimos cargar la colección.</span><p>Inténtalo de nuevo en unos momentos.</p><button class="button-outline" type="button" (click)="catalog.refresh()">Reintentar</button></div> }
-    @else if (results().length) { <div class="grid grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-10 md:gap-x-5">@for (product of results(); track product.id) { <app-product-card [product]="product" [preferredColor]="color()" /> }</div> }
+    @if (results().length) { <div class="grid grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-10 md:gap-x-5">@for (product of results(); track product.id) { <app-product-card [product]="product" [preferredColor]="color()" /> }</div> }
     @else { <div class="empty-results"><span class="font-editorial">Aún no encontramos esa combinación.</span><p>Prueba otra talla, color o categoría para descubrir más prendas.</p><button class="button-outline" type="button" (click)="reset()">Ver toda la colección</button></div> }
   </div>
 </div>

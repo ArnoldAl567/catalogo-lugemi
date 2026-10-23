@@ -20,7 +20,6 @@ export class CartService {
       try { if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items())); } catch { /* The cart remains usable when browser storage is unavailable. */ }
     });
     effect(() => {
-      if (!['demo', 'ready'].includes(this.catalog.status())) return;
       const valid = this.items().filter(item => {
         const product = this.catalog.getById(item.productId);
         return !!product && validateQuantity(product, item.colorId, item.size, item.quantity);

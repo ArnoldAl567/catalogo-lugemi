@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
 import { PRODUCTS } from '../data/catalog.data';
 import { CartService } from './cart.service';
 import { CatalogService } from './catalog.service';
@@ -8,7 +7,7 @@ describe('carrito persistente', () => {
   const product=PRODUCTS[0], variant=product.variants[0];
   beforeEach(() => {
     localStorage.clear();
-    TestBed.configureTestingModule({providers:[{provide:CatalogService,useValue:{status:signal('ready'),getById:(id:string)=>PRODUCTS.find(item=>item.id===id)}}]});
+    TestBed.configureTestingModule({providers:[{provide:CatalogService,useValue:{getById:(id:string)=>PRODUCTS.find(item=>item.id===id)}}]});
   });
   afterEach(()=>TestBed.resetTestingModule());
   it('agrupa variantes idénticas y calcula importes decimales en céntimos', () => {

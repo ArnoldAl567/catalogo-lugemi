@@ -29,10 +29,8 @@
 <section class="featured-section">
   <div class="page-shell section-spacing">
     <div class="section-heading"><div><span class="eyebrow">Favoritos de Lugemi</span><h2>Sus próximos favoritos</h2></div><div class="carousel-actions"><a routerLink="/catalogo" class="text-link">Ver toda la colección ↗</a><div><button type="button" class="round-arrow" aria-label="Prendas anteriores" (click)="slide(featuredRail,-1)">←</button><button type="button" class="round-arrow" aria-label="Más prendas destacadas" (click)="slide(featuredRail,1)">→</button></div></div></div>
-    @if (catalog.status() === 'loading') { <div class="product-skeletons" role="status" aria-label="Cargando colección"><span></span><span></span><span></span><span></span></div> }
-    @else if (catalog.status() === 'error') { <div class="load-error" role="alert"><p>No pudimos cargar la colección.</p><button class="button-outline" type="button" (click)="catalog.refresh()">Reintentar</button></div> }
     <div class="featured-rail" #featuredRail tabindex="0" aria-label="Prendas destacadas, desplaza para ver más">@for (product of featured(); track product.id) { <app-product-card [product]="product" /> }</div>
-    @if (catalog.status() === 'demo') { <p class="demo-note">Colección de demostración · Fotografías ilustrativas, precios y existencias referenciales.</p> }
+    <p class="demo-note">Colección de demostración · Fotografías ilustrativas, precios y existencias referenciales.</p>
   </div>
 </section>
 

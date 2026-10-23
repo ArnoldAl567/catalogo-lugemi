@@ -1,7 +1,7 @@
 import { Category, Product } from '../models/store.models';
 
 // Colección ilustrativa: fotos generadas, precios y existencias referenciales.
-// Los productos infantiles publicados en Sanity sustituyen esta colección completa.
+// Catálogo local activo mientras no se conecte un inventario real.
 export const CATEGORIES: Category[] = [
   ['recien-nacidos', 'Recién nacidos'], ['bodies', 'Bodies y conjuntos'],
   ['vestidos', 'Vestidos'], ['ropa-comoda', 'Ropa cómoda'], ['accesorios', 'Accesorios'],
