@@ -3,63 +3,53 @@ import { provideRouter } from '@angular/router';
 import { vi } from 'vitest';
 import { StoreMascot } from './store-mascot';
 
-describe('mascota fija de la tienda', () => {
+describe('Otto estático señalando WhatsApp', () => {
   beforeEach(() => {
     vi.useFakeTimers(); sessionStorage.clear();
-    vi.stubGlobal('matchMedia', vi.fn(() => ({matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn()})));
-    vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
-    TestBed.configureTestingModule({imports: [StoreMascot], providers: [provideRouter([])]});
+    TestBed.configureTestingModule({ imports: [StoreMascot], providers: [provideRouter([])] });
   });
   afterEach(() => {
-    TestBed.resetTestingModule(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); sessionStorage.clear();
+    TestBed.resetTestingModule(); vi.useRealTimers(); vi.restoreAllMocks(); sessionStorage.clear();
   });
   const create = () => {
-    const fixture = TestBed.createComponent(StoreMascot); fixture.detectChanges(); return fixture;
-  };
-  it('se levanta, saluda, señala WhatsApp y se sienta sin desplazarse', () => {
-    const fixture = create(), pet = fixture.componentInstance;
-    vi.advanceTimersByTime(3200); expect(pet.pose()).toBe('rising');
-    vi.advanceTimersByTime(640); expect(pet.pose()).toBe('standing');
-    vi.advanceTimersByTime(960); expect(pet.pose()).toBe('waving');
-    vi.advanceTimersByTime(1600); expect(pet.pose()).toBe('pointing');
+    const fixture = TestBed.createComponent(StoreMascot);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.mascot-pointing')).not.toBeNull();
-    expect(fixture.nativeElement.querySelector('.whatsapp-cue').textContent).toContain('¿Te ayudamos?');
-    expect(fixture.nativeElement.querySelector('.mascot-shell').style.transform).toBe('');
-    vi.advanceTimersByTime(2400); expect(pet.pose()).toBe('sitting-down');
-    vi.advanceTimersByTime(640); expect(pet.pose()).toBe('sitting');
+    return fixture;
+  };
+  it('conserva la imagen de pie y no inicia temporizadores de animación', () => {
+    const interval = vi.spyOn(window, 'setInterval');
+    const fixture = create();
+    const image = () => fixture.nativeElement.querySelector('.mascot-pointing') as HTMLImageElement;
+    expect(image().getAttribute('src')).toBe('/images/brand/lugemi-mascota-senala.png');
+    vi.advanceTimersByTime(60000); fixture.detectChanges();
+    expect(image().getAttribute('src')).toBe('/images/brand/lugemi-mascota-senala.png');
+    expect(interval).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('.mascot-sprite')).toBeNull();
   });
-  it('permite pausar la secuencia', () => {
-    const pet = create().componentInstance;
-    pet.togglePause(); vi.advanceTimersByTime(30000);
-    expect(pet.pose()).toBe('sitting');
-    expect(sessionStorage.getItem('lugemi-mascot-paused')).toBe('true');
-    pet.togglePause(); vi.advanceTimersByTime(3200);
-    expect(pet.pose()).toBe('rising');
-  });
-  it('respeta movimiento reducido y los diálogos de compra', () => {
-    const fixture = create(), pet = fixture.componentInstance;
-    pet.reduced.set(true); vi.advanceTimersByTime(10000);
-    expect(pet.pose()).toBe('sitting');
-    pet.reduced.set(false); fixture.componentRef.setInput('blocked', true); fixture.detectChanges();
-    vi.advanceTimersByTime(10000); expect(pet.pose()).toBe('sitting');
-    expect(fixture.nativeElement.querySelector('.mascot-shell').classList.contains('blocked')).toBe(true);
-  });
-  it('abre el saludo sin instrucciones de arrastre y conserva las opciones', () => {
+  it('abrir y cerrar la ayuda no cambia la postura ni ofrece reanudar animación', () => {
     const fixture = create(), pet = fixture.componentInstance;
     pet.greet(); fixture.detectChanges();
-    expect(pet.pose()).toBe('waving');
+    expect(fixture.nativeElement.querySelector('.mascot-pointing')).not.toBeNull();
     expect(fixture.nativeElement.textContent).toContain('WhatsApp');
-    expect(fixture.nativeElement.textContent).not.toContain('arrastr');
-    pet.close(); expect(pet.open()).toBe(false);
+    expect(fixture.nativeElement.textContent).not.toMatch(/animación|Pausar|Reanudar/);
+    pet.close(); fixture.detectChanges();
+    expect(pet.open()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.mascot-pointing')).not.toBeNull();
   });
-  it('permite ocultar y recuperar la mascota durante la visita', () => {
+  it('cierra la ayuda y se oculta cuando hay un diálogo de compra', () => {
+    const fixture = create(), pet = fixture.componentInstance;
+    pet.greet(); fixture.detectChanges();
+    fixture.componentRef.setInput('blocked', true); fixture.detectChanges();
+    expect(pet.open()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.mascot-shell').classList.contains('blocked')).toBe(true);
+  });
+  it('permite ocultar y recuperar a Otto durante la visita', () => {
     const fixture = create(), pet = fixture.componentInstance;
     pet.hide(); fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.mascot-character')).toBeNull();
     expect(sessionStorage.getItem('lugemi-mascot-hidden')).toBe('true');
     pet.show(); fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.mascot-character')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.mascot-pointing')).not.toBeNull();
     expect(sessionStorage.getItem('lugemi-mascot-hidden')).toBeNull();
   });
 });

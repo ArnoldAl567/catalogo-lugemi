@@ -1,5 +1,5 @@
 @if (visible()) {
-  <div #shell class="mascot-shell" [class.ready]="ready()" [class.blocked]="blocked()" [class.still]="paused() || reduced()" [attr.data-pose]="pose()" (focusin)="onFocus()" (focusout)="onBlur($event)">
+  <div class="mascot-shell" [class.ready]="ready()" [class.blocked]="blocked()">
     @if (open()) {
       <section class="mascot-bubble" aria-label="Saludo de Otto">
         <button class="close-bubble" type="button" aria-label="Cerrar saludo" (click)="close()">×</button>
@@ -8,20 +8,14 @@
         <p>¿Te ayudo a elegir? El botón verde de abajo te lleva al WhatsApp de la tienda.</p>
         <a routerLink="/catalogo" (click)="close()" class="mascot-explore">Explorar la colección <span aria-hidden="true">↗</span></a>
         <div class="mascot-controls">
-          <button type="button" [disabled]="reduced()" (click)="togglePause()">{{ reduced() ? 'Movimiento reducido' : paused() ? 'Reanudar animación' : 'Pausar animación' }}</button>
           <button type="button" (click)="hide()">Ocultar a Otto</button>
         </div>
       </section>
     }
     <button class="mascot-character" type="button" aria-label="Saludar a Otto" [attr.aria-expanded]="open()" title="¡Hola! Tócame para saludar" (click)="greet()">
-      @if (pose() === 'pointing') {
-        <img class="mascot-pointing" src="/images/brand/lugemi-mascota-senala.png" alt="" width="1024" height="1024" draggable="false">
-      } @else {
-        <span class="mascot-sprite" aria-hidden="true" [style.background-position]="spritePosition()"></span>
-      }
-      <span class="mascot-spark" aria-hidden="true">✦</span>
+      <img class="mascot-pointing" src="/images/brand/lugemi-mascota-senala.png" alt="Otto de pie señalando hacia WhatsApp" width="1280" height="1280" draggable="false">
     </button>
-    @if (pose() === 'pointing' && !open()) {
+    @if (!open()) {
       <span class="whatsapp-cue" aria-hidden="true">¿Te ayudamos? <span>↓</span></span>
     }
   </div>

@@ -2,13 +2,10 @@
 .mascot-shell{position:fixed;right:22px;bottom:calc(max(24px,env(safe-area-inset-bottom)) + 64px);width:112px;height:112px;z-index:54;visibility:hidden;pointer-events:none}
 .mascot-shell.ready{visibility:visible}
 .mascot-shell.blocked,.mascot-restore.blocked{visibility:hidden}
-.mascot-character{position:relative;display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation;pointer-events:auto;user-select:none;filter:drop-shadow(0 5px 5px #182d4d25);transform-origin:50% 92%}
+.mascot-character{position:relative;display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation;pointer-events:auto;user-select:none;filter:drop-shadow(0 5px 5px #182d4d25)}
 .mascot-character:hover{filter:drop-shadow(0 5px 8px #cea54b70)}
 .mascot-character:focus-visible{outline:2px solid #967025;outline-offset:4px;border-radius:24px}
-.mascot-sprite{display:block;width:100%;height:100%;background-image:url('/images/brand/lugemi-mascota-posturas.png');background-size:300% 200%;background-repeat:no-repeat;pointer-events:none}
 .mascot-pointing{width:84%;height:88%;object-fit:contain;align-self:end;margin-bottom:4%;pointer-events:none}
-.mascot-spark{position:absolute;right:2px;top:10%;font-size:22px;color:#C99B3D;opacity:0;transition:opacity .2s}
-.mascot-character:hover .mascot-spark,.mascot-character:focus-visible .mascot-spark{opacity:1}
 .mascot-bubble{position:absolute;right:0;bottom:calc(100% + 12px);width:min(254px,calc(100vw - 44px));max-height:calc(100dvh - 240px);overflow:auto;padding:18px;background:#fffdf8;color:#182D4D;border:1px solid #DDCBA5;border-radius:18px 18px 4px 18px;box-shadow:0 8px 32px #182d4d24;pointer-events:auto}
 .mascot-eyebrow{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#70551F;padding-right:20px}
 .mascot-bubble h2{font-family:var(--font-serif);font-size:20px;line-height:1.3;margin:10px 0;font-weight:500}
@@ -23,14 +20,4 @@
 .whatsapp-cue span{font-size:20px;line-height:1}
 .mascot-restore{position:fixed;right:22px;bottom:calc(max(24px,env(safe-area-inset-bottom)) + 64px);z-index:54;border:1px solid #DDCBA5;border-radius:18px;padding:8px 10px;min-height:36px;background:#fffdf8;color:#596579;font-size:10px;box-shadow:0 3px 12px #182d4d12}
 :host-context(body:has([aria-modal="true"])) .mascot-shell,:host-context(body:has([aria-modal="true"])) .mascot-restore{visibility:hidden}
-.mascot-shell[data-pose="rising"] .mascot-character{animation:mascot-rise .64s ease-out both}
-.mascot-shell[data-pose="sitting-down"] .mascot-character{animation:mascot-sit .64s ease-in both}
-.mascot-shell[data-pose="waving"] .mascot-character{animation:mascot-hello .64s ease-in-out infinite alternate}
-.mascot-shell[data-pose="pointing"] .whatsapp-cue span{animation:mascot-indicate .8s ease-in-out infinite alternate}
-.mascot-shell.still .mascot-character,.mascot-shell.still .whatsapp-cue span{animation:none}
-@keyframes mascot-rise{from{transform:scaleY(.92)}to{transform:scaleY(1)}}
-@keyframes mascot-sit{from{transform:scaleY(1)}to{transform:scaleY(.94)}}
-@keyframes mascot-hello{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
-@keyframes mascot-indicate{from{transform:translateY(-2px)}to{transform:translateY(2px)}}
 @media(max-width:700px){.mascot-shell{right:12px;bottom:calc(max(14px,env(safe-area-inset-bottom)) + 58px);width:96px;height:96px}.mascot-bubble{width:min(230px,calc(100vw - 24px));padding:16px;max-height:calc(100dvh - 204px)}.mascot-bubble h2{font-size:19px}.mascot-restore{right:12px;bottom:calc(max(14px,env(safe-area-inset-bottom)) + 58px)}.whatsapp-cue{right:11px}}
-@media(prefers-reduced-motion:reduce){.mascot-shell .mascot-character,.mascot-shell .whatsapp-cue span{animation:none!important}.mascot-spark{transition:none}}
