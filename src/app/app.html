@@ -3,15 +3,6 @@
   <div class="page-shell header-inner">
     <button class="icon-button mobile-toggle" type="button" [attr.aria-label]="mobileOpen() ? 'Cerrar menú' : 'Abrir menú'" [attr.aria-expanded]="mobileOpen()" (click)="mobileOpen.set(!mobileOpen())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'"><span class="brand-symbol" aria-hidden="true"></span><span class="brand-name">{{ config().name }}<small>IMAGINA · CRECE · EXPLORA</small></span></a>
-    <nav class="desktop-nav" aria-label="Navegación principal">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Inicio</a>
-      <a routerLink="/catalogo" [queryParams]="{genero:'bebes'}" routerLinkActive="active">Bebés</a>
-      <a routerLink="/catalogo" [queryParams]="{genero:'ninas'}" routerLinkActive="active">Niñas</a>
-      <a routerLink="/catalogo" [queryParams]="{genero:'ninos'}" routerLinkActive="active">Niños</a>
-      <a routerLink="/catalogo" [queryParams]="{orden:'novedades'}">Colecciones</a>
-      <a routerLink="/catalogo" [queryParams]="{ofertas:'si'}">Ofertas</a>
-      <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
-    </nav>
     <div class="header-actions">
       <button class="icon-button" type="button" aria-label="Buscar productos" [attr.aria-expanded]="searchOpen()" (click)="searchOpen.set(!searchOpen()); mobileOpen.set(false)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
       <button class="icon-button bag-button" type="button" aria-label="Abrir carrito" (click)="cart.drawerOpen.set(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 8h15l-1 13h-13l-1-13Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>@if (cart.count() > 0) { <span class="bag-count">{{ cart.count() }}</span> }</button>

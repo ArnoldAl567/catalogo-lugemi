@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "maison-mode": {
+    "catalogo-lugemi": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "maison-mode:build:production"
+              "buildTarget": "catalogo-lugemi:build:production"
             },
             "development": {
-              "buildTarget": "maison-mode:build:development"
+              "buildTarget": "catalogo-lugemi:build:development"
             }
           },
           "defaultConfiguration": "development"

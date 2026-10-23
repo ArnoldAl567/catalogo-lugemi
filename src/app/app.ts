@@ -1,5 +1,5 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from './core/cart.service';
 import { CatalogService } from './core/catalog.service';
@@ -9,7 +9,7 @@ import { ProductPhoto } from './shared/product-photo';
 import { FocusTrap } from './shared/focus-trap';
 import { StoreMascot } from './shared/store-mascot';
 
-@Component({ selector: 'app-root', standalone: true, imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ProductPhoto, FocusTrap, StoreMascot], templateUrl: './app.html', styleUrl: './app.css' })
+@Component({ selector: 'app-root', standalone: true, imports: [RouterOutlet, RouterLink, FormsModule, ProductPhoto, FocusTrap, StoreMascot], templateUrl: './app.html', styleUrl: './app.css' })
 export class App {
   readonly cart = inject(CartService);
   readonly catalog = inject(CatalogService);

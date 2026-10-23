@@ -8,7 +8,6 @@ export const STORE_CONFIG: StoreSettings = {
   instagramUrl: 'https://www.instagram.com/lugemi.kids/',
   tiktokUrl: 'https://www.tiktok.com/@lugemi.kids',
   currency: 'PEN',
-  announcement: 'Imagina · Crece · Explora — Atención personalizada por WhatsApp',
   heroEyebrow: 'Moda infantil para hoy y siempre',
   heroTitle: 'Estilo para imaginar, crecer',
   heroAccent: 'y explorar.',

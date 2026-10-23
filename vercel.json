@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/maison-mode/browser",
+  "outputDirectory": "dist/catalogo-lugemi/browser",
   "rewrites": [{ "source": "/((?!.*\\.[^/]+$).*)", "destination": "/index.html" }]
 }
 

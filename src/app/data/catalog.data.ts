@@ -7,7 +7,7 @@ export const CATEGORIES: Category[] = [
   ['vestidos', 'Vestidos'], ['ropa-comoda', 'Ropa cómoda'], ['accesorios', 'Accesorios'],
   ['blusas', 'Polos y blusas'], ['camisetas', 'Polos y camisetas'], ['camisas', 'Camisas'],
   ['pantalones', 'Pantalones y jeans'], ['conjuntos', 'Conjuntos'], ['abrigos', 'Casacas y chompas'],
-].map(([id, name]) => ({ id, name, description: 'Pequeñas prendas para grandes momentos', image: '/images/infancia-editorial.webp' }));
+].map(([id, name]) => ({ id, name }));
 
 export const AUDIENCES = [{ id: 'bebes', name: 'Bebés', age: 'Sus primeros descubrimientos' }, { id: 'ninas', name: 'Niñas', age: 'Un mundo por imaginar' }, { id: 'ninos', name: 'Niños', age: 'Listos para cada aventura' }];
 export const COLLECTIONS = [{ id: 'nueva', name: 'Nueva colección' }, { id: 'ocasiones', name: 'Ocasiones especiales' }, { id: 'verano', name: 'Temporada de verano' }, { id: 'invierno', name: 'Temporada de invierno' }];

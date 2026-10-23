@@ -5,7 +5,7 @@ Catálogo Angular para bebés, niñas y niños. Usa datos e imágenes locales, c
 ## Vista previa y comprobaciones
 
 - `npm start`: http://localhost:4200
-- `npm run build`: salida `dist/maison-mode/browser`
+- `npm run build`: salida `dist/catalogo-lugemi/browser`
 - `npm test -- --watch=false`: pruebas de filtros, variantes, stock, importes, carrito y mensaje.
 - `vercel.json` incluye salida y reescritura de las rutas de Angular.
 
@@ -15,23 +15,25 @@ La tienda muestra exclusivamente la colección definida en `src/app/data/catalog
 
 La identidad Lugemi Kids, sus redes sociales y el WhatsApp `+51 982 226 022` se fijan en `src/app/core/store.config.ts`.
 
+Otto permanece sobre el acceso a WhatsApp y alterna sus posturas. El antiguo Studio de Sanity se conserva en `studio/` para una posible reactivación, pero la tienda no lo usa al ejecutar ni al compilar.
+
 Antes de vender, reemplaza los modelos ilustrativos con fotografías, tallas, composición, precios y existencias confirmados. Desactiva el indicador `demo` únicamente en prendas reales y completa las condiciones de entrega y cambios.
 
 ## Experiencia implementada
 
-- Portada editorial, tarjetas visuales de bebés/niñas/niños, carrusel de destacados y secciones de temporada.
+- Portada editorial, categorías de prendas, carrusel de destacados y secciones de temporada.
 - Filtros por público, categoría, colección, talla, color y precio; talla y color deben pertenecer a la misma variante disponible.
 - Fichas con galería por color, ampliación, guía de tallas orientativa, cantidad y recomendaciones.
 - Carrito persistente, modificación y eliminación, cálculos en céntimos y validación de existencias.
 - Mensaje con todas las prendas, variantes, cantidades, subtotales y total recalculado.
 - Menú móvil, panel de filtros, navegación por teclado en los diálogos y movimiento reducido.
-- Veinte fotografías WebP locales (aproximadamente 1,2 MB en total), fuentes locales y carga diferida.
+- Fotografías WebP locales, fuentes locales y carga diferida.
 
 ## Archivos principales
 
 - `src/app/features/home/*`: portada editorial.
 - `src/app/app.*` y `src/styles.css`: navegación, pie, carrito lateral y estilo global.
-- `src/app/shared/product-card.ts`, `product-photo.ts`, `focus-trap.ts`: componentes reutilizables.
+- `src/app/shared/product-card.ts`, `product-photo.ts`, `focus-trap.ts`, `store-mascot.ts`: componentes reutilizables.
 - `src/app/features/catalog/*` y `product/*`: catálogo y ficha.
 - `src/app/core/catalog.service.ts`: acceso al catálogo local.
 - `src/app/core/cart.service.ts`, `store.utils.ts`: carrito y WhatsApp.
