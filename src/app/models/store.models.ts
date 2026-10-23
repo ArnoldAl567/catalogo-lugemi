@@ -9,11 +9,13 @@ export interface Product {
   id: string; name: string; categoryId: string; audience: Audience; price: number;
   previousPrice?: number; badge?: ProductBadge; description: string; material: string;
   details: string[]; images: ProductImage[]; variants: ProductVariant[];
+  recommendedAge?: string; garmentLength?: string; chestMeasurement?: string;
+  safetyStandard?: string; contents?: string;
   featured?: boolean; createdAt: number;
   collections?: string[]; demo?: boolean;
 }
 export interface StoreSettings {
-  name: string; whatsappNumber: string; email: string; location: string; instagramUrl: string; currency: 'PEN';
+  name: string; whatsappNumber: string; email: string; location: string; instagramUrl: string; tiktokUrl?: string; currency: 'PEN';
   announcement: string; heroEyebrow: string; heroTitle: string; heroAccent: string; heroDescription: string;
   heroImageUrl: string; heroImageAlt: string;
   useChildrenEditorial?: boolean;

@@ -1,9 +1,8 @@
 <a class="skip-link" href="#main-content">Saltar al contenido</a>
-<div class="announcement">{{ config().announcement }}</div>
 <header class="site-header" [class.scrolled]="scrolled()">
   <div class="page-shell header-inner">
     <button class="icon-button mobile-toggle" type="button" [attr.aria-label]="mobileOpen() ? 'Cerrar menú' : 'Abrir menú'" [attr.aria-expanded]="mobileOpen()" (click)="mobileOpen.set(!mobileOpen())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'">{{ config().name }}<small>BOUTIQUE INFANTIL</small></a>
+    <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'"><img class="brand-logo" src="/images/brand/lugemi-kids-logo.png" alt="" width="1080" height="1080"><span class="brand-name">{{ config().name }}<small>IMAGINA · CRECE · EXPLORA</small></span></a>
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Inicio</a>
       <a routerLink="/catalogo" [queryParams]="{genero:'bebes'}" routerLinkActive="active">Bebés</a>
@@ -24,12 +23,20 @@
 <main id="main-content" tabindex="-1"><router-outlet /></main>
 <footer class="site-footer">
   <div class="page-shell footer-main">
-    <div class="footer-brand"><a class="wordmark" routerLink="/">{{ config().name }}</a><p>Pequeñas prendas, grandes historias. Un universo de detalles delicados para acompañar el encanto de crecer.</p><span class="eyebrow">{{ config().location }}</span></div>
+    <div class="footer-brand"><a class="footer-logo" routerLink="/" aria-label="Lugemi Kids, ir al inicio"><img src="/images/brand/lugemi-kids-logo.png" alt="Lugemi Kids · Imagina, crece, explora" width="1080" height="1080" loading="lazy"></a><p>Un pequeño mundo de grandes aventuras. Ropa y detalles para acompañar a quienes nunca dejan de imaginar.</p><span class="eyebrow">{{ config().location }}</span></div>
     <div><h3>Explora</h3><a routerLink="/catalogo">Todas las prendas</a><a routerLink="/catalogo" [queryParams]="{genero:'bebes'}">Bebés</a><a routerLink="/catalogo" [queryParams]="{genero:'ninas'}">Niñas</a><a routerLink="/catalogo" [queryParams]="{genero:'ninos'}">Niños</a><a routerLink="/catalogo" [queryParams]="{ofertas:'si'}">Ofertas</a></div>
     <div><h3>Ayuda</h3><a routerLink="/contacto">Contacto</a><a routerLink="/contacto" fragment="preguntas">Preguntas frecuentes</a><a routerLink="/carrito">Mi carrito</a><a routerLink="/checkout">Cómo comprar</a></div>
-    <div><h3>Conecta</h3>@if (config().instagramUrl) { <a [href]="config().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram ↗</a> }@if (config().email) { <a [href]="'mailto:' + config().email">{{ config().email }}</a> }<span>Atención personalizada</span></div>
+    <div><h3>Conecta</h3>@if (config().instagramUrl) { <a [href]="config().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram ↗</a> }@if (config().tiktokUrl) { <a [href]="config().tiktokUrl" target="_blank" rel="noopener noreferrer">TikTok ↗</a> }@if (config().email) { <a [href]="'mailto:' + config().email">{{ config().email }}</a> }<span>Atención personalizada</span></div>
   </div><div class="page-shell footer-bottom"><span>© 2026 {{ config().name }}. Todos los derechos reservados.</span><span>La magia está en los pequeños momentos.</span></div>
 </footer>
+<nav class="floating-social" aria-label="Redes sociales de Lugemi Kids">
+  <a class="floating-action instagram-action" [href]="config().instagramUrl" target="_blank" rel="noopener noreferrer" aria-label="Visitar Instagram de Lugemi Kids" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+  <a class="floating-action tiktok-action" [href]="config().tiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="Visitar TikTok de Lugemi Kids" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 2c.2 2.2 1.5 3.6 3.7 3.8v3.2a8.5 8.5 0 0 1-3.7-1.1v7.2a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.3a3 3 0 1 0 1.8 2.8V2h3.3Z"/></svg></a>
+</nav>
+<div class="floating-commerce" aria-label="Accesos rápidos de compra">
+  <button class="floating-action floating-cart" type="button" aria-label="Abrir carrito" (click)="cart.drawerOpen.set(true)" title="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2 12h11l2-9H6"/><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>@if (cart.count() > 0) { <span class="floating-count">{{ cart.count() }}</span> }</button>
+  <a class="floating-action floating-whatsapp" [href]="'https://wa.me/' + config().whatsappNumber" target="_blank" rel="noopener noreferrer" aria-label="Escribir a Lugemi Kids por WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.05 2a9.9 9.9 0 0 0-8.5 15L2 22l5.2-1.4A10 10 0 1 0 12.05 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.1.82.83-3-.2-.32a8.25 8.25 0 1 1 6.97 3.83Zm4.5-6.2c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.13-.57.12-.17.26-.65.8-.8.96-.15.17-.3.2-.55.07-.25-.12-1.07-.39-2.04-1.25-.75-.66-1.26-1.48-1.4-1.73-.15-.25-.02-.38.1-.5.11-.1.25-.3.37-.43.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.45-.06-.12-.56-1.36-.77-1.86-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.45 1.03 2.62c.12.17 1.78 2.72 4.3 3.81.6.26 1.07.42 1.44.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.17-.47-.3Z"/></svg></a>
+</div>
 @if (cart.drawerOpen()) {
   <div class="drawer-backdrop" (click)="cart.drawerOpen.set(false)" aria-hidden="true"></div>
   <aside appFocusTrap class="cart-drawer" role="dialog" aria-modal="true" aria-label="Tu carrito">
@@ -43,4 +50,5 @@
     }
   </aside>
 }
+<app-store-mascot [blocked]="cart.drawerOpen() || mobileOpen() || searchOpen()" />
 <div class="sr-only" role="status" aria-live="polite">{{ cart.feedback() }}</div>

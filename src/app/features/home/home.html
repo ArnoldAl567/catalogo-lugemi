@@ -4,12 +4,12 @@
     <h1>{{ settings().heroTitle }}<br><em>{{ settings().heroAccent }}</em></h1>
     <p>{{ settings().heroDescription }}</p>
     <div class="hero-actions"><a class="button-dark" routerLink="/catalogo">Explorar colección <span aria-hidden="true">↗</span></a><a class="text-link" routerLink="/catalogo" [queryParams]="{coleccion:'nueva'}">Ver novedades <span aria-hidden="true">→</span></a></div>
-    <div class="hero-footnote"><span class="fine-line"></span> Una infancia para recordar.</div>
+    <div class="hero-footnote"><span class="fine-line"></span> Pequeños soñadores. Grandes aventuras.</div>
   </div>
   <div class="hero-visual">
-    <img [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1536" height="1024" fetchpriority="high" (error)="imageError($event)" />
-    <span class="photo-caption">Un pequeño mundo. Infinitas historias.</span>
-    <div class="editorial-seal" aria-hidden="true"><span>HECHO DE</span><i>pequeños<br>momentos</i><span>MAISON MODE</span></div>
+    <img [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1350" height="1688" fetchpriority="high" (error)="imageError($event)" />
+
+    <div class="editorial-seal" aria-hidden="true"><span>UN MUNDO PARA</span><i>imaginar<br>y crecer</i><span>LUGEMI KIDS</span></div>
   </div>
 </section>
 <div class="story-strip"><div class="page-shell"><span>Diseños cuidadosamente seleccionados</span><i>✧</i><span>Para crecer con comodidad</span><i>✧</i><span>Atención personalizada</span></div></div>
@@ -28,7 +28,7 @@
 
 <section class="featured-section">
   <div class="page-shell section-spacing">
-    <div class="section-heading"><div><span class="eyebrow">La selección de la boutique</span><h2>Sus próximos favoritos</h2></div><div class="carousel-actions"><a routerLink="/catalogo" class="text-link">Ver toda la colección ↗</a><div><button type="button" class="round-arrow" aria-label="Prendas anteriores" (click)="slide(featuredRail,-1)">←</button><button type="button" class="round-arrow" aria-label="Más prendas destacadas" (click)="slide(featuredRail,1)">→</button></div></div></div>
+    <div class="section-heading"><div><span class="eyebrow">Favoritos de Lugemi</span><h2>Sus próximos favoritos</h2></div><div class="carousel-actions"><a routerLink="/catalogo" class="text-link">Ver toda la colección ↗</a><div><button type="button" class="round-arrow" aria-label="Prendas anteriores" (click)="slide(featuredRail,-1)">←</button><button type="button" class="round-arrow" aria-label="Más prendas destacadas" (click)="slide(featuredRail,1)">→</button></div></div></div>
     @if (catalog.status() === 'loading') { <div class="product-skeletons" role="status" aria-label="Cargando colección"><span></span><span></span><span></span><span></span></div> }
     @else if (catalog.status() === 'error') { <div class="load-error" role="alert"><p>No pudimos cargar la colección.</p><button class="button-outline" type="button" (click)="catalog.refresh()">Reintentar</button></div> }
     <div class="featured-rail" #featuredRail tabindex="0" aria-label="Prendas destacadas, desplaza para ver más">@for (product of featured(); track product.id) { <app-product-card [product]="product" /> }</div>
@@ -46,5 +46,6 @@
   <div class="arrival-grid">@for (product of newArrivals(); track product.id) { <app-product-card [product]="product" /> }</div>
 </section>
 
+<section class="community-section page-shell" aria-labelledby="community-title"><div><span class="eyebrow">Sigamos imaginando juntos</span><h2 id="community-title">El mundo Lugemi, más cerca.</h2><p>Novedades, inspiración y pequeños momentos para compartir.</p></div><div class="community-links"><a [href]="settings().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram <span>↗</span></a><a [href]="settings().tiktokUrl" target="_blank" rel="noopener noreferrer">TikTok <span>↗</span></a></div></section>
 <section class="season-banner page-shell"><div><span class="eyebrow">Días de sol, recuerdos para siempre</span><h2>Un verano muy suyo.</h2><p>Colores suaves y pequeños detalles para salir a descubrir.</p></div><a class="button-outline" routerLink="/catalogo" [queryParams]="{coleccion:'verano'}">Explorar temporada ↗</a></section>
 <section class="benefits page-shell"><div><span aria-hidden="true">✧</span><h3>Elegido con cariño</h3><p>Diseños cuidadosamente seleccionados para cada etapa.</p></div><div><span aria-hidden="true">☁</span><h3>Libertad para jugar</h3><p>La comodidad de los más pequeños, siempre presente.</p></div><div><span aria-hidden="true">↗</span><h3>Así de sencillo</h3><p>Prepara tu pedido y coordina los detalles por WhatsApp.</p></div><div><span aria-hidden="true">♡</span><h3>Estamos para ayudarte</h3><p>Atención personalizada para elegir tallas y prendas.</p></div></section>

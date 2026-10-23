@@ -5,7 +5,7 @@ import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
   name: 'maison-mode',
-  title: 'Maison Mode · Administración',
+  title: 'Lugemi Kids · Administración',
   projectId: project.projectId,
   dataset: project.dataset,
   plugins: [structureTool({

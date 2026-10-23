@@ -11,7 +11,9 @@ interface SanityColor {
 interface SanityProduct {
   id?: string; name?: string; categoryId?: string; audience?: Product['audience']; price?: number;
   previousPrice?: number; badge?: ProductBadge; description?: string; material?: string;
-  details?: string[]; featured?: boolean; createdAt?: string; colors?: SanityColor[]; collections?: string[]; demo?: boolean;
+  details?: string[]; recommendedAge?: string; garmentLength?: string; chestMeasurement?: string;
+  safetyStandard?: string; contents?: string;
+  featured?: boolean; createdAt?: string; colors?: SanityColor[]; collections?: string[]; demo?: boolean;
 }
 interface SanityCategory {id?: string; name?: string; description?: string; image?: ImageDocument}
 interface SanitySettings extends Partial<Omit<StoreSettings, 'currency' | 'heroImageUrl' | 'heroImageAlt'>> {heroImage?: ImageDocument}
@@ -23,7 +25,9 @@ const CATALOG_QUERY = `{
   },
   "products": *[_type == "product" && active != false && defined(slug.current)] | order(_createdAt desc) {
     "id": slug.current, name, "categoryId": category->slug.current, audience,
-    price, previousPrice, badge, description, material, details, featured, collections, demo,
+    price, previousPrice, badge, description, material, details,
+    recommendedAge, garmentLength, chestMeasurement, safetyStandard, contents,
+    featured, collections, demo,
     "createdAt": _createdAt,
     colors[]{code, name, hex, photos[], sizes[]{size, stock}}
   },
@@ -75,7 +79,10 @@ export async function fetchSanityCatalog(options: {fresh?: boolean; lastLiveEven
     return [{
       id: item.id, name: item.name, categoryId: item.categoryId, audience: item.audience!, price: item.price,
       previousPrice: item.previousPrice, badge: item.badge, description: item.description ?? '', material: item.material ?? '',
-      details: item.details ?? [], collections: item.collections ?? [], demo: !!item.demo, featured: !!item.featured, createdAt: Date.parse(item.createdAt ?? '') || Date.now(), variants, images,
+      details: item.details ?? [], recommendedAge: item.recommendedAge, garmentLength: item.garmentLength,
+      chestMeasurement: item.chestMeasurement, safetyStandard: item.safetyStandard, contents: item.contents,
+      collections: item.collections ?? [], demo: !!item.demo, featured: !!item.featured,
+      createdAt: Date.parse(item.createdAt ?? '') || Date.now(), variants, images,
     }];
   });
   const rawSettings = response.settings ?? {};

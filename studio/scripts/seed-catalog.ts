@@ -82,7 +82,7 @@ async function main(): Promise<void> {
     }
     await client.createIfNotExists({
       _id: 'storeSettings', _type: 'storeSettings', name: 'MAISON MODE',
-      whatsappNumber: '51902586908', email: '', instagramUrl: '', location: 'Lima, Perú',
+      whatsappNumber: '51982226022', email: '', instagramUrl: 'https://www.instagram.com/lugemi.kids/', location: 'Lima, Perú',
       announcement: 'Pequeños detalles, momentos inolvidables · Atención por WhatsApp',
       heroEyebrow: 'El encanto de crecer', heroTitle: 'Pequeños estilos,', heroAccent: 'grandes momentos',
       heroDescription: 'Descubre prendas únicas diseñadas para acompañar cada aventura de su infancia',

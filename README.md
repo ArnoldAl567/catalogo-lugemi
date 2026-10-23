@@ -1,52 +1,69 @@
-# MAISON MODE
+# LUGEMI KIDS · Catálogo infantil
 
-Catálogo de moda con Angular y panel editorial en Sanity Studio. Permite administrar productos, fotos por color, tallas, existencias, categorías, precios, ofertas y los datos de contacto de la tienda. Los pedidos se preparan para WhatsApp; no se cobran ni reservan existencias automáticamente.
+Catálogo Angular existente, renovado para bebés, niñas y niños. Conserva Sanity, las rutas, el carrito en almacenamiento local y los pedidos por WhatsApp. No incorpora pagos ni un backend de pedidos.
 
-## Desarrollo local
+## Vista previa y comprobaciones
 
-Requisitos: Node.js 22.12 o superior, npm 10 y, solo para cargar la colección de muestra, `ffmpeg`.
+- `npm start`: http://localhost:4200
+- `npm run build`: salida `dist/maison-mode/browser`
+- `npm test -- --watch=false`: pruebas de filtros, variantes, stock, importes, carrito y mensaje.
+- `npm --prefix studio run typecheck`
+- `npm run studio:build`
+- `vercel.json` incluye salida y reescritura de las rutas de Angular.
 
-```bash
-npm install
-npm --prefix studio install
-npm start
-```
+## Datos reales y demostración
 
-La tienda abre en `http://localhost:4200`. El panel ya está publicado en [maison-mode-catalogo.sanity.studio](https://maison-mode-catalogo.sanity.studio/). También puedes abrirlo localmente con `npm run studio` en otra terminal (`http://127.0.0.1:3333`).
+Se mantiene el proyecto Sanity configurado en `sanity.project.json`. La tienda acepta productos publicados con colección `bebes`, `ninas` o `ninos`. No modifica ni elimina los documentos anteriores.
 
-## Sanity configurado
+Si Sanity no contiene prendas infantiles válidas o no responde, se muestra una colección local de demostración. Sus fotografías, precios y existencias son ilustrativos y se identifican como tales en la interfaz y en el mensaje de WhatsApp. Cuando publiques productos infantiles válidos, sustituirán la colección local completa.
 
-El proyecto `9krd69tb` y el dataset público `production` están configurados en [`sanity.project.json`](sanity.project.json). El panel contiene 8 categorías, 24 productos con 48 fotografías recortadas por color y los datos básicos de la tienda. La tienda consulta únicamente documentos publicados y nunca lleva un token de edición al navegador. Los orígenes `http://localhost:4200`, `http://127.0.0.1:4200` y `https://catalogo-tienda-ropa.vercel.app` están autorizados sin credenciales.
+La identidad Lugemi Kids, sus redes sociales y el WhatsApp `+51 982 226 022` se fijan en la configuración de la tienda. Los textos y la foto anteriores de portada solo se vuelven a usar al activar **Publicar esta portada infantil** en el panel, después de actualizarlos.
 
-1. Abre el [panel](https://maison-mode-catalogo.sanity.studio/) con la cuenta de Sanity dueña del proyecto.
-2. En **Datos de la tienda**, revisa el WhatsApp, completa un correo real y la cuenta de Instagram, añade una fotografía de portada y publica los cambios.
-3. En **Productos**, edita precios, tallas, existencias y fotos. Cada color tiene su propia galería: sube fotografías donde la prenda coincida con el color indicado.
-4. Cuando publiques la tienda en un dominio real, autoriza ese origen sin credenciales en CORS de Sanity. No uses comodines.
+Para vender:
+1. Publica el esquema actualizado del Studio.
+2. Crea las prendas infantiles con fotografías reales por color, tallas, composición, precios y existencias confirmados.
+3. Desactiva **Producto de demostración** únicamente en prendas reales.
+4. Completa datos comerciales, entregas y cambios con información verificada.
+5. Revisa el dominio final en los orígenes autorizados de Sanity.
 
-`npm --prefix studio run seed` vuelve a crear solamente documentos que falten; usa IDs estables y no reemplaza cambios posteriores del editor. Requiere `ffmpeg`. Para revisar cuántos elementos prepararía, ejecuta `node --experimental-strip-types scripts/seed-catalog.ts --dry-run` desde `studio/`.
+El script de importación de muestras sigue usando `createIfNotExists`; no se ha ejecutado ninguna escritura sobre Sanity durante esta transformación. Puede cargar las nuevas fotos locales y conserva el indicador de demostración.
 
-Si la consulta a Sanity falla, la tienda muestra un mensaje de error y un botón para reintentar. Si se quita temporalmente el Project ID, vuelve al catálogo local de demostración.
+## Experiencia implementada
 
-## Operación editorial
+- Portada editorial, tarjetas visuales de bebés/niñas/niños, carrusel de destacados y secciones de temporada.
+- Filtros por público, categoría, colección, talla, color y precio; talla y color deben pertenecer a la misma variante disponible.
+- Fichas con galería por color, ampliación, guía de tallas orientativa, cantidad y recomendaciones.
+- Carrito persistente, modificación y eliminación, cálculos en céntimos y validación de existencias.
+- Mensaje con todas las prendas, variantes, cantidades, subtotales y total recalculado.
+- Menú móvil, panel de filtros, navegación por teclado en los diálogos y movimiento reducido.
+- Veinte fotografías WebP locales (aproximadamente 1,2 MB en total), fuentes locales y carga diferida.
 
-- **Producto:** nombre, enlace, colección, categoría, precio, descripción, materiales, etiqueta y publicación.
-- **Color:** código, nombre, muestra hexadecimal, fotos del color y existencias por talla. Cambiar el color en la tienda cambia también la galería de la prenda.
-- **Categoría:** nombre, enlace y orden.
-- **Datos de la tienda:** WhatsApp, correo, Instagram, ubicación y textos de portada. WhatsApp debe tener código de país, sin `+` ni espacios.
+## Archivos principales
 
-Guarda y **publica** los documentos para que aparezcan en el catálogo. Los borradores permanecen fuera de la consulta pública. La tienda escucha las publicaciones de Sanity y actualiza el contenido en una pestaña abierta; al regresar desde el panel también consulta la versión publicada directamente. Una pestaña que estuviera abierta antes de desplegar esta función necesita recargarse una vez.
+- `src/app/features/home/*`: portada editorial.
+- `src/app/app.*` y `src/styles.css`: navegación, pie, carrito lateral y estilo global.
+- `src/app/shared/product-card.ts`, `product-photo.ts`, `focus-trap.ts`: componentes reutilizables.
+- `src/app/features/catalog/*` y `product/*`: catálogo y ficha.
+- `src/app/core/catalog.service.ts`, `sanity.repository.ts`: lectura de datos y separación de la demostración.
+- `src/app/core/cart.service.ts`, `store.utils.ts`: carrito y WhatsApp.
+- `src/app/data/catalog.data.ts`: colección infantil ilustrativa.
+- `studio/schemaTypes/*`: categorías infantiles, colecciones y contenido editorial.
+- `public/images/`: fotografías optimizadas.
 
-## Comprobación
+## Imágenes de demostración
 
-```bash
-npm run build
-npm test -- --watch=false
-npm --prefix studio run typecheck
-npm run studio:build
-```
+Generadas con la herramienta integrada ImageGen, sin API externa configurada. Dirección de los prompts: fotografía editorial infantil realista, luz natural cálida, marfil, beige, rosa empolvado y salvia; sin texto, logotipos ni marcas de agua.
 
-El catálogo se genera en `dist/maison-mode/browser`; el panel se genera en `studio/dist`. Después de cambiar el esquema o la interfaz del panel, actualízalo con `npm --prefix studio run deploy`. En un alojamiento estático, configura la redirección de rutas de Angular hacia `index.html`.
+Conjunto de prompts utilizado:
+- Portada: niña de cinco años con vestido rosa y niño de cuatro con camisa marfil y short beige caminando de la mano por un jardín mediterráneo.
+- Categorías: tríptico con bebé vestido de punto marfil, niña con vestido rosa y niño con conjunto beige; escenarios cálidos y coherentes.
+- Bebés: lámina de cuatro fotografías, cárdigan con bombacho marfil/salvia y vestido con bombacho rosa/marfil.
+- Niñas: vestido rosa/beige y conjunto de blusa marfil con pantalón salvia/rosa.
+- Niños: camisa marfil con short beige/celeste y polo salvia/celeste con pantalón beige.
+- Abrigos: casaca con capucha salvia/beige y cárdigan rosa/marfil.
 
-## Pedidos
+Las láminas se separaron en fotografías por variante y se comprimieron a WebP. La vista «detalle» es un acercamiento de la misma fotografía, identificado en su texto alternativo.
 
-El carrito se guarda en el navegador. Al finalizar, se valida la disponibilidad visible y se abre WhatsApp con el resumen. La tienda debe confirmar disponibilidad, entrega y costo final con el cliente. Sanity es un gestor de contenido, por lo que esta versión no descuenta stock ni registra pedidos en un servidor.
+## Límites operativos
+
+El catálogo prepara una solicitud: no registra la venta en un servidor, no reserva ni descuenta stock automáticamente y no confirma que el cliente haya enviado el mensaje. El negocio confirma disponibilidad, entrega y monto final por WhatsApp. La guía de tallas no sustituye las medidas específicas de cada marca o prenda.

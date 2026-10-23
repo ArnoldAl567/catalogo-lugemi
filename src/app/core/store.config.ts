@@ -1,17 +1,18 @@
 import { StoreSettings } from '../models/store.models';
 
 export const STORE_CONFIG: StoreSettings = {
-  name: 'MAISON MODE',
-  whatsappNumber: '51902586908',
+  name: 'LUGEMI KIDS',
+  whatsappNumber: '51982226022',
   email: '',
   location: 'Lima, Perú',
-  instagramUrl: '',
+  instagramUrl: 'https://www.instagram.com/lugemi.kids/',
+  tiktokUrl: 'https://www.tiktok.com/@lugemi.kids',
   currency: 'PEN',
-  announcement: 'Pequeños detalles, momentos inolvidables · Atención por WhatsApp',
-  heroEyebrow: 'El encanto de crecer',
-  heroTitle: 'Pequeños estilos,',
-  heroAccent: 'grandes momentos',
-  heroDescription: 'Descubre prendas únicas diseñadas para acompañar cada aventura de su infancia',
-  heroImageUrl: '/images/infancia-editorial.webp',
-  heroImageAlt: 'Niña con vestido rosa y niño con conjunto beige caminando en un jardín',
+  announcement: 'Imagina · Crece · Explora — Atención personalizada por WhatsApp',
+  heroEyebrow: 'Bienvenidos al universo Lugemi',
+  heroTitle: 'Imagina, crece',
+  heroAccent: 'y explora.',
+  heroDescription: 'Prendas para pequeños soñadores y grandes aventuras. Descubre un mundo de comodidad, ternura y detalles especiales.',
+  heroImageUrl: '/images/brand/lugemi-kids-mascota.png',
+  heroImageAlt: 'La mascota de Lugemi Kids: un osito con lentes y chaqueta de jean bajo la luna y las estrellas',
 };

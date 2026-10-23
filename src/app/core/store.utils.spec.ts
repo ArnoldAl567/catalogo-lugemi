@@ -1,6 +1,7 @@
 import { PRODUCTS } from '../data/catalog.data';
 import { buildOrderMessage, filterProducts, imagesForColor, mainImageForColor, validateCustomer, validateQuantity, whatsappUrl } from './store.utils';
 import { Product } from '../models/store.models';
+import { STORE_CONFIG } from './store.config';
 
 describe('catálogo infantil y variantes', () => {
   it('combina colección infantil, categoría, talla y orden de precio', () => {
@@ -70,7 +71,7 @@ describe('pedido por WhatsApp', () => {
     expect(message).toContain('costo de envío');
     const url=new URL(whatsappUrl(message));
     expect(url.hostname).toBe('wa.me');
-    expect(url.pathname).toBe('/51902586908');
+    expect(url.pathname).toBe(`/${STORE_CONFIG.whatsappNumber}`);
     expect(url.searchParams.get('text')).toBe(message);
   });
   it('no genera un pedido vacío ni con variantes inválidas', () => {

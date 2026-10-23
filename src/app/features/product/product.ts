@@ -24,6 +24,21 @@ export class ProductPage {
   readonly images = computed(() => this.product() ? imagesForColor(this.product()!, this.selectedColor()) : []);
   readonly variant = computed(() => { const product = this.product(); return product ? getVariant(product, this.selectedColor(), this.selectedSize()) : undefined; });
   readonly related = computed(() => this.product() ? this.catalog.related(this.product()!) : []);
+  readonly detailRows = computed(() => {
+    const item = this.product();
+    if (!item) return [];
+    const rows = [
+      {label: 'Edad recomendada', value: item.recommendedAge},
+      {label: 'Tallas disponibles', value: [...new Set(item.variants.map(variant => variant.size))].join(' · ')},
+      {label: 'Material', value: item.material},
+      {label: 'Contenido', value: item.contents},
+      {label: 'Colección', value: {bebes: 'Bebés', ninas: 'Niñas', ninos: 'Niños'}[item.audience]},
+      {label: 'Pecho', value: item.chestMeasurement},
+      {label: 'Largo / medida', value: item.garmentLength},
+      {label: 'Seguridad / norma', value: item.safetyStandard},
+    ];
+    return rows.filter((row): row is {label: string; value: string} => !!row.value?.trim());
+  });
   private initializedProductId = '';
 
   constructor() {

@@ -59,13 +59,22 @@ export class CatalogService implements OnDestroy {
       this.categoryState.set(hasChildren ? data.categories.filter(category => data.products.some(product => product.categoryId === category.id)) : CATEGORIES);
       const settings = Object.fromEntries(Object.entries(data.settings).filter(([, value]) => value != null));
       // Preserve real contact details. Legacy adult editorial content is not reused.
-      const contact = Object.fromEntries(['name', 'whatsappNumber', 'email', 'location', 'instagramUrl'].filter(key => key in settings).map(key => [key, settings[key]]));
-      this.settingsState.set({...STORE_CONFIG, ...(data.settings.useChildrenEditorial ? settings : contact)});
+      const contact = Object.fromEntries(['name', 'whatsappNumber', 'email', 'location'].filter(key => key in settings).map(key => [key, settings[key]]));
+      this.settingsState.set({...STORE_CONFIG, ...(data.settings.useChildrenEditorial ? settings : contact),
+        // The storefront identity stays consistent with its supplied brand assets.
+        name: STORE_CONFIG.name, whatsappNumber: STORE_CONFIG.whatsappNumber,
+        instagramUrl: STORE_CONFIG.instagramUrl, tiktokUrl: STORE_CONFIG.tiktokUrl,
+      });
       this.syncTags = data.syncTags;
       this.status.set(hasChildren ? 'ready' : 'demo');
     } catch (error) {
       console.error('No se pudo cargar el catálogo de Sanity.', error);
-      if (currentRequestId === this.requestId && !this.products().length) this.status.set('error');
+      if (currentRequestId === this.requestId && !this.products().length) {
+        // Keep the clearly labeled demonstration collection usable when Sanity is unreachable.
+        this.productState.set(PRODUCTS);
+        this.categoryState.set(CATEGORIES);
+        this.status.set('demo');
+      }
     }
   }
 
