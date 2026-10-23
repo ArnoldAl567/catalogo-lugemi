@@ -1,34 +1,26 @@
 :host { display: block; background: #fcf7f0; }
 .hero {
-  position: relative;
-  isolation: isolate;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.35fr);
   align-items: center;
-  min-height: 680px;
-  height: clamp(680px, 88.6vw, 900px);
-  padding-block: 36px;
-  overflow: hidden;
-  background: #f9f1e4;
+  gap: clamp(20px, 3vw, 56px);
+  padding: clamp(32px, 5vw, 72px) max(24px, calc((100vw - 1440px) / 2));
+  background: #fcf7f0;
 }
 .hero-photo {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
+  grid-column: 2;
+  grid-row: 1;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(90deg, #fcf6ed 0%, #fcf6edf0 15%, #fcf6edbd 29%, #fcf6ed36 46%, transparent 63%);
+  height: auto;
+  aspect-ratio: 1494 / 1053;
+  object-fit: contain;
 }
 .hero-copy {
-  width: 48%;
-  padding: 24px 0 0 max(6.2vw, calc((100vw - 1320px) / 2));
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding: 0;
   color: #082b47;
 }
 .hero-eyebrow {
@@ -43,12 +35,12 @@
 .hero h1 {
   margin: 28px 0 30px;
   font-family: var(--font-serif);
-  font-size: clamp(54px, 7.75vw, 92px);
+  font-size: clamp(38px, 5.1vw, 74px);
   font-weight: 500;
   line-height: 1.04;
   letter-spacing: -.055em;
 }
-.hero h1 span, .hero h1 em { white-space: nowrap; }
+.hero h1 span, .hero h1 em { white-space: normal; }
 .hero h1 em { color: #a16d2b; font-weight: 500; }
 .hero-description {
   max-width: 285px;
@@ -106,16 +98,19 @@
   .community-section { flex-wrap: wrap; }
   .community-links { flex-wrap: wrap; }
 }
-/* Keep the same photographic composition at every viewport size. */
+/* The photograph keeps its full frame; text never overlaps either child. */
 @media (max-width: 700px) {
-  .hero { min-height: 600px; height: auto; padding-block: 40px; }
-  .hero-photo { object-position: 64% center; }
-  .hero::after { background: linear-gradient(90deg, #fcf6ed 0%, #fcf6edf5 12%, #fcf6edcf 30%, #fcf6ed66 48%, transparent 76%); }
-  .hero-copy { width: 66%; padding: 0 0 0 6vw; }
-  .hero-eyebrow { font-size: 12px; line-height: 1.5; letter-spacing: .16em; }
-  .hero h1 { margin: 24px 0; font-size: clamp(34px, 7.6vw, 53px); line-height: 1.08; letter-spacing: -.045em; }
-  .hero-description { max-width: 220px; margin-bottom: 24px; font-size: 16px; line-height: 1.45; }
-  .hero .button-dark { min-height: 48px; padding: 12px 16px; gap: 12px; font-size: 13px; letter-spacing: .07em; }
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0; }
+  .hero-photo { grid-column: 1; grid-row: 1; width: 100%; height: auto; object-fit: contain; }
+  .hero-copy { grid-column: 1; grid-row: 2; width: auto; padding: 26px 22px 32px; }
+  .hero-eyebrow { font-size: 12px; line-height: 1.5; letter-spacing: .12em; }
+  .hero-eyebrow span { display: inline; }
+  .hero-eyebrow span + span::before { content: ' '; }
+  .hero h1 { margin: 16px 0; font-size: clamp(30px, 7.5vw, 44px); line-height: 1.12; letter-spacing: -.035em; }
+  .hero h1 span, .hero h1 em { display: inline; }
+  .hero h1 span::after { content: ' '; }
+  .hero-description { max-width: 100%; margin-bottom: 20px; font-size: 16px; line-height: 1.5; }
+  .hero .button-dark { min-height: 48px; padding: 12px 18px; gap: 16px; font-size: 14px; letter-spacing: .07em; }
   .hero .button-dark span { font-size: 23px; }
   .story-strip > div { width: calc(100% - 24px); padding-block: 24px; }
   .story-strip > div > span { flex-direction: column; gap: 9px; padding-inline: 6px; font-size: 13px; line-height: 1.4; text-align: center; }
@@ -128,10 +123,6 @@
   .category-caption > span { font-size: 18px; }
 }
 @media (max-width: 480px) {
-  .hero { min-height: 570px; padding-block: 36px; }
-  .hero-copy { width: 70%; }
-  .hero h1 { font-size: clamp(33px, 8.8vw, 42px); }
-  .hero-description { max-width: 185px; font-size: 15px; }
   .category-caption { align-items: flex-start; }
   .category-caption > span { display: none; }
   .category-photo { aspect-ratio: .8; }
