@@ -2,7 +2,7 @@
 <header class="site-header" [class.scrolled]="scrolled()">
   <div class="page-shell header-inner">
     <button class="icon-button mobile-toggle" type="button" [attr.aria-label]="mobileOpen() ? 'Cerrar menú' : 'Abrir menú'" [attr.aria-expanded]="mobileOpen()" (click)="mobileOpen.set(!mobileOpen())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'"><img class="brand-logo" src="/images/brand/lugemi-kids-logo.png" alt="" width="1080" height="1080"><span class="brand-name">{{ config().name }}<small>IMAGINA · CRECE · EXPLORA</small></span></a>
+    <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'"><span class="brand-symbol" aria-hidden="true"></span><span class="brand-name">{{ config().name }}<small>IMAGINA · CRECE · EXPLORA</small></span></a>
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Inicio</a>
       <a routerLink="/catalogo" [queryParams]="{genero:'bebes'}" routerLinkActive="active">Bebés</a>

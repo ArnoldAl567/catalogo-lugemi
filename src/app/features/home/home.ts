@@ -2,13 +2,13 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/catalog.service';
 import { ProductCard } from '../../shared/product-card';
-import { AUDIENCES } from '../../data/catalog.data';
+
 
 @Component({ selector: 'app-home', standalone: true, imports: [RouterLink, ProductCard], templateUrl: './home.html', styleUrl: './home.css' })
 export class Home {
   readonly catalog = inject(CatalogService);
   readonly settings = this.catalog.settings;
-  readonly audiences = AUDIENCES;
+
   readonly featured = computed(() => {
     const products = this.catalog.products();
     const selected = products.filter(product => product.featured);
@@ -20,4 +20,3 @@ export class Home {
   }
   imageError(event: Event): void { const image = event.target as HTMLImageElement; if (!image.src.endsWith('image-fallback.svg')) image.src = '/image-fallback.svg'; }
 }
-

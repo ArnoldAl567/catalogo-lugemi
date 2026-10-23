@@ -1,28 +1,22 @@
 <section class="hero">
-  <div class="hero-copy fade-in">
-    <span class="eyebrow"><span class="tiny-star" aria-hidden="true">✧</span> {{ settings().heroEyebrow }}</span>
+  <img class="hero-photo" [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1536" height="1024" fetchpriority="high" (error)="imageError($event)">
+  <div class="hero-copy">
+    <span class="eyebrow">{{ settings().heroEyebrow }}</span>
     <h1>{{ settings().heroTitle }}<br><em>{{ settings().heroAccent }}</em></h1>
     <p>{{ settings().heroDescription }}</p>
-    <div class="hero-actions"><a class="button-dark" routerLink="/catalogo">Explorar colección <span aria-hidden="true">↗</span></a><a class="text-link" routerLink="/catalogo" [queryParams]="{coleccion:'nueva'}">Ver novedades <span aria-hidden="true">→</span></a></div>
-    <div class="hero-footnote"><span class="fine-line"></span> Pequeños soñadores. Grandes aventuras.</div>
-  </div>
-  <div class="hero-visual">
-    <img [src]="settings().heroImageUrl" [alt]="settings().heroImageAlt" width="1350" height="1688" fetchpriority="high" (error)="imageError($event)" />
-
-    <div class="editorial-seal" aria-hidden="true"><span>UN MUNDO PARA</span><i>imaginar<br>y crecer</i><span>LUGEMI KIDS</span></div>
+    <a class="button-dark" routerLink="/catalogo">Ver colección <span aria-hidden="true">→</span></a>
   </div>
 </section>
-<div class="story-strip"><div class="page-shell"><span>Diseños cuidadosamente seleccionados</span><i>✧</i><span>Para crecer con comodidad</span><i>✧</i><span>Atención personalizada</span></div></div>
-
-<section class="page-shell section-spacing category-section">
-  <div class="section-heading"><div><span class="eyebrow">Un universo para cada etapa</span><h2>Pequeños, a su manera.</h2></div><p>Desde sus primeros abrazos<br>hasta sus grandes aventuras.</p></div>
+<div class="story-strip" aria-label="El mundo Lugemi"><div class="page-shell">
+  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28V16m0 8-6-6m6 6 6-6M8 24C0 23 2 13 7 12 5 4 14 1 17 7c6-4 12 1 10 7 7 6 1 13-11 11Z"/></svg>Detalles especiales</span>
+  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 26 24 7M7 23C0 8 18 8 28 3c0 18-7 25-21 20Z"/></svg>Diseños versátiles</span>
+  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28S2 19 2 10C2 1 13 0 16 8c3-8 14-7 14 2 0 9-14 18-14 18Z"/></svg>Atención en Perú</span>
+</div></div>
+<section class="page-shell category-section" aria-label="Explora por tipo de prenda">
   <div class="category-grid">
-    @for (audience of audiences; track audience.id; let i = $index) {
-      <a class="category-card" routerLink="/catalogo" [queryParams]="{genero:audience.id}">
-        <div class="category-photo"><img [src]="'/images/categoria-' + audience.id + '.webp'" [alt]="'Moda infantil para ' + audience.name" width="600" height="760" loading="lazy" (error)="imageError($event)" /><span class="category-number">0{{ i + 1 }}</span></div>
-        <div class="category-caption"><div><h3>{{ audience.name }}</h3><p>{{ audience.age }}</p></div><span class="round-arrow" aria-hidden="true">↗</span></div>
-      </a>
-    }
+    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'camisetas'}"><div class="category-photo"><img src="/images/conjunto-milo-celeste.webp" alt="Polo infantil" width="600" height="760" loading="lazy"></div><div class="category-caption"><h2>Polos</h2><span aria-hidden="true">→</span></div></a>
+    <a class="category-card" routerLink="/catalogo" [queryParams]="{buscar:'short'}"><div class="category-photo shorts-photo"><img src="/images/brand/lugemi-portada-moda.png" alt="Short de jean infantil, fotografía ilustrativa" width="1536" height="1024" loading="lazy"></div><div class="category-caption"><h2>Jeans y shorts</h2><span aria-hidden="true">→</span></div></a>
+    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'conjuntos'}"><div class="category-photo"><img src="/images/conjunto-olivia-salvia.webp" alt="Conjunto infantil de blusa y pantalón" width="600" height="760" loading="lazy"></div><div class="category-caption"><h2>Conjuntos</h2><span aria-hidden="true">→</span></div></a>
   </div>
 </section>
 
