@@ -35,22 +35,20 @@
 .drawer-head .icon-button { min-width: 44px; min-height: 44px; }
 
 @media (max-width: 700px) {
-  .header-inner { grid-template-columns: 44px minmax(0, 1fr) 44px; width: calc(100% - 24px); min-height: 92px; gap: 8px; position: relative; }
-  .wordmark { gap: 8px; }
-  .brand-symbol { width: 48px; height: 48px; }
-  .brand-name { padding-left: 9px; font-size: clamp(15px, 3.5vw, 22px); letter-spacing: .08em; text-transform: uppercase; }
-  .brand-name small { margin-top: 5px; font-size: 9px; letter-spacing: .04em; }
+  .header-inner { grid-template-columns: 36px minmax(0, 1fr) 72px; width: calc(100% - 20px); min-height: 78px; gap: 4px; }
+  .wordmark { gap: 6px; }
+  .brand-symbol { width: 40px; height: 46px; }
+  .brand-name { padding-left: 7px; font-size: clamp(13px, 3.5vw, 21px); letter-spacing: .06em; }
+  .brand-name small { margin-top: 4px; font-size: 9px; letter-spacing: 0; }
   .header-actions { gap: 0; }
-  .header-actions .icon-button:first-child { position: absolute; left: 0; bottom: 0; height: 40px; }
-  .mobile-toggle { align-self: start; margin-top: 4px; }
-  .header-actions svg, .mobile-toggle svg { width: 25px; height: 25px; }
-  .mobile-nav { max-height: calc(100dvh - 92px); }
+  .header-actions .icon-button, .mobile-toggle { width: 36px; height: 44px; }
+  .header-actions svg, .mobile-toggle svg { width: 23px; height: 23px; }
+  .mobile-nav { max-height: calc(100dvh - 78px); }
 }
-@media (max-width: 360px) {
-  .brand-symbol { width: 36px; height: 40px; }
-  .wordmark { gap: 5px; }
-  .brand-name { padding-left: 6px; font-size: 14px; letter-spacing: .04em; }
-  .brand-name small { font-size: 8px; letter-spacing: 0; }
+@media (max-width: 400px) {
+  .brand-name small { display: none; }
+  .brand-symbol { width: 36px; height: 42px; }
+  .brand-name { font-size: 13px; padding-left: 6px; letter-spacing: .04em; }
 }
 .site-footer { padding-bottom: 100px; }
 .brand-name { text-transform: uppercase; }
