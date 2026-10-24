@@ -37,8 +37,8 @@
 @media (max-width: 700px) {
   .header-inner { grid-template-columns: 36px minmax(0, 1fr) 72px; width: calc(100% - 20px); min-height: 78px; gap: 4px; }
   .wordmark { gap: 6px; }
-  .brand-symbol { width: 40px; height: 46px; }
-  .brand-name { padding-left: 7px; font-size: clamp(13px, 3.5vw, 21px); letter-spacing: .06em; }
+  .brand-symbol { width: 48px; height: 54px; }
+  .brand-name { padding-left: 7px; font-size: clamp(15px, 4vw, 23px); letter-spacing: .06em; }
   .brand-name small { margin-top: 4px; font-size: 9px; letter-spacing: 0; }
   .header-actions { gap: 0; }
   .header-actions .icon-button, .mobile-toggle { width: 36px; height: 44px; }
@@ -47,8 +47,8 @@
 }
 @media (max-width: 400px) {
   .brand-name small { display: none; }
-  .brand-symbol { width: 36px; height: 42px; }
-  .brand-name { font-size: 13px; padding-left: 6px; letter-spacing: .04em; }
+  .brand-symbol { width: 44px; height: 50px; }
+  .brand-name { font-size: 15px; padding-left: 6px; letter-spacing: .04em; }
 }
 .site-footer { padding-bottom: 100px; }
 .brand-name { text-transform: uppercase; }
