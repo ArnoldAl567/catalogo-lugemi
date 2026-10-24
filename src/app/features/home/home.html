@@ -10,37 +10,28 @@
     <a class="button-dark" routerLink="/catalogo">Ver colección <span aria-hidden="true">→</span></a>
   </div>
 </section>
-<div class="story-strip" aria-label="El mundo Lugemi"><div class="page-shell">
-  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28V16m0 8-6-6m6 6 6-6M8 24C0 23 2 13 7 12 5 4 14 1 17 7c6-4 12 1 10 7 7 6 1 13-11 11Z"/></svg>Calidad en cada detalle</span>
-  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 26 24 7M7 23C0 8 18 8 28 3c0 18-7 25-21 20Z"/></svg>Diseños versátiles</span>
-  <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 28S2 19 2 10C2 1 13 0 16 8c3-8 14-7 14 2 0 9-14 18-14 18Z"/></svg>Hecho en Perú</span>
-</div></div>
-<section class="page-shell category-section" aria-label="Explora por tipo de prenda">
-  <div class="category-grid">
-    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'camisetas'}"><div class="category-photo"><img src="/images/brand/categoria-polos.webp" alt="Niño con polo marfil y detalles azul marino" width="800" height="800" loading="lazy" decoding="async"></div><div class="category-caption"><h2>Polos</h2><span aria-hidden="true">→</span></div></a>
-    <a class="category-card" routerLink="/catalogo" [queryParams]="{buscar:'short'}"><div class="category-photo"><img src="/images/brand/categoria-jeans.webp" alt="Detalle de un short cargo de jean azul" width="800" height="800" loading="lazy" decoding="async"></div><div class="category-caption"><h2>Jeans y shorts</h2><span aria-hidden="true">→</span></div></a>
-    <a class="category-card" routerLink="/catalogo" [queryParams]="{categoria:'conjuntos'}"><div class="category-photo"><img src="/images/brand/categoria-conjuntos.webp" alt="Niña con una sudadera marfil con capucha" width="800" height="800" loading="lazy" decoding="async"></div><div class="category-caption"><h2>Conjuntos</h2><span aria-hidden="true">→</span></div></a>
+
+<section class="shop-section" aria-labelledby="categories-title">
+  <div class="shop-heading"><h2 id="categories-title">Compra por categoría</h2><a routerLink="/catalogo">Ver todo <span aria-hidden="true">→</span></a></div>
+  <div class="shop-category-grid">
+    @for (category of categories; track category.category) {
+      <a class="shop-category" routerLink="/catalogo" [queryParams]="{categoria: category.category}">
+        <img [src]="category.image" [alt]="category.alt" width="800" height="800" loading="lazy" decoding="async">
+        <h3>{{ category.label }}</h3>
+      </a>
+    }
   </div>
 </section>
 
-<section class="featured-section">
-  <div class="page-shell section-spacing">
-    <div class="section-heading"><div><span class="eyebrow">Favoritos de Lugemi</span><h2>Sus próximos favoritos</h2></div><div class="carousel-actions"><a routerLink="/catalogo" class="text-link">Ver toda la colección ↗</a><div><button type="button" class="round-arrow" aria-label="Prendas anteriores" (click)="slide(featuredRail,-1)">←</button><button type="button" class="round-arrow" aria-label="Más prendas destacadas" (click)="slide(featuredRail,1)">→</button></div></div></div>
-    <div class="featured-rail" #featuredRail tabindex="0" aria-label="Prendas destacadas, desplaza para ver más">@for (product of featured(); track product.id) { <app-product-card [product]="product" /> }</div>
-    <p class="demo-note">Colección de demostración · Fotografías ilustrativas, precios y existencias referenciales.</p>
-  </div>
+<section class="shop-benefits" aria-label="Comprar en Lugemi Kids">
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 28V16m0 8-6-6m6 6 6-6M8 24C0 23 2 13 7 12 5 4 14 1 17 7c6-4 12 1 10 7 7 6 1 13-11 11Z"/></svg><p>Calidad en<br>cada detalle</p></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 26 24 7M7 23C0 8 18 8 28 3c0 18-7 25-21 20Z"/></svg><p>Diseños<br>versátiles</p></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h18v18H2zM20 12h6l4 6v6H20M20 18h10"/><circle cx="8" cy="25" r="3" fill="var(--page-background)"/><circle cx="25" cy="25" r="3" fill="var(--page-background)"/></svg><p>Coordinamos<br>tu envío</p></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 3 28 8v8c0 7-12 13-12 13S4 23 4 16V8L16 3Z"/><path d="m10 15 4 4 8-9"/></svg><p>Atención<br>personalizada</p></div>
 </section>
 
-<section class="page-shell editorial-section">
-  <div class="editorial-photo"><img src="/images/infancia-editorial.webp" alt="Pequeños compartiendo un paseo en el jardín" width="1536" height="1024" loading="lazy"><span>EL ARTE DE CRECER</span></div>
-  <div class="editorial-copy"><span class="eyebrow">Mucho más que vestir</span><h2>Diseñado para<br>sus momentos<br><em>más especiales</em></h2><p>Las primeras veces. Las tardes sin prisa. Ese abrazo que lo dice todo. Hay prendas que se convierten en parte de su historia.</p><a class="text-link" routerLink="/catalogo" [queryParams]="{coleccion:'ocasiones'}">Descubrir ocasiones especiales <span>↗</span></a><span class="editorial-flower" aria-hidden="true">✳</span></div>
+<section class="shop-section shop-featured" aria-labelledby="featured-title">
+  <div class="shop-heading"><h2 id="featured-title">Lo más elegido</h2><a routerLink="/catalogo">Ver todo <span aria-hidden="true">→</span></a></div>
+  <div class="shop-product-grid">@for (product of featured(); track product.id) { <app-product-card [product]="product" [compact]="true" /> }</div>
+  <p class="demo-note">Colección de demostración · Fotografías ilustrativas, precios y existencias referenciales.</p>
 </section>
-
-<section class="page-shell section-spacing arrivals">
-  <div class="section-heading"><div><span class="eyebrow">Nuevas historias por estrenar</span><h2>Lo último en llegar</h2></div><a routerLink="/catalogo" [queryParams]="{coleccion:'nueva'}" class="text-link">Ver novedades ↗</a></div>
-  <div class="arrival-grid">@for (product of newArrivals(); track product.id) { <app-product-card [product]="product" /> }</div>
-</section>
-
-<section class="community-section page-shell" aria-labelledby="community-title"><div><span class="eyebrow">Sigamos imaginando juntos</span><h2 id="community-title">El mundo Lugemi, más cerca.</h2><p>Novedades, inspiración y pequeños momentos para compartir.</p></div><div class="community-links"><a [href]="settings().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram <span>↗</span></a><a [href]="settings().tiktokUrl" target="_blank" rel="noopener noreferrer">TikTok <span>↗</span></a><a [href]="settings().facebookUrl" target="_blank" rel="noopener noreferrer">Facebook <span>↗</span></a></div></section>
-<section class="season-banner page-shell"><div><span class="eyebrow">Días de sol, recuerdos para siempre</span><h2>Un verano muy suyo.</h2><p>Colores suaves y pequeños detalles para salir a descubrir.</p></div><a class="button-outline" routerLink="/catalogo" [queryParams]="{coleccion:'verano'}">Explorar temporada ↗</a></section>
-<section class="benefits page-shell"><div><span aria-hidden="true">✧</span><h3>Elegido con cariño</h3><p>Diseños cuidadosamente seleccionados para cada etapa.</p></div><div><span aria-hidden="true">☁</span><h3>Libertad para jugar</h3><p>La comodidad de los más pequeños, siempre presente.</p></div><div><span aria-hidden="true">↗</span><h3>Así de sencillo</h3><p>Prepara tu pedido y coordina los detalles por WhatsApp.</p></div><div><span aria-hidden="true">♡</span><h3>Estamos para ayudarte</h3><p>Atención personalizada para elegir tallas y prendas.</p></div></section>

@@ -56,3 +56,12 @@
 .drawer-item-bottom { flex-wrap: wrap; gap: 8px; }
 .footer-brand p { font-size: 1rem; }
 .footer-main h3 { font-size: .875rem; }
+
+.shop-nav { display: flex; justify-content: space-between; gap: 28px; max-width: 1440px; margin: auto; padding: 0 28px; border-top: 1px solid #182d4d0d; overflow-x: auto; scrollbar-width: thin; }
+.shop-nav a { display: flex; align-items: center; flex: none; min-height: 48px; padding: 8px 0; color: #182d4d; font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.shop-nav a:hover, .shop-nav a:focus-visible { color: #94621f; }
+@media (max-width: 700px) {
+  .shop-nav { justify-content: flex-start; gap: 22px; padding-inline: 16px; }
+  .shop-nav a { font-size: 12px; min-height: 44px; }
+  .mobile-nav { max-height: calc(100dvh - 122px); }
+}

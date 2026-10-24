@@ -8,6 +8,11 @@
       <button class="icon-button bag-button" type="button" aria-label="Abrir carrito" (click)="cart.drawerOpen.set(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 8h15l-1 13h-13l-1-13Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>@if (cart.count() > 0) { <span class="bag-count">{{ cart.count() }}</span> }</button>
     </div>
   </div>
+  <nav class="shop-nav" aria-label="Categorías de la tienda">
+    @for (item of shopNavigation; track item.label) {
+      <a routerLink="/catalogo" [queryParams]="item.query" (click)="closeNavigation()">{{ item.label }}</a>
+    }
+  </nav>
   @if (searchOpen()) { <form class="search-bar page-shell" (ngSubmit)="submitSearch()" role="search"><label class="sr-only" for="header-search">Buscar prendas</label><input id="header-search" name="search" [(ngModel)]="searchTerm" placeholder="¿Qué estás buscando?" autocomplete="off" /><button type="submit">Buscar ↗</button></form> }
   @if (mobileOpen()) { <nav class="mobile-nav" aria-label="Navegación móvil"><a routerLink="/" (click)="closeNavigation()">Inicio</a><a routerLink="/catalogo" [queryParams]="{genero:'bebes'}" (click)="closeNavigation()">Bebés</a><a routerLink="/catalogo" [queryParams]="{genero:'ninas'}" (click)="closeNavigation()">Niñas</a><a routerLink="/catalogo" [queryParams]="{genero:'ninos'}" (click)="closeNavigation()">Niños</a><a routerLink="/catalogo" (click)="closeNavigation()">Colecciones</a><a routerLink="/catalogo" [queryParams]="{ofertas:'si'}" (click)="closeNavigation()">Ofertas</a><a routerLink="/contacto" (click)="closeNavigation()">Contacto</a></nav> }
 </header>
