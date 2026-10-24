@@ -1,12 +1,12 @@
 :host { display: block; background: #fcf7f0; }
-/* Keep the reference's portrait composition instead of stretching two columns. */
+/* The new photograph keeps its native 16:9 frame, with both faces clear. */
 .hero {
   position: relative;
   isolation: isolate;
   container-type: inline-size;
-  width: min(100%, 1100px);
+  width: min(100%, 1440px);
   margin-inline: auto;
-  aspect-ratio: 938 / 831;
+  aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -22,24 +22,24 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, #fcf7f0 0%, #fcf7f0ed 16%, #fcf7f0a8 27%, #fcf7f026 38%, transparent 45%);
+  background: linear-gradient(90deg, #fcf7f0 0%, #fcf7f0f2 15%, #fcf7f0cc 25%, #fcf7f06b 34%, transparent 45%);
 }
 .hero-photo {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: left center;
 }
 .hero-copy {
-  width: 43%;
+  width: 37%;
   min-width: 0;
-  padding: 3% 0 0 6.2%;
+  padding: 3cqw 0 3cqw 4.5cqw;
   color: #082b47;
 }
 .hero-eyebrow {
   margin: 0;
-  font-size: 2.3cqw;
+  font-size: 1.45cqw;
   font-weight: 600;
   line-height: 1.42;
   letter-spacing: .17em;
@@ -47,9 +47,9 @@
 }
 .hero-eyebrow span, .hero h1 span, .hero h1 em { display: block; }
 .hero h1 {
-  margin: 3cqw 0;
+  margin: 1.8cqw 0;
   font-family: var(--font-serif);
-  font-size: 7.7cqw;
+  font-size: 5cqw;
   font-weight: 500;
   line-height: 1.04;
   letter-spacing: -.055em;
@@ -57,19 +57,19 @@
 .hero h1 span, .hero h1 em { white-space: normal; }
 .hero h1 em { color: #a16d2b; font-weight: 500; }
 .hero-description {
-  max-width: 28cqw;
-  margin: 0 0 3.5cqw;
-  font-size: 2.6cqw;
+  max-width: 24cqw;
+  margin: 0 0 2cqw;
+  font-size: 1.6cqw;
   line-height: 1.32;
   color: #43505c;
 }
 .hero .button-dark {
-  min-height: 7.8cqw;
-  gap: 2.5cqw;
-  padding: 2cqw 3.4cqw;
+  min-height: max(44px, 4.7cqw);
+  gap: 1.8cqw;
+  padding: 1.2cqw 2cqw;
   border-radius: 5px;
   background: #062d4b;
-  font-size: 2cqw;
+  font-size: 1.35cqw;
   font-weight: 500;
   letter-spacing: .11em;
   white-space: nowrap;
@@ -116,7 +116,7 @@
    additional room for readable copy cannot zoom in and crop either child. */
 @media (max-width: 700px) {
   .hero { aspect-ratio: auto; min-height: 88.6cqw; align-items: flex-start; }
-  .hero-visual { inset: 0 auto auto 0; width: 126%; aspect-ratio: 1494 / 1053; }
+  .hero-visual { inset: 0 auto auto 0; width: 100%; aspect-ratio: 16 / 9; }
   .hero-photo { width: 100%; height: 100%; object-fit: contain; }
   .hero-visual::after {
     background:

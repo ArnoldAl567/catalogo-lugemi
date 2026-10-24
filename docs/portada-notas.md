@@ -1,9 +1,13 @@
-# Fotografías de portada Lugemi Kids
+# Fotografía de portada Lugemi Kids
 
-La portada actual usa `public/images/brand/lugemi-portada-campo.webp`, versión optimizada de la fotografía proporcionada por la tienda de dos niños corriendo en el campo. El texto, el degradado claro y el botón se renderizan por separado en HTML y CSS.
+La portada actual utiliza la fotografía entregada por la tienda el 23 de octubre de 2026: dos niños sentados, con polos de mangas rojas y un avión de madera. Archivo recibido: codex-clipboard-a5d699ca-5527-4d03-b5d5-ca3a0c78ec96.png.
 
-Imagen anterior: `lugemi-portada-moda.png`. Fue sustituida por fotografías específicas de categorías y se conserva en el historial de Git.
+Resolución original: 1600 × 900 píxeles. Se conserva el encuadre y no se amplía artificialmente ni se genera otra escena.
 
-Prompt: Create ONLY the large fashion hero PHOTOGRAPH inspired by this website reference. No website UI, no typography, no buttons, no header, no category cards. Landscape 1536x1024. A cheerful curly brown-haired boy age 7 in a white baseball t-shirt with red sleeves and navy collar, simple navy 07 graphic, blue denim cargo shorts, hands casually in pockets, looking toward upper left. Child fills right half, head fully visible with margin, framed head to knees. Warm cream sunlit Mediterranean storefront wall, navy doorway on far right. LEFT 48% of image is soft uncluttered ivory wall with subtle blurred foliage, empty negative space for separate HTML text. Premium natural children's fashion editorial photography, warm daylight, realistic clothing texture. Match the composition, warmth and palette of the reference.
+Versiones WebP (calidad 95):
+- public/images/brand/lugemi-portada-aventura-1600.webp: 1600 × 900, 244036 bytes.
+- public/images/brand/lugemi-portada-aventura-960.webp: 960 × 540, 123842 bytes.
 
-El osito se llama Otto. Permanece sobre WhatsApp y conserva sus animaciones.
+El navegador elige la versión mediante srcset según el ancho y la densidad de pantalla. El título conserva DM Sans y Playfair Display con el cierre dorado en cursiva. El degradado crema se aplica por CSS sobre el espacio de fondo de la izquierda. La fotografía conserva la relación 16:9.
+
+Otto permanece estático, de pie y señalando WhatsApp.

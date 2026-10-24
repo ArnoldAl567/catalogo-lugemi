@@ -18,5 +18,11 @@ export class Home {
   slide(element: HTMLElement, direction: number): void {
     element.scrollBy({ left: direction * (element.clientWidth + 24), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
-  imageError(event: Event): void { const image = event.target as HTMLImageElement; if (!image.src.endsWith('image-fallback.svg')) image.src = '/image-fallback.svg'; }
+  imageError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    if (!image.src.endsWith('image-fallback.svg')) {
+      image.removeAttribute('srcset');
+      image.src = '/image-fallback.svg';
+    }
+  }
 }

@@ -13,6 +13,6 @@ export const STORE_CONFIG: StoreSettings = {
   heroTitleLines: ['Estilo para', 'imaginar,', 'crecer'],
   heroAccent: 'y explorar.',
   heroDescription: 'Prendas cómodas, detalles especiales y calidad para cada aventura.',
-  heroImageUrl: '/images/brand/lugemi-portada-campo.webp',
-  heroImageAlt: 'Dos niños con ropa cómoda corren juntos por el campo al atardecer',
+  heroImageUrl: '/images/brand/lugemi-portada-aventura-1600.webp',
+  heroImageAlt: 'Dos niños sonríen sentados al sol con polos de mangas rojas y un avión de madera',
 };
