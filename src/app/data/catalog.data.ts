@@ -44,6 +44,13 @@ const shopImages: Record<string, string> = {
   "jogger-explorador": "/images/brand/tienda-joggers.webp",
 };
 
+const productOnlyImages: Record<string, string> = {
+  'polo-pique-clasico': '/images/brand/producto-polo-marino.webp',
+  'polo-pique-marfil': '/images/brand/producto-polo-marfil.webp',
+  'short-denim-aventura': '/images/brand/producto-short-denim.webp',
+  'short-drill-arena': '/images/brand/producto-short-arena.webp',
+};
+
 export const PRODUCTS: Product[] = seeds.map((seed, index) => {
   const sizes = seed.audience === 'bebes' ? ['0–3 m', '3–6 m', '6–12 m', '12–18 m'] : ['2 años', '4 años', '6 años', '8 años'];
   return {
@@ -52,8 +59,8 @@ export const PRODUCTS: Product[] = seeds.map((seed, index) => {
     details: ['Modelo de demostración; fotografía ilustrativa', 'Confirma las medidas de la prenda antes de pedir', 'Sigue las instrucciones de cuidado de la etiqueta'],
     featured: true, createdAt: seeds.length - index,
     images: seed.colorIds.flatMap(colorId => ['full', 'detail'].map(view => ({
-      url: shopImages[seed.id] ?? `/images/${seed.id}-${colorId}.webp`, colorId, view: view as 'full' | 'detail',
-      alt: `${seed.name} en ${colors[colorId].name}${view === 'detail' ? ', acercamiento de la misma fotografía' : ''}`,
+      url: (view === 'full' ? productOnlyImages[seed.id] : undefined) ?? shopImages[seed.id] ?? `/images/${seed.id}-${colorId}.webp`, colorId, view: view as 'full' | 'detail',
+      alt: `${seed.name} en ${colors[colorId].name}${view === 'detail' ? productOnlyImages[seed.id] ? ', vista con modelo' : ', acercamiento de la misma fotografía' : ', vista completa de la prenda'}`,
     }))),
     variants: seed.colorIds.flatMap((colorId, colorIndex) => sizes.map((size, sizeIndex) => ({
       colorId, colorName: colors[colorId].name, hex: colors[colorId].hex, size,
