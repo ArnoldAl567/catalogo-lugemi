@@ -1,4 +1,4 @@
-:host { display: block; background: #fcf7f0; }
+:host { display: block; background: #F3E7D5; }
 /* The new photograph keeps its native 16:9 frame, with both faces clear. */
 .hero {
   position: relative;
@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: #fcf7f0;
+  background: #F3E7D5;
 }
 .hero-visual {
   position: absolute;
@@ -22,7 +22,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, #fcf7f0 0%, #fcf7f0f2 15%, #fcf7f0cc 25%, #fcf7f06b 34%, transparent 45%);
+  background: linear-gradient(90deg, #F3E7D5 0%, #F3E7D5f2 15%, #F3E7D5cc 25%, #F3E7D56b 34%, transparent 45%);
 }
 .hero-photo {
   display: block;
@@ -75,7 +75,7 @@
   white-space: nowrap;
 }
 .hero .button-dark span { font-size: 29px; line-height: 1; }
-.story-strip { background: #fcf7f0; }
+.story-strip { background: #F3E7D5; }
 .story-strip > div {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -118,7 +118,7 @@
   .hero { display: flex; align-items: center; aspect-ratio: 2 / 3; padding: 0; }
   .hero-visual { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
   .hero-photo { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-  .hero-visual::after { background: linear-gradient(90deg, #fcf7f0f5 0%, #fcf7f0c9 14%, #fcf7f078 28%, #fcf7f024 37%, transparent 44%); }
+  .hero-visual::after { background: linear-gradient(90deg, #F3E7D5f5 0%, #F3E7D5c9 14%, #F3E7D578 28%, #F3E7D524 37%, transparent 44%); }
   .hero-copy { display: block; width: 45%; padding: 6cqw 0 6cqw 5cqw; }
   .hero-eyebrow { padding: 0; font-size: clamp(11px, 2.8cqw, 18px); line-height: 1.5; letter-spacing: .08em; }
   .hero h1 { margin: 5cqw 0; font-size: clamp(27px, 8.2cqw, 54px); line-height: 1.08; letter-spacing: -.055em; }
