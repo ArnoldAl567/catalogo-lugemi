@@ -112,23 +112,38 @@
   .community-section { flex-wrap: wrap; }
   .community-links { flex-wrap: wrap; }
 }
-/* Preserve the desktop composition on phones; size the image by width so
-   additional room for readable copy cannot zoom in and crop either child. */
+/* Mobile gives the title and both faces their own space, then lets supporting
+   copy and the action use the full width instead of shrinking every element. */
 @media (max-width: 700px) {
-  .hero { aspect-ratio: auto; min-height: 88.6cqw; align-items: flex-start; }
-  .hero-visual { inset: 0 auto auto 0; width: 100%; aspect-ratio: 16 / 9; }
-  .hero-photo { width: 100%; height: 100%; object-fit: contain; }
+  .hero {
+    display: grid;
+    grid-template-columns: 42% minmax(0, 58%);
+    aspect-ratio: auto;
+    min-height: 0;
+    align-items: start;
+    padding-bottom: 24px;
+  }
+  .hero-visual {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 100%;
+    height: 63.6cqw;
+  }
+  .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: 75% center; }
   .hero-visual::after {
     background:
-      linear-gradient(180deg, transparent 86%, #fcf7f0 100%),
-      linear-gradient(90deg, #fcf7f0 0%, #fcf7f0ed 13%, #fcf7f09c 22%, #fcf7f020 30%, transparent 36%);
+      linear-gradient(180deg, transparent 88%, #fcf7f0 100%),
+      linear-gradient(90deg, #fcf7f0, #fcf7f040 12%, transparent 22%);
   }
-  .hero-copy { width: 45%; padding: 7cqw 0 7cqw 5cqw; }
-  .hero-eyebrow { font-size: clamp(10px, 2.3cqw, 16px); line-height: 1.45; letter-spacing: .1em; }
-  .hero h1 { margin: 4cqw 0; font-size: 7.7cqw; line-height: 1.08; }
-  .hero-description { max-width: 35cqw; margin-bottom: 4cqw; font-size: clamp(12px, 2.6cqw, 18px); line-height: 1.4; }
-  .hero .button-dark { min-height: 44px; padding: 10px 12px; gap: 8px; font-size: clamp(11px, 2cqw, 14px); letter-spacing: .04em; }
-  .hero .button-dark span { font-size: 18px; }
+  .hero-copy { display: contents; }
+  .hero-eyebrow { grid-column: 1; grid-row: 1; padding: 20px 4px 0 18px; font-size: 11px; line-height: 1.45; letter-spacing: .06em; }
+  .hero h1 { grid-column: 1; grid-row: 2; margin: 14px 0 18px 18px; font-size: clamp(25px, 7.5cqw, 49px); line-height: 1.1; letter-spacing: -.055em; }
+  .hero-description { grid-column: 1 / -1; grid-row: 3; max-width: none; padding: 0 18px; margin: 16px 0 20px; font-size: 16px; line-height: 1.55; }
+  .hero .button-dark { grid-column: 1 / -1; grid-row: 4; margin-inline: 18px; min-height: 48px; padding: 12px 18px; gap: 16px; font-size: 14px; letter-spacing: .07em; }
+  .hero .button-dark span { font-size: 23px; }
   .story-strip > div { width: calc(100% - 24px); padding-block: 24px; }
   .story-strip > div > span { flex-direction: column; gap: 9px; padding-inline: 6px; font-size: 13px; line-height: 1.4; text-align: center; }
   .story-strip svg { width: 32px; height: 32px; }
