@@ -9,15 +9,15 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ivory: #F5F1E8;
-  --color-cream: #EAE2D4;
+  --color-ivory: #FCF7F0;
+  --color-cream: #F4EBDD;
   --color-charcoal: #182D4D;
   --color-olive: #596579;
   --font-sans: 'DM Sans', Arial, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
 }
 
-:root { font-family: var(--font-sans); color: #182D4D; background: #F5F1E8; scroll-behavior: smooth; }
+:root { font-family: var(--font-sans); color: #182D4D; background: #FCF7F0; scroll-behavior: smooth; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 body { font-size: 16px; line-height: 1.5; }
@@ -37,12 +37,12 @@ img { display: block; max-width: 100%; }
 .button-dark:hover { background: #596579; transform: translateY(-2px); }
 .button-outline { display: inline-flex; align-items: center; justify-content: center; gap: .75rem; min-height: 3.4rem; padding: .75rem 1.5rem; border: 1px solid #3e4138; color: #182D4D; font-size: .875rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; transition: color .25s, background .25s; }
 .button-outline:hover { background: #182D4D; color: white; }
-.field { width: 100%; min-height: 3.1rem; border: 1px solid #d7d3ca; background: #fff; padding: .7rem .9rem; border-radius: 0; color: #182D4D; }
+.field { width: 100%; min-height: 3.1rem; border: 1px solid #d7d3ca; background: var(--surface); padding: .7rem .9rem; border-radius: 0; color: #182D4D; }
 .field:focus { border-color: #596579; outline: none; box-shadow: 0 0 0 1px #596579; }
 .fade-in { animation: fade-in .65s ease both; }
 @keyframes fade-in { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
-:root{--ivory:#F5F1E8;--beige:#EAE2D4;--rose:#E8CFCB;--blue:#D8E8EF;--sage:#C8D5C2;--brown:#596579;--ink:#182D4D;--line:#E4DCD1}body{color:var(--ink);background:var(--ivory)}.page-shell{width:min(100% - 4rem,1280px)}.eyebrow{font-size:.875rem;letter-spacing:.2em;font-weight:500;color:var(--brown)}.button-dark,.button-outline{border-radius:2px;min-height:48px;font-size:.875rem;letter-spacing:.1em}.button-dark{border:1px solid transparent}.button-outline{border-color:#A79786;background:transparent}.text-link{display:inline-flex;gap:1rem;align-items:center;font-size:.875rem;color:var(--brown);padding:.5rem 0;border-bottom:1px solid #B9A897;transition:color .2s,border-color .2s}.text-link:hover{color:#182D4D;border-color:#182D4D}.demo-disclosure{font-size:.875rem;line-height:1.7;padding:.8rem 1rem;background:#EAE2D480;color:#596579;border-left:2px solid #C4B4A2;margin:1rem 0}.skip-link{position:fixed;top:-100px;left:1rem;padding:.75rem 1rem;background:#182D4D;color:white;z-index:100}.skip-link:focus{top:1rem}.button-dark:disabled{opacity:.5;transform:none}main:focus{outline:none}@media(max-width:700px){.page-shell{width:calc(100% - 2.5rem)}button,a,input,select{-webkit-tap-highlight-color:transparent}}
+:root{--ivory:#FCF7F0;--beige:#F4EBDD;--rose:#E8CFCB;--blue:#D8E8EF;--sage:#C8D5C2;--brown:#596579;--ink:#182D4D;--line:#E4DCD1}body{color:var(--ink);background:var(--ivory)}.page-shell{width:min(100% - 4rem,1280px)}.eyebrow{font-size:.875rem;letter-spacing:.2em;font-weight:500;color:var(--brown)}.button-dark,.button-outline{border-radius:2px;min-height:48px;font-size:.875rem;letter-spacing:.1em}.button-dark{border:1px solid transparent}.button-outline{border-color:#A79786;background:transparent}.text-link{display:inline-flex;gap:1rem;align-items:center;font-size:.875rem;color:var(--brown);padding:.5rem 0;border-bottom:1px solid #B9A897;transition:color .2s,border-color .2s}.text-link:hover{color:#182D4D;border-color:#182D4D}.demo-disclosure{font-size:.875rem;line-height:1.7;padding:.8rem 1rem;background:#EAE2D480;color:#596579;border-left:2px solid #C4B4A2;margin:1rem 0}.skip-link{position:fixed;top:-100px;left:1rem;padding:.75rem 1rem;background:#182D4D;color:white;z-index:100}.skip-link:focus{top:1rem}.button-dark:disabled{opacity:.5;transform:none}main:focus{outline:none}@media(max-width:700px){.page-shell{width:calc(100% - 2.5rem)}button,a,input,select{-webkit-tap-highlight-color:transparent}}
 /* Lugemi Kids brand system */
-:root{--ivory:#F5F1E8;--beige:#EAE2D4;--brown:#596579;--ink:#182D4D;--line:#DED7C8;--brand-gold:#CEA54B}
+:root{--ivory:#FCF7F0;--beige:#F4EBDD;--brown:#596579;--ink:#182D4D;--line:#DED7C8;--page-background:#FCF7F0;--surface:#FFFDF8;--surface-muted:#F4EBDD;--brand-gold:#CEA54B}
 .button-dark{background:var(--ink);color:#fff}.button-dark:hover{background:#294566}.button-outline{border-color:var(--ink);color:var(--ink)}.eyebrow{color:#70551F}::selection{background:#E4C982;color:#182D4D}:focus-visible{outline-color:#967025}.text-link{color:#182D4D;border-color:#B69960}
