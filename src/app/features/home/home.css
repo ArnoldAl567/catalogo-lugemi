@@ -74,6 +74,13 @@
   white-space: nowrap;
 }
 .hero .button-dark span { font-size: 29px; line-height: 1; }
+@media (min-width: 1441px) {
+  .hero-visual::after {
+    background:
+      linear-gradient(270deg, #F3E7D5 0%, #F3E7D5e8 2%, transparent 12%),
+      linear-gradient(90deg, #F3E7D5 0%, #F3E7D5f2 15%, #F3E7D5cc 25%, #F3E7D56b 34%, transparent 45%);
+  }
+}
 @media (max-width: 700px) {
   .hero { display: flex; align-items: center; aspect-ratio: 2 / 3; padding: 0; }
   .hero-visual { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
