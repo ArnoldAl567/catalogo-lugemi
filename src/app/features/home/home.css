@@ -112,38 +112,19 @@
   .community-section { flex-wrap: wrap; }
   .community-links { flex-wrap: wrap; }
 }
-/* Mobile gives the title and both faces their own space, then lets supporting
-   copy and the action use the full width instead of shrinking every element. */
+/* A portrait photograph reserves the left side for live type, so mobile
+   keeps the same continuous image and lateral fade as the desktop hero. */
 @media (max-width: 700px) {
-  .hero {
-    display: grid;
-    grid-template-columns: 42% minmax(0, 58%);
-    aspect-ratio: auto;
-    min-height: 0;
-    align-items: start;
-    padding-bottom: 24px;
-  }
-  .hero-visual {
-    position: relative;
-    inset: auto;
-    z-index: auto;
-    grid-column: 2;
-    grid-row: 1 / 3;
-    width: 100%;
-    height: 63.6cqw;
-  }
-  .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: 75% center; }
-  .hero-visual::after {
-    background:
-      linear-gradient(180deg, transparent 88%, #fcf7f0 100%),
-      linear-gradient(90deg, #fcf7f0, #fcf7f040 12%, transparent 22%);
-  }
-  .hero-copy { display: contents; }
-  .hero-eyebrow { grid-column: 1; grid-row: 1; padding: 20px 4px 0 18px; font-size: 11px; line-height: 1.45; letter-spacing: .06em; }
-  .hero h1 { grid-column: 1; grid-row: 2; margin: 14px 0 18px 18px; font-size: clamp(25px, 7.5cqw, 49px); line-height: 1.1; letter-spacing: -.055em; }
-  .hero-description { grid-column: 1 / -1; grid-row: 3; max-width: none; padding: 0 18px; margin: 16px 0 20px; font-size: 16px; line-height: 1.55; }
-  .hero .button-dark { grid-column: 1 / -1; grid-row: 4; margin-inline: 18px; min-height: 48px; padding: 12px 18px; gap: 16px; font-size: 14px; letter-spacing: .07em; }
-  .hero .button-dark span { font-size: 23px; }
+  .hero { display: flex; align-items: center; aspect-ratio: 2 / 3; padding: 0; }
+  .hero-visual { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
+  .hero-photo { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+  .hero-visual::after { background: linear-gradient(90deg, #fcf7f0f5 0%, #fcf7f0c9 14%, #fcf7f078 28%, #fcf7f024 37%, transparent 44%); }
+  .hero-copy { display: block; width: 45%; padding: 6cqw 0 6cqw 5cqw; }
+  .hero-eyebrow { padding: 0; font-size: clamp(11px, 2.8cqw, 18px); line-height: 1.5; letter-spacing: .08em; }
+  .hero h1 { margin: 5cqw 0; font-size: clamp(27px, 8.2cqw, 54px); line-height: 1.08; letter-spacing: -.055em; }
+  .hero-description { max-width: 33cqw; padding: 0; margin: 0 0 5cqw; font-size: clamp(14px, 3.4cqw, 21px); line-height: 1.45; }
+  .hero .button-dark { margin: 0; min-height: 48px; padding: 12px; gap: 10px; font-size: clamp(12px, 2.5cqw, 16px); letter-spacing: .04em; }
+  .hero .button-dark span { font-size: 20px; }
   .story-strip > div { width: calc(100% - 24px); padding-block: 24px; }
   .story-strip > div > span { flex-direction: column; gap: 9px; padding-inline: 6px; font-size: 13px; line-height: 1.4; text-align: center; }
   .story-strip svg { width: 32px; height: 32px; }

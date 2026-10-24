@@ -22,6 +22,7 @@ export class Home {
     const image = event.target as HTMLImageElement;
     if (!image.src.endsWith('image-fallback.svg')) {
       image.removeAttribute('srcset');
+      image.closest('picture')?.querySelectorAll('source').forEach(source => source.removeAttribute('srcset'));
       image.src = '/image-fallback.svg';
     }
   }
