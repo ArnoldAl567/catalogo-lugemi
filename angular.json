@@ -55,6 +55,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "host": "127.0.0.1",
+            "port": 4301
+          },
           "configurations": {
             "production": {
               "buildTarget": "catalogo-lugemi:build:production"
