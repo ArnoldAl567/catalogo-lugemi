@@ -5,7 +5,7 @@ import { PRODUCTS } from '../data/catalog.data';
 describe('catálogo local', () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it('muestra las prendas de inmediato sin consultar servicios externos', () => {
+  it('muestra las prendas de inmediato mientras carga el catálogo compartido', () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch');
     try {
       const catalog = TestBed.inject(CatalogService);
@@ -13,7 +13,7 @@ describe('catálogo local', () => {
       expect(catalog.getById('polo-oversize-athletic-67')?.name).toBe('Polo Oversize Athletic 67');
       expect(catalog.getById('vestido-alma')).toBeUndefined();
       expect(catalog.settings().whatsappNumber).toBe('51982226022');
-      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(fetchSpy).toHaveBeenCalledWith('/api/products');
     } finally {
       fetchSpy.mockRestore();
     }

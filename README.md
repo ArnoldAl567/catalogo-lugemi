@@ -4,11 +4,18 @@ Catálogo Angular de polos infantiles. La tienda muestra los ocho modelos del do
 
 ## Ejecutar y comprobar
 
-- `npm start`: abre http://127.0.0.1:4301/
+- `npm start`: abre http://127.0.0.1:4301/ e inicia la API local en el puerto 4302
 - `npm run build`: genera `dist/catalogo-lugemi/browser`
 - `npm test -- --watch=false`: comprueba el catálogo, los filtros, el carrito y el mensaje de pedido
+- `node server/integration.test.mjs`: comprueba PostgreSQL, acceso administrativo y publicación de productos e imágenes con el servidor local en ejecución
 
-La tienda usa datos locales; no consulta Sanity ni un servicio de inventario. La carpeta `studio/` permanece inactiva.
+La tienda lee los productos desde PostgreSQL mediante `/api/products`. Los ocho modelos incluidos en el código se muestran de inmediato mientras carga la API y sirven para inicializar una base vacía una sola vez. Sanity no participa en la tienda; la carpeta `studio/` permanece inactiva.
+
+## Administración
+
+El panel está en `/administrador`. Solo se puede entrar con la contraseña configurada en el servidor. Permite crear, editar y quitar productos, modificar precio y descripción, agregar colores y tallas, y subir una foto frontal y otra posterior por color. Las fotos JPG, PNG o WebP de hasta 2 MB se guardan en PostgreSQL y se publican al guardar el producto. El acceso usa una cookie de sesión privada que dura 12 horas. Cinco intentos fallidos bloquean el ingreso durante 15 minutos.
+
+Para ejecutar el panel localmente, crear `.env.local` con `DATABASE_URL`, `ADMIN_PASSWORD_HASH` y `SESSION_SECRET`. `DATABASE_URL` es una conexión PostgreSQL. `ADMIN_PASSWORD_HASH` tiene formato `sal:hash`, donde el hash se obtiene con `scrypt` de Node.js. `SESSION_SECRET` debe ser una cadena aleatoria de al menos 32 bytes. Los tres valores son secretos y no se incluyen en Git. El servidor crea las tablas y carga los ocho productos iniciales al primer acceso. Para publicar el panel en Vercel, configurar las mismas variables en el proyecto y conectar una base PostgreSQL de Neon. Las imágenes quedan en la base y no dependen del disco temporal de Vercel.
 
 ## Colección
 
@@ -18,7 +25,9 @@ La composición de Skate y Focus Game 07 no figura en la ficha original y se mue
 
 ## Organización
 
-- `src/app/data/catalog.data.ts`: los ocho modelos y sus datos.
+- `src/app/data/catalog.data.ts` y `server/seed-products.json`: los ocho modelos iniciales.
+- `src/app/features/admin/`: panel administrativo.
+- `server/core.mjs` y `api/[...path].js`: API, contraseña, imágenes y PostgreSQL.
 - `public/images/productos/`: las 16 fotografías originales, una de frente y otra de espalda para cada modelo.
 - `src/app/features/home/`: portada y colección completa, con cuatro tarjetas por fila.
 - `src/app/features/catalog/` y `src/app/features/product/`: filtros y fichas.

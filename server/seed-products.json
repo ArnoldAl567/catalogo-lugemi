@@ -1,0 +1,610 @@
+[
+  {
+    "id": "polo-oversize-athletic-67",
+    "name": "Polo Oversize Athletic 67",
+    "categoryId": "oversize",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo oversize marfil con el número 67 al frente y gráfico Lugemi Athletic Club en la espalda. Su tela Jersey Pima es suave, ligera y fresca.",
+    "material": "Jersey Pima",
+    "details": [
+      "Manga corta y silueta oversize",
+      "Estampados al frente y en la espalda",
+      "Costuras recubiertas para mayor durabilidad"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 8,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/athletic-67-frente.jpeg",
+        "colorId": "marfil",
+        "view": "full",
+        "alt": "Polo Oversize Athletic 67, vista frontal"
+      },
+      {
+        "url": "/images/productos/athletic-67-espalda.jpeg",
+        "colorId": "marfil",
+        "view": "detail",
+        "alt": "Polo Oversize Athletic 67, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "marfil",
+        "colorName": "Marfil",
+        "hex": "#F2EDE1",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "marfil",
+        "colorName": "Marfil",
+        "hex": "#F2EDE1",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "marfil",
+        "colorName": "Marfil",
+        "hex": "#F2EDE1",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "marfil",
+        "colorName": "Marfil",
+        "hex": "#F2EDE1",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "marfil",
+        "colorName": "Marfil",
+        "hex": "#F2EDE1",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "marfil",
+        "colorName": "Marfil",
+        "hex": "#F2EDE1",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-oversize-move",
+    "name": "Polo Oversize Move",
+    "categoryId": "oversize",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo oversize verde olivo con estampado Move Your Way al frente y un detalle gráfico en la espalda. Confeccionado en Jersey Pima suave, ligero y fresco.",
+    "material": "Jersey Pima",
+    "details": [
+      "Manga corta y silueta oversize",
+      "Estampados al frente y en la espalda",
+      "Costuras recubiertas para mayor durabilidad"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 7,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/move-frente.jpeg",
+        "colorId": "olivo",
+        "view": "full",
+        "alt": "Polo Oversize Move, vista frontal"
+      },
+      {
+        "url": "/images/productos/move-espalda.jpeg",
+        "colorId": "olivo",
+        "view": "detail",
+        "alt": "Polo Oversize Move, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "olivo",
+        "colorName": "Verde olivo",
+        "hex": "#7A853E",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "olivo",
+        "colorName": "Verde olivo",
+        "hex": "#7A853E",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "olivo",
+        "colorName": "Verde olivo",
+        "hex": "#7A853E",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "olivo",
+        "colorName": "Verde olivo",
+        "hex": "#7A853E",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "olivo",
+        "colorName": "Verde olivo",
+        "hex": "#7A853E",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "olivo",
+        "colorName": "Verde olivo",
+        "hex": "#7A853E",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-oversize-space",
+    "name": "Polo Oversize Space",
+    "categoryId": "oversize",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo oversize azul marino con pequeño planeta al frente y un estampado espacial de astronauta en la espalda. Su tela Jersey Pima es suave, ligera y fresca.",
+    "material": "Jersey Pima",
+    "details": [
+      "Manga corta y silueta oversize",
+      "Estampado espacial en la espalda",
+      "Costuras recubiertas para mayor durabilidad"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 6,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/space-frente.jpeg",
+        "colorId": "marino",
+        "view": "full",
+        "alt": "Polo Oversize Space, vista frontal"
+      },
+      {
+        "url": "/images/productos/space-espalda.jpeg",
+        "colorId": "marino",
+        "view": "detail",
+        "alt": "Polo Oversize Space, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "marino",
+        "colorName": "Azul marino",
+        "hex": "#182D4D",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "marino",
+        "colorName": "Azul marino",
+        "hex": "#182D4D",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "marino",
+        "colorName": "Azul marino",
+        "hex": "#182D4D",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "marino",
+        "colorName": "Azul marino",
+        "hex": "#182D4D",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "marino",
+        "colorName": "Azul marino",
+        "hex": "#182D4D",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "marino",
+        "colorName": "Azul marino",
+        "hex": "#182D4D",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-oversize-fire",
+    "name": "Polo Oversize Fire",
+    "categoryId": "oversize",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo oversize color arena con estampado Find Your Fire al frente y detalle Lugemi en la espalda. Confeccionado en Jersey Pima suave, ligero y fresco.",
+    "material": "Jersey Pima",
+    "details": [
+      "Manga corta y silueta oversize",
+      "Estampados al frente y en la espalda",
+      "Costuras recubiertas para mayor durabilidad"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 5,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/fire-frente.jpeg",
+        "colorId": "arena",
+        "view": "full",
+        "alt": "Polo Oversize Fire, vista frontal"
+      },
+      {
+        "url": "/images/productos/fire-espalda.jpeg",
+        "colorId": "arena",
+        "view": "detail",
+        "alt": "Polo Oversize Fire, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "arena",
+        "colorName": "Arena",
+        "hex": "#CCBDA7",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "arena",
+        "colorName": "Arena",
+        "hex": "#CCBDA7",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "arena",
+        "colorName": "Arena",
+        "hex": "#CCBDA7",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "arena",
+        "colorName": "Arena",
+        "hex": "#CCBDA7",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "arena",
+        "colorName": "Arena",
+        "hex": "#CCBDA7",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "arena",
+        "colorName": "Arena",
+        "hex": "#CCBDA7",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-raglan-lion",
+    "name": "Polo raglán Lion",
+    "categoryId": "raglan",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo raglán de cuerpo marfil, mangas terracota y cuello azul marino. Su estampado frontal muestra un león con el mensaje Find Your Power. Tela Jersey Pima suave, ligera y fresca.",
+    "material": "Jersey Pima",
+    "details": [
+      "Mangas cortas de corte raglán",
+      "Estampado de león al frente",
+      "Costuras recubiertas para mayor durabilidad"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 4,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/lion-frente.jpeg",
+        "colorId": "terracota",
+        "view": "full",
+        "alt": "Polo raglán Lion, vista frontal"
+      },
+      {
+        "url": "/images/productos/lion-espalda.jpeg",
+        "colorId": "terracota",
+        "view": "detail",
+        "alt": "Polo raglán Lion, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "terracota",
+        "colorName": "Marfil y terracota",
+        "hex": "#AF5135",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "terracota",
+        "colorName": "Marfil y terracota",
+        "hex": "#AF5135",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "terracota",
+        "colorName": "Marfil y terracota",
+        "hex": "#AF5135",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "terracota",
+        "colorName": "Marfil y terracota",
+        "hex": "#AF5135",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "terracota",
+        "colorName": "Marfil y terracota",
+        "hex": "#AF5135",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "terracota",
+        "colorName": "Marfil y terracota",
+        "hex": "#AF5135",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-raglan-skate",
+    "name": "Polo raglán Skate",
+    "categoryId": "raglan",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo raglán de cuerpo marfil, mangas verdes y cuello mostaza. El frente lleva tres patinetas y el mensaje Good Days Ahead.",
+    "material": "Composición por confirmar con la tienda",
+    "details": [
+      "Mangas cortas de corte raglán",
+      "Estampado de patinetas al frente",
+      "Espalda lisa"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 3,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/skate-frente.jpeg",
+        "colorId": "verde",
+        "view": "full",
+        "alt": "Polo raglán Skate, vista frontal"
+      },
+      {
+        "url": "/images/productos/skate-espalda.jpeg",
+        "colorId": "verde",
+        "view": "detail",
+        "alt": "Polo raglán Skate, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "verde",
+        "colorName": "Marfil y verde",
+        "hex": "#596851",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "verde",
+        "colorName": "Marfil y verde",
+        "hex": "#596851",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "verde",
+        "colorName": "Marfil y verde",
+        "hex": "#596851",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "verde",
+        "colorName": "Marfil y verde",
+        "hex": "#596851",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "verde",
+        "colorName": "Marfil y verde",
+        "hex": "#596851",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "verde",
+        "colorName": "Marfil y verde",
+        "hex": "#596851",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-raglan-focus-game-07",
+    "name": "Polo raglán Focus Game 07",
+    "categoryId": "raglan",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo raglán blanco con mangas rojas, cuello azul marino y estampado Focus Game 07 en el frente.",
+    "material": "Composición por confirmar con la tienda",
+    "details": [
+      "Mangas cortas de corte raglán",
+      "Estampado Focus Game 07 al frente",
+      "Espalda lisa"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 2,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/focus-game-07-frente.jpeg",
+        "colorId": "rojo",
+        "view": "full",
+        "alt": "Polo raglán Focus Game 07, vista frontal"
+      },
+      {
+        "url": "/images/productos/focus-game-07-espalda.jpeg",
+        "colorId": "rojo",
+        "view": "detail",
+        "alt": "Polo raglán Focus Game 07, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "rojo",
+        "colorName": "Blanco y rojo",
+        "hex": "#BA3B32",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "rojo",
+        "colorName": "Blanco y rojo",
+        "hex": "#BA3B32",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "rojo",
+        "colorName": "Blanco y rojo",
+        "hex": "#BA3B32",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "rojo",
+        "colorName": "Blanco y rojo",
+        "hex": "#BA3B32",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "rojo",
+        "colorName": "Blanco y rojo",
+        "hex": "#BA3B32",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "rojo",
+        "colorName": "Blanco y rojo",
+        "hex": "#BA3B32",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  },
+  {
+    "id": "polo-raglan-music",
+    "name": "Polo raglán Music",
+    "categoryId": "raglan",
+    "audience": "infantil",
+    "price": 35,
+    "description": "Polo raglán blanco con mangas azul marino, cuello terracota y estampado musical en el frente. Su tela Jersey Pima es suave, ligera y fresca.",
+    "material": "Jersey Pima",
+    "details": [
+      "Mangas cortas de corte raglán",
+      "Estampado musical al frente",
+      "Costuras recubiertas para mayor durabilidad"
+    ],
+    "contents": "1 polo",
+    "featured": true,
+    "createdAt": 1,
+    "stockUnconfirmed": true,
+    "images": [
+      {
+        "url": "/images/productos/music-frente.jpeg",
+        "colorId": "azul",
+        "view": "full",
+        "alt": "Polo raglán Music, vista frontal"
+      },
+      {
+        "url": "/images/productos/music-espalda.jpeg",
+        "colorId": "azul",
+        "view": "detail",
+        "alt": "Polo raglán Music, vista posterior"
+      }
+    ],
+    "variants": [
+      {
+        "colorId": "azul",
+        "colorName": "Blanco y azul marino",
+        "hex": "#1B2438",
+        "size": "6",
+        "stock": 99
+      },
+      {
+        "colorId": "azul",
+        "colorName": "Blanco y azul marino",
+        "hex": "#1B2438",
+        "size": "8",
+        "stock": 99
+      },
+      {
+        "colorId": "azul",
+        "colorName": "Blanco y azul marino",
+        "hex": "#1B2438",
+        "size": "10",
+        "stock": 99
+      },
+      {
+        "colorId": "azul",
+        "colorName": "Blanco y azul marino",
+        "hex": "#1B2438",
+        "size": "12",
+        "stock": 99
+      },
+      {
+        "colorId": "azul",
+        "colorName": "Blanco y azul marino",
+        "hex": "#1B2438",
+        "size": "14",
+        "stock": 99
+      },
+      {
+        "colorId": "azul",
+        "colorName": "Blanco y azul marino",
+        "hex": "#1B2438",
+        "size": "16",
+        "stock": 99
+      }
+    ]
+  }
+]

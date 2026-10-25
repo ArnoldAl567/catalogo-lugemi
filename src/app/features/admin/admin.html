@@ -1,0 +1,28 @@
+<main class="admin-page page-shell" id="main-content">
+  <div class="admin-heading"><div><p class="eyebrow">Lugemi Kids</p><h1 class="font-editorial">Administrador</h1><p>Gestiona los productos que ven tus clientes.</p></div>@if (authenticated()) { <button type="button" class="admin-link" (click)="logout()">Cerrar sesión</button> }</div>
+  @if (!configured()) { <p class="notice error" role="alert">El panel necesita una conexión PostgreSQL y sus claves de acceso. La tienda sigue mostrando el catálogo actual.</p> }
+  @if (message()) { <p class="notice" role="status">{{ message() }}</p> }
+  @if (!authenticated()) {
+    <form class="login-card" (ngSubmit)="login()"><h2>Acceso privado</h2><label for="admin-password">Contraseña</label><input id="admin-password" class="field" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" required><button class="button-dark" type="submit" [disabled]="busy() || !password">Ingresar</button></form>
+  } @else {
+    <div class="admin-toolbar"><h2>Productos <span>{{ catalog.products().length }}</span></h2><button class="button-dark" type="button" (click)="create()">+ Nuevo producto</button></div>
+    @if (!editing()) {
+      <div class="product-list">@for (product of catalog.products(); track product.id) {
+        <article class="product-row"><img [src]="product.images[0]?.url || '/image-fallback.svg'" [alt]="product.name"><div><h3>{{ product.name }}</h3><p>{{ product.categoryId === 'raglan' ? 'Polo raglán' : 'Polo oversize' }} · {{ product.variants.length }} tallas y colores · S/ {{ product.price.toFixed(2) }}</p></div><div class="row-actions"><button type="button" (click)="edit(product)">Editar</button><button type="button" class="danger" (click)="remove(product)" [disabled]="busy()">Quitar</button></div></article>
+      }</div>
+    } @else {
+      @let d = editing()!;
+      <form class="editor" (ngSubmit)="save()"><div class="editor-title"><h2>{{ d.id ? 'Editar producto' : 'Nuevo producto' }}</h2><button type="button" class="admin-link" (click)="cancel()">Cancelar</button></div>
+        <div class="field-grid"><label>Nombre<input class="field" name="name" [(ngModel)]="d.name" required maxlength="120"></label><label>Tipo<select class="field" name="category" [(ngModel)]="d.categoryId"><option value="oversize">Polo oversize</option><option value="raglan">Polo raglán</option></select></label><label>Precio en soles<input class="field" type="number" min="0" step="0.01" name="price" [(ngModel)]="d.price" required></label><label>Material<input class="field" name="material" [(ngModel)]="d.material"></label></div>
+        <label>Descripción<textarea class="field" rows="4" name="description" [(ngModel)]="d.description" required></textarea></label><label>Detalles <small>(uno por línea)</small><textarea class="field" rows="3" name="details" [(ngModel)]="d.details"></textarea></label>
+        <div class="options"><label><input type="checkbox" name="featured" [(ngModel)]="d.featured"> Destacar en inicio</label><label><input type="checkbox" name="stockUnconfirmed" [(ngModel)]="d.stockUnconfirmed"> Confirmar disponibilidad por WhatsApp</label></div>
+        <div class="colors-heading"><h3>Colores, tallas e imágenes</h3><button type="button" class="admin-link" (click)="addColor()">+ Agregar color</button></div>
+        @for (color of d.colors; track $index; let i = $index) {
+          <section class="color-card"><div class="color-heading"><strong>Color {{ i + 1 }}</strong>@if (d.colors.length > 1) { <button type="button" class="danger" (click)="removeColor(i)">Quitar color</button> }</div><div class="field-grid"><label>Identificador<input class="field" [name]="'colorId'+i" [(ngModel)]="color.id" placeholder="marfil" required></label><label>Nombre del color<input class="field" [name]="'colorName'+i" [(ngModel)]="color.name" required></label><label>Color de muestra<input class="field color-input" type="color" [name]="'colorHex'+i" [(ngModel)]="color.hex"></label><label>Tallas, separadas por coma<input class="field" [name]="'sizes'+i" [(ngModel)]="color.sizes" placeholder="6, 8, 10, 12" required></label><label>Unidades por talla<input class="field" type="number" min="0" [name]="'stock'+i" [(ngModel)]="color.stock"></label></div>
+          <div class="image-grid"><div><span>Foto frontal</span>@if (color.front) { <img [src]="color.front" alt="Vista frontal del producto"> }<input type="file" accept="image/jpeg,image/png,image/webp" [attr.aria-label]="'Subir foto frontal del color '+color.name" (change)="upload($event, color, 'front')"><small>JPG, PNG o WebP. Máximo 2 MB.</small></div><div><span>Foto posterior</span>@if (color.back) { <img [src]="color.back" alt="Vista posterior del producto"> }<input type="file" accept="image/jpeg,image/png,image/webp" [attr.aria-label]="'Subir foto posterior del color '+color.name" (change)="upload($event, color, 'back')"><small>Opcional.</small></div></div>
+        </section> }
+        <div class="editor-actions"><button class="button-dark" type="submit" [disabled]="busy()">{{ busy() ? 'Guardando…' : 'Guardar y publicar' }}</button><button type="button" class="admin-link" (click)="cancel()">Cancelar</button></div>
+      </form>
+    }
+  }
+</main>

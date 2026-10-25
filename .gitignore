@@ -16,6 +16,10 @@ studio/.sanity/
 studio/.env
 studio/.env.local
 /.npm-cache
+/.vercel/
+/.dev-postgres/
+/.test-tmp/
+/.admin-credentials
 npm-debug.log
 yarn-error.log
 
@@ -50,3 +54,6 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+.vercel
+.env*

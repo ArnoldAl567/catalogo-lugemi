@@ -7,5 +7,6 @@ export const routes: Routes = [
   { path: 'carrito', title: 'Mi carrito | LUGEMI KIDS', loadComponent: () => import('./features/cart/cart').then(m => m.CartPage) },
   { path: 'checkout', title: 'Finalizar pedido | LUGEMI KIDS', loadComponent: () => import('./features/checkout/checkout').then(m => m.Checkout) },
   { path: 'contacto', title: 'Contacto | LUGEMI KIDS', loadComponent: () => import('./features/contact/contact').then(m => m.Contact) },
+  { path: 'administrador', title: 'Administrador | LUGEMI KIDS', loadComponent: () => import('./features/admin/admin').then(m => m.Admin) },
   { path: '**', redirectTo: '' },
 ];
