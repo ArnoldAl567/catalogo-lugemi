@@ -2,7 +2,7 @@ import { Component, computed, effect, HostListener, inject, signal } from '@angu
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/catalog.service';
 import { CartService } from '../../core/cart.service';
-import { getVariant, imagesForColor, money } from '../../core/store.utils';
+import { getVariant, imagesForColor, money, whatsappUrl } from '../../core/store.utils';
 import { ProductCard } from '../../shared/product-card';
 import { ProductPhoto } from '../../shared/product-photo';
 import { FocusTrap } from '../../shared/focus-trap';
@@ -15,6 +15,7 @@ export class ProductPage {
   private readonly router = inject(Router);
   readonly productId = signal(this.route.snapshot.paramMap.get('id') ?? '');
   readonly product = computed(() => this.catalog.getById(this.productId()));
+  readonly categoryName = computed(() => this.catalog.categories().find(category => category.id === this.product()?.categoryId)?.name ?? 'Polos');
   readonly selectedColor = signal(''); readonly selectedSize = signal(''); readonly activeImage = signal(0);
   readonly quantity = signal(1); readonly error = signal(''); readonly sizeGuideOpen = signal(false); readonly zoomOpen = signal(false);
   readonly money = money;
@@ -24,6 +25,7 @@ export class ProductPage {
   readonly images = computed(() => this.product() ? imagesForColor(this.product()!, this.selectedColor()) : []);
   readonly variant = computed(() => { const product = this.product(); return product ? getVariant(product, this.selectedColor(), this.selectedSize()) : undefined; });
   readonly related = computed(() => this.product() ? this.catalog.related(this.product()!) : []);
+  readonly sizeGuideUrl = computed(() => whatsappUrl(`Hola, Lugemi Kids. ¿Podrían compartirme las medidas del ${this.product()?.name ?? 'polo'}${this.selectedSize() ? ` en talla ${this.selectedSize()}` : ''}?`));
   readonly detailRows = computed(() => {
     const item = this.product();
     if (!item) return [];
@@ -32,7 +34,7 @@ export class ProductPage {
       {label: 'Tallas disponibles', value: [...new Set(item.variants.map(variant => variant.size))].join(' · ')},
       {label: 'Material', value: item.material},
       {label: 'Contenido', value: item.contents},
-      {label: 'Colección', value: {bebes: 'Bebés', ninas: 'Niñas', ninos: 'Niños'}[item.audience]},
+      {label: 'Estilo', value: this.categoryName()},
       {label: 'Pecho', value: item.chestMeasurement},
       {label: 'Largo / medida', value: item.garmentLength},
       {label: 'Seguridad / norma', value: item.safetyStandard},

@@ -11,8 +11,8 @@ import { AUDIENCES } from '../data/catalog.data';
   template: `
     <article class="product-card" [class.compact]="compact()">
       <a [routerLink]="['/producto', product().id]" [queryParams]="{color:selectedColor()}" class="product-visual" [attr.aria-label]="'Ver ' + product().name + ' en ' + selectedColorName()">
-        @if (images()[0]; as photo) { <app-product-photo [image]="photo" class="main-image" /> }
-        @if (!compact()) { @if (images()[1]; as detail) { <app-product-photo [image]="detail" class="alternate-image" /> } }
+        @if (images()[0]; as photo) { <app-product-photo [image]="photo" fit="cover" class="main-image" /> }
+        @if (!compact()) { @if (images()[1]; as detail) { <app-product-photo [image]="detail" fit="cover" class="alternate-image" /> } }
         @if (product().badge) { <span class="product-badge">{{ product().badge }}</span> }
         <span class="image-cta">Descubrir la prenda <span>↗</span></span>
       </a>

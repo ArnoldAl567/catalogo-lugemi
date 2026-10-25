@@ -43,7 +43,7 @@ export function validateCustomer(customer: Customer): Record<string, string> {
 export function buildOrderMessage(order: Order, products: Product[], storeName = STORE_CONFIG.name): string {
   const lines = [`Hola, ${storeName}. Deseo realizar el siguiente pedido:`, ''];
   if (!order.items.length) throw new Error('El pedido está vacío.');
-  if (order.items.some(item => products.find(product => product.id === item.productId)?.demo)) lines.push('CONSULTA DE COLECCIÓN DE DEMOSTRACIÓN — precios y existencias referenciales.', '');
+  lines.push('Por favor, confirma la disponibilidad de las tallas y el costo de envío.', '');
   let totalCents = 0;
   order.items.forEach((item: CartItem, index) => {
     const product = products.find(candidate => candidate.id === item.productId);

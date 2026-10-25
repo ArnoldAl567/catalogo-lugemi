@@ -1,14 +1,9 @@
 export const SHOP_NAVIGATION = [
-  { label: 'Nuevos ingresos', query: { coleccion: 'nueva', orden: 'novedades' } },
-  { label: 'Polos', query: { categoria: 'camisetas' } },
-  { label: 'Jeans', query: { categoria: 'pantalones' } },
-  { label: 'Shorts', query: { categoria: 'shorts' } },
-  { label: 'Joggers', query: { categoria: 'joggers' } },
-  { label: 'Accesorios', query: { categoria: 'accesorios' } },
+  { label: 'Toda la colección', query: {} },
+  { label: 'Polos oversize', query: { categoria: 'oversize' } },
+  { label: 'Polos raglán', query: { categoria: 'raglan' } },
 ];
 export const SHOP_CATEGORIES = [
-  { label: 'Polos', category: 'camisetas', image: '/images/brand/tienda-polos.webp', alt: 'Niño con polo piqué azul marino' },
-  { label: 'Jeans', category: 'pantalones', image: '/images/brand/tienda-jeans.webp', alt: 'Jean infantil azul de corte recto' },
-  { label: 'Shorts', category: 'shorts', image: '/images/brand/tienda-shorts.webp', alt: 'Short cargo infantil de color arena' },
-  { label: 'Joggers', category: 'joggers', image: '/images/brand/tienda-joggers.webp', alt: 'Jogger infantil azul marino con puños elásticos' },
+  { label: 'Polos oversize', category: 'oversize', image: '/images/productos/athletic-67-frente.jpeg', alt: 'Polo oversize Athletic 67 marfil, vista frontal' },
+  { label: 'Polos raglán', category: 'raglan', image: '/images/productos/lion-frente.jpeg', alt: 'Polo raglán Lion con mangas terracota, vista frontal' },
 ];

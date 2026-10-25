@@ -3,50 +3,54 @@ import { buildOrderMessage, filterProducts, imagesForColor, mainImageForColor, v
 import { Product } from '../models/store.models';
 import { STORE_CONFIG } from './store.config';
 
-describe('catálogo infantil y variantes', () => {
-  it('combina colección infantil, categoría, talla y orden de precio', () => {
-    const found = filterProducts(PRODUCTS, { audience: 'ninas', category: 'vestidos', size: '4 años', sort: 'price-asc' });
-    expect(found.length).toBeGreaterThan(0);
-    expect(found.every(product => product.categoryId === 'vestidos' && product.audience === 'ninas')).toBe(true);
-    const sorted = filterProducts(PRODUCTS, { sort: 'price-desc' });
-    expect(sorted.map(product => product.price)).toEqual([...sorted.map(product => product.price)].sort((a,b) => b-a));
+describe('catálogo Lugemi Kids', () => {
+  it('contiene únicamente los ocho modelos de la ficha y seis tallas por modelo', () => {
+    expect(PRODUCTS).toHaveLength(8);
+    expect(new Set(PRODUCTS.map(product => product.id)).size).toBe(8);
+    expect(PRODUCTS.filter(product => product.categoryId === 'oversize')).toHaveLength(4);
+    expect(PRODUCTS.filter(product => product.categoryId === 'raglan')).toHaveLength(4);
+    for (const product of PRODUCTS) {
+      expect(product.price).toBe(35);
+      expect(product.variants.map(variant => variant.size)).toEqual(['6', '8', '10', '12', '14', '16']);
+      expect(product.stockUnconfirmed).toBe(true);
+    }
+  });
+  it('filtra por estilo, talla, nombre y precio', () => {
+    const found = filterProducts(PRODUCTS, { category: 'raglan', size: '10', sort: 'name' });
+    expect(found).toHaveLength(4);
+    expect(found.every(product => product.categoryId === 'raglan')).toBe(true);
+    expect(found.map(product => product.name)).toEqual([...found.map(product => product.name)].sort((a,b) => a.localeCompare(b, 'es')));
+    expect(filterProducts(PRODUCTS, {query:'  LION  '})).toHaveLength(1);
+    expect(filterProducts(PRODUCTS, {minPrice:35,maxPrice:35})).toHaveLength(8);
+    expect(filterProducts(PRODUCTS, {minPrice:36})).toHaveLength(0);
   });
   it('solo acepta talla y color disponibles en la misma variante', () => {
     const product: Product = {...PRODUCTS[0], variants: [
-      { colorId: 'rosa', colorName: 'Rosa', hex: '#E8CFCB', size: '2 años', stock: 2 },
-      { colorId: 'marfil', colorName: 'Marfil', hex: '#FAF8F5', size: '4 años', stock: 3 },
+      { colorId: 'rojo', colorName: 'Rojo', hex: '#BA3B32', size: '8', stock: 2 },
+      { colorId: 'marfil', colorName: 'Marfil', hex: '#FAF8F5', size: '10', stock: 3 },
     ]};
-    expect(filterProducts([product], {size:'4 años',color:'rosa'})).toHaveLength(0);
-    expect(filterProducts([product], {size:'4 años',color:'marfil'})).toHaveLength(1);
-  });
-  it('filtra rangos de precios, búsquedas y colecciones de temporada', () => {
-    const found = filterProducts(PRODUCTS, { minPrice: 90, maxPrice: 120, collection: 'verano' });
-    expect(found.length).toBeGreaterThan(0);
-    expect(found.every(product => product.price >= 90 && product.price <= 120 && product.collections?.includes('verano'))).toBe(true);
-    expect(filterProducts(PRODUCTS, {query:'  FLORA  '})).toHaveLength(1);
-    expect(filterProducts(PRODUCTS, {minPrice: 999})).toHaveLength(0);
+    expect(filterProducts([product], {size:'10',color:'rojo'})).toHaveLength(0);
+    expect(filterProducts([product], {size:'10',color:'marfil'})).toHaveLength(1);
   });
   it('rechaza variantes inexistentes, agotadas y cantidades inválidas', () => {
     const product = PRODUCTS[0], variant = product.variants[0];
     for (const quantity of [0,-1,.5,999,NaN]) expect(validateQuantity(product,variant.colorId,variant.size,quantity)).toBe(false);
     expect(validateQuantity(product, variant.colorId, variant.size, 1)).toBe(true);
     expect(validateQuantity(product, 'inexistente', variant.size, 1)).toBe(false);
-    const empty = product.variants.find(item => item.stock === 0)!;
-    expect(validateQuantity(product,empty.colorId,empty.size,1)).toBe(false);
+    const unavailable: Product = {...product, variants: [{...variant, stock:0}]};
+    expect(validateQuantity(unavailable,variant.colorId,variant.size,1)).toBe(false);
   });
-  it('cada color tiene su fotografía infantil propia y las muestras están identificadas', () => {
+  it('muestra fotos reales de frente y espalda para cada modelo', () => {
+    const urls = new Set<string>();
     for (const product of PRODUCTS) {
-      expect(['bebes','ninas','ninos']).toContain(product.audience);
-      expect(product.demo).toBe(true);
-      const colorIds = [...new Set(product.variants.map(variant => variant.colorId))];
-      const urls = colorIds.map(colorId => {
-        const photos = imagesForColor(product,colorId);
-        expect(photos.length).toBeGreaterThan(0);
-        expect(photos.every(photo => photo.url.startsWith('/images/') && photo.colorId === colorId)).toBe(true);
-        return mainImageForColor(product,colorId)?.url;
-      });
-      expect(new Set(urls).size).toBe(colorIds.length);
+      const colorId = product.variants[0].colorId;
+      const photos = imagesForColor(product,colorId);
+      expect(photos.map(photo => photo.view)).toEqual(['full','detail']);
+      expect(mainImageForColor(product,colorId)?.url).toBe(photos[0].url);
+      expect(photos.every(photo => photo.url.startsWith('/images/productos/') && photo.colorId === colorId)).toBe(true);
+      photos.forEach(photo => urls.add(photo.url));
     }
+    expect(urls.size).toBe(16);
   });
 });
 
@@ -56,19 +60,18 @@ describe('pedido por WhatsApp', () => {
     expect(validateCustomer({ ...customer, fullName: '', address: '' })).toHaveProperty('fullName');
     expect(validateCustomer({ ...customer, fulfillment: 'pickup', address: '' })).toEqual({});
   });
-  it('genera todas las líneas y calcula el total desde precios actuales, ignorando un total desactualizado', () => {
+  it('incluye modelos, tallas, precios y consulta de disponibilidad', () => {
     const first=PRODUCTS[0], second=PRODUCTS[2];
-    const items=[{productId:first.id,colorId:first.variants[0].colorId,size:first.variants[0].size,quantity:2},{productId:second.id,colorId:second.variants[0].colorId,size:second.variants[0].size,quantity:1}];
+    const items=[{productId:first.id,colorId:first.variants[0].colorId,size:'6',quantity:2},{productId:second.id,colorId:second.variants[0].colorId,size:'10',quantity:1}];
     const message=buildOrderMessage({items,customer,total:0},PRODUCTS);
-    expect(message).toContain('Producto: Conjunto Nube');
-    expect(message).toContain('Producto: Vestido Flora');
-    expect(message).toContain('Talla: 0–3 m');
+    expect(message).toContain('Producto: Polo Oversize Athletic 67');
+    expect(message).toContain('Producto: Polo Oversize Space');
+    expect(message).toContain('Talla: 6');
     expect(message).toContain('Color: Marfil');
-    expect(message).toContain('Precio unitario: S/ 89.90');
-    expect(message).toContain('Subtotal: S/ 179.80');
-    expect(message).toContain('TOTAL: S/ 289.70');
-    expect(message).toContain('DEMOSTRACIÓN');
-    expect(message).toContain('costo de envío');
+    expect(message).toContain('Precio unitario: S/ 35.00');
+    expect(message).toContain('Subtotal: S/ 70.00');
+    expect(message).toContain('TOTAL: S/ 105.00');
+    expect(message).toContain('confirma la disponibilidad');
     const url=new URL(whatsappUrl(message));
     expect(url.hostname).toBe('wa.me');
     expect(url.pathname).toBe(`/${STORE_CONFIG.whatsappNumber}`);
@@ -83,4 +86,3 @@ describe('pedido por WhatsApp', () => {
     expect(()=>whatsappUrl('Hola','abc')).toThrow();
   });
 });
-

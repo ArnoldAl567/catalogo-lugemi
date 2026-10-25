@@ -1,71 +1,97 @@
 import { Category, Product } from '../models/store.models';
 
-// Colección ilustrativa: fotos generadas, precios y existencias referenciales.
-// Catálogo local activo mientras no se conecte un inventario real.
+// Modelos y fotografías proporcionados por Lugemi Kids en su ficha de productos.
+// La disponibilidad de cada talla se confirma al coordinar el pedido por WhatsApp.
 export const CATEGORIES: Category[] = [
-  ['recien-nacidos', 'Recién nacidos'], ['bodies', 'Bodies y conjuntos'],
-  ['vestidos', 'Vestidos'], ['ropa-comoda', 'Ropa cómoda'], ['accesorios', 'Accesorios'],
-  ['blusas', 'Polos y blusas'], ['camisetas', 'Polos y camisetas'], ['camisas', 'Camisas'],
-  ['pantalones', 'Pantalones y jeans'], ['shorts', 'Shorts'], ['joggers', 'Joggers'], ['conjuntos', 'Conjuntos'], ['abrigos', 'Casacas y chompas'],
-].map(([id, name]) => ({ id, name }));
-
-export const AUDIENCES = [{ id: 'bebes', name: 'Bebés', age: 'Sus primeros descubrimientos' }, { id: 'ninas', name: 'Niñas', age: 'Un mundo por imaginar' }, { id: 'ninos', name: 'Niños', age: 'Listos para cada aventura' }];
-export const COLLECTIONS = [{ id: 'nueva', name: 'Nueva colección' }, { id: 'ocasiones', name: 'Ocasiones especiales' }, { id: 'verano', name: 'Temporada de verano' }, { id: 'invierno', name: 'Temporada de invierno' }];
-const colors: Record<string, { name: string; hex: string }> = {
-  marfil: { name: 'Marfil', hex: '#F0EBDF' }, salvia: { name: 'Salvia', hex: '#C8D5C2' },
-  rosa: { name: 'Rosa empolvado', hex: '#E8CFCB' }, beige: { name: 'Beige', hex: '#D6C4AD' },
-  marino: { name: 'Azul marino', hex: '#182D4D' }, denim: { name: 'Denim', hex: '#718FA8' },
-  celeste: { name: 'Celeste', hex: '#D8E8EF' },
-};
-interface Seed { id: string; name: string; audience: Product['audience']; categoryId: string; price: number; colorIds: string[]; description: string; contents: string; collections: string[]; }
-const seeds: Seed[] = [
-  { id: 'conjunto-nube', name: 'Conjunto Nube', audience: 'bebes', categoryId: 'bodies', price: 89.90, colorIds: ['marfil', 'salvia'], description: 'Un pequeño conjunto de cárdigan y bombacho, con textura de punto y botones al frente. Para acompañar sus primeros descubrimientos.', contents: '1 cárdigan y 1 bombacho', collections: ['nueva', 'invierno'] },
-  { id: 'vestido-alma', name: 'Vestido Alma bebé', audience: 'bebes', categoryId: 'vestidos', price: 79.90, colorIds: ['rosa', 'marfil'], description: 'Vestido con cuello delicado y bombacho a juego. Una silueta encantadora para las primeras celebraciones.', contents: '1 vestido y 1 bombacho', collections: ['ocasiones', 'verano'] },
-  { id: 'vestido-flora', name: 'Vestido Flora', audience: 'ninas', categoryId: 'vestidos', price: 109.90, colorIds: ['rosa', 'beige'], description: 'Mangas cortas, cuello con un pequeño volante y falda fruncida. Un vestido para girar, jugar y guardar recuerdos.', contents: '1 vestido', collections: ['nueva', 'ocasiones', 'verano'] },
-  { id: 'conjunto-olivia', name: 'Conjunto Olivia', audience: 'ninas', categoryId: 'conjuntos', price: 119.90, colorIds: ['salvia', 'rosa'], description: 'Blusa marfil con mangas de volantes y pantalón de silueta amplia. Dos piezas para combinar a su manera.', contents: '1 blusa y 1 pantalón', collections: ['nueva', 'verano'] },
-  { id: 'conjunto-leo', name: 'Conjunto Leo', audience: 'ninos', categoryId: 'camisas', price: 99.90, colorIds: ['beige', 'celeste'], description: 'Camisa marfil de cuello redondo y short a juego con sus días de aventura. Un conjunto de líneas sencillas y detalles especiales.', contents: '1 camisa y 1 short', collections: ['nueva', 'ocasiones', 'verano'] },
-  { id: 'conjunto-milo', name: 'Conjunto Milo', audience: 'ninos', categoryId: 'camisetas', price: 89.90, colorIds: ['salvia', 'celeste'], description: 'Polo de manga corta y pantalón beige: un dúo relajado para pequeños exploradores y tardes de juego.', contents: '1 polo y 1 pantalón', collections: ['verano'] },
-  { id: 'casaca-bosque', name: 'Casaca Bosque', audience: 'ninos', categoryId: 'abrigos', price: 139.90, colorIds: ['salvia', 'beige'], description: 'Casaca infantil con capucha, bolsillos y cierre frontal. Una capa para acompañar sus paseos en días frescos.', contents: '1 casaca', collections: ['nueva', 'invierno'] },
-  { id: 'cardigan-luna', name: 'Cárdigan Luna', audience: 'ninas', categoryId: 'abrigos', price: 99.90, colorIds: ['rosa', 'marfil'], description: 'Cárdigan de punto con botones y cuello redondo. Un toque delicado sobre sus conjuntos favoritos.', contents: '1 cárdigan', collections: ['invierno'] },
-  {"id":"polo-pique-clasico","name":"Polo piqué clásico","audience":"ninos","categoryId":"camisetas","price":59.9,"colorIds":["marino"],"description":"Polo azul marino de manga corta, cuello con botones y un pequeño bordado de oso. Una prenda sencilla para combinar con jeans o shorts.","contents":"1 polo","collections":["nueva","verano"]},
-  {"id":"polo-pique-marfil","name":"Polo piqué rayas","audience":"ninos","categoryId":"camisetas","price":59.9,"colorIds":["marfil"],"description":"Polo marfil de manga corta con detalles azul marino en el cuello y los puños. Un diseño para acompañar sus días de juego.","contents":"1 polo","collections":["nueva","verano"]},
-  {"id":"short-denim-aventura","name":"Short denim","audience":"ninos","categoryId":"shorts","price":69.9,"colorIds":["denim"],"description":"Short infantil de jean azul con bolsillos cargo y cierre frontal. Una silueta cómoda para combinar con sus polos favoritos.","contents":"1 short","collections":["nueva","verano"]},
-  {"id":"short-drill-arena","name":"Short drill","audience":"ninos","categoryId":"shorts","price":69.9,"colorIds":["beige"],"description":"Short infantil de color arena con bolsillos laterales cargo y botón frontal. Un básico versátil para sus aventuras.","contents":"1 short","collections":["nueva","verano"]},
-  {"id":"jean-clasico","name":"Jean clásico","audience":"ninos","categoryId":"pantalones","price":89.9,"colorIds":["denim"],"description":"Pantalón infantil de jean azul de corte recto, con bolsillos y cierre frontal. Para combinar con polos, camisas o prendas de abrigo.","contents":"1 pantalón","collections":["nueva"]},
-  {"id":"jogger-explorador","name":"Jogger explorador","audience":"ninos","categoryId":"joggers","price":79.9,"colorIds":["marino"],"description":"Jogger azul marino con cintura ajustable, bolsillos cargo y puños elásticos en los tobillos.","contents":"1 jogger","collections":["nueva","invierno"]},
+  { id: 'oversize', name: 'Polos oversize' },
+  { id: 'raglan', name: 'Polos raglán' },
 ];
 
-const shopImages: Record<string, string> = {
-  "polo-pique-clasico": "/images/brand/tienda-polos.webp",
-  "polo-pique-marfil": "/images/brand/categoria-polos.webp",
-  "short-denim-aventura": "/images/brand/categoria-jeans.webp",
-  "short-drill-arena": "/images/brand/tienda-shorts.webp",
-  "jean-clasico": "/images/brand/tienda-jeans.webp",
-  "jogger-explorador": "/images/brand/tienda-joggers.webp",
-};
+export const AUDIENCES = [{ id: 'infantil', name: 'Infantil', age: 'Tallas 6 a 16' }];
 
-const productOnlyImages: Record<string, string> = {
-  'polo-pique-clasico': '/images/brand/producto-polo-marino.webp',
-  'polo-pique-marfil': '/images/brand/producto-polo-marfil.webp',
-  'short-denim-aventura': '/images/brand/producto-short-denim.webp',
-  'short-drill-arena': '/images/brand/producto-short-arena.webp',
-};
+const sizes = ['6', '8', '10', '12', '14', '16'];
 
-export const PRODUCTS: Product[] = seeds.map((seed, index) => {
-  const sizes = seed.audience === 'bebes' ? ['0–3 m', '3–6 m', '6–12 m', '12–18 m'] : ['2 años', '4 años', '6 años', '8 años'];
-  return {
-    ...seed, demo: true, badge: seed.collections.includes('nueva') ? 'Nuevo' : undefined,
-    material: 'Composición por confirmar con la tienda',
-    details: ['Modelo de demostración; fotografía ilustrativa', 'Confirma las medidas de la prenda antes de pedir', 'Sigue las instrucciones de cuidado de la etiqueta'],
-    featured: true, createdAt: seeds.length - index,
-    images: seed.colorIds.flatMap(colorId => ['full', 'detail'].map(view => ({
-      url: (view === 'full' ? productOnlyImages[seed.id] : undefined) ?? shopImages[seed.id] ?? `/images/${seed.id}-${colorId}.webp`, colorId, view: view as 'full' | 'detail',
-      alt: `${seed.name} en ${colors[colorId].name}${view === 'detail' ? productOnlyImages[seed.id] ? ', vista con modelo' : ', acercamiento de la misma fotografía' : ', vista completa de la prenda'}`,
-    }))),
-    variants: seed.colorIds.flatMap((colorId, colorIndex) => sizes.map((size, sizeIndex) => ({
-      colorId, colorName: colors[colorId].name, hex: colors[colorId].hex, size,
-      stock: sizeIndex === 3 && colorIndex === 1 ? 0 : 8 - sizeIndex,
-    }))),
-  };
-});
+interface CatalogModel {
+  id: string;
+  name: string;
+  categoryId: 'oversize' | 'raglan';
+  colorId: string;
+  colorName: string;
+  hex: string;
+  front: string;
+  back: string;
+  description: string;
+  material: string;
+  details: string[];
+}
 
+const models: CatalogModel[] = [
+  {
+    id: 'polo-oversize-athletic-67', name: 'Polo Oversize Athletic 67', categoryId: 'oversize',
+    colorId: 'marfil', colorName: 'Marfil', hex: '#F2EDE1', front: 'athletic-67-frente', back: 'athletic-67-espalda',
+    description: 'Polo oversize marfil con el número 67 al frente y gráfico Lugemi Athletic Club en la espalda. Su tela Jersey Pima es suave, ligera y fresca.',
+    material: 'Jersey Pima', details: ['Manga corta y silueta oversize', 'Estampados al frente y en la espalda', 'Costuras recubiertas para mayor durabilidad'],
+  },
+  {
+    id: 'polo-oversize-move', name: 'Polo Oversize Move', categoryId: 'oversize',
+    colorId: 'olivo', colorName: 'Verde olivo', hex: '#7A853E', front: 'move-frente', back: 'move-espalda',
+    description: 'Polo oversize verde olivo con estampado Move Your Way al frente y un detalle gráfico en la espalda. Confeccionado en Jersey Pima suave, ligero y fresco.',
+    material: 'Jersey Pima', details: ['Manga corta y silueta oversize', 'Estampados al frente y en la espalda', 'Costuras recubiertas para mayor durabilidad'],
+  },
+  {
+    id: 'polo-oversize-space', name: 'Polo Oversize Space', categoryId: 'oversize',
+    colorId: 'marino', colorName: 'Azul marino', hex: '#182D4D', front: 'space-frente', back: 'space-espalda',
+    description: 'Polo oversize azul marino con pequeño planeta al frente y un estampado espacial de astronauta en la espalda. Su tela Jersey Pima es suave, ligera y fresca.',
+    material: 'Jersey Pima', details: ['Manga corta y silueta oversize', 'Estampado espacial en la espalda', 'Costuras recubiertas para mayor durabilidad'],
+  },
+  {
+    id: 'polo-oversize-fire', name: 'Polo Oversize Fire', categoryId: 'oversize',
+    colorId: 'arena', colorName: 'Arena', hex: '#CCBDA7', front: 'fire-frente', back: 'fire-espalda',
+    description: 'Polo oversize color arena con estampado Find Your Fire al frente y detalle Lugemi en la espalda. Confeccionado en Jersey Pima suave, ligero y fresco.',
+    material: 'Jersey Pima', details: ['Manga corta y silueta oversize', 'Estampados al frente y en la espalda', 'Costuras recubiertas para mayor durabilidad'],
+  },
+  {
+    id: 'polo-raglan-lion', name: 'Polo raglán Lion', categoryId: 'raglan',
+    colorId: 'terracota', colorName: 'Marfil y terracota', hex: '#AF5135', front: 'lion-frente', back: 'lion-espalda',
+    description: 'Polo raglán de cuerpo marfil, mangas terracota y cuello azul marino. Su estampado frontal muestra un león con el mensaje Find Your Power. Tela Jersey Pima suave, ligera y fresca.',
+    material: 'Jersey Pima', details: ['Mangas cortas de corte raglán', 'Estampado de león al frente', 'Costuras recubiertas para mayor durabilidad'],
+  },
+  {
+    id: 'polo-raglan-skate', name: 'Polo raglán Skate', categoryId: 'raglan',
+    colorId: 'verde', colorName: 'Marfil y verde', hex: '#596851', front: 'skate-frente', back: 'skate-espalda',
+    description: 'Polo raglán de cuerpo marfil, mangas verdes y cuello mostaza. El frente lleva tres patinetas y el mensaje Good Days Ahead.',
+    material: 'Composición por confirmar con la tienda', details: ['Mangas cortas de corte raglán', 'Estampado de patinetas al frente', 'Espalda lisa'],
+  },
+  {
+    id: 'polo-raglan-focus-game-07', name: 'Polo raglán Focus Game 07', categoryId: 'raglan',
+    colorId: 'rojo', colorName: 'Blanco y rojo', hex: '#BA3B32', front: 'focus-game-07-frente', back: 'focus-game-07-espalda',
+    description: 'Polo raglán blanco con mangas rojas, cuello azul marino y estampado Focus Game 07 en el frente.',
+    material: 'Composición por confirmar con la tienda', details: ['Mangas cortas de corte raglán', 'Estampado Focus Game 07 al frente', 'Espalda lisa'],
+  },
+  {
+    id: 'polo-raglan-music', name: 'Polo raglán Music', categoryId: 'raglan',
+    colorId: 'azul', colorName: 'Blanco y azul marino', hex: '#1B2438', front: 'music-frente', back: 'music-espalda',
+    description: 'Polo raglán blanco con mangas azul marino, cuello terracota y estampado musical en el frente. Su tela Jersey Pima es suave, ligera y fresca.',
+    material: 'Jersey Pima', details: ['Mangas cortas de corte raglán', 'Estampado musical al frente', 'Costuras recubiertas para mayor durabilidad'],
+  },
+];
+
+export const PRODUCTS: Product[] = models.map((model, index) => ({
+  id: model.id,
+  name: model.name,
+  categoryId: model.categoryId,
+  audience: 'infantil',
+  price: 35,
+  description: model.description,
+  material: model.material,
+  details: model.details,
+  contents: '1 polo',
+  featured: true,
+  createdAt: models.length - index,
+  stockUnconfirmed: true,
+  images: [
+    { url: `/images/productos/${model.front}.jpeg`, colorId: model.colorId, view: 'full', alt: `${model.name}, vista frontal` },
+    { url: `/images/productos/${model.back}.jpeg`, colorId: model.colorId, view: 'detail', alt: `${model.name}, vista posterior` },
+  ],
+  variants: sizes.map(size => ({ colorId: model.colorId, colorName: model.colorName, hex: model.hex, size, stock: 99 })),
+}));

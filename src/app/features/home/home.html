@@ -12,12 +12,12 @@
 </section>
 
 <section class="shop-section" aria-labelledby="categories-title">
-  <div class="shop-heading"><h2 id="categories-title">Compra por categoría</h2><a routerLink="/catalogo">Ver todo <span aria-hidden="true">→</span></a></div>
+  <div class="shop-heading"><h2 id="categories-title">Explora por estilo</h2><a routerLink="/catalogo">Ver todos los polos <span aria-hidden="true">→</span></a></div>
   <div class="shop-category-grid">
     @for (category of categories; track category.category) {
       <a class="shop-category" routerLink="/catalogo" [queryParams]="{categoria: category.category}">
         <img [src]="category.image" [alt]="category.alt" width="800" height="800" loading="lazy" decoding="async">
-        <h3>{{ category.label }}</h3>
+        <h3>{{ category.label }} <span aria-hidden="true">→</span></h3>
       </a>
     }
   </div>
@@ -31,7 +31,7 @@
 </section>
 
 <section class="shop-section shop-featured" aria-labelledby="featured-title">
-  <div class="shop-heading"><h2 id="featured-title">Lo más elegido</h2><a routerLink="/catalogo">Ver todo <span aria-hidden="true">→</span></a></div>
+  <div class="shop-heading"><h2 id="featured-title">Los modelos Lugemi</h2><a routerLink="/catalogo">Ver catálogo <span aria-hidden="true">→</span></a></div>
   <div class="shop-product-grid">@for (product of featured(); track product.id) { <app-product-card [product]="product" [compact]="true" /> }</div>
-  <p class="demo-note">Colección de demostración · Fotografías ilustrativas, precios y existencias referenciales.</p>
+  <p class="collection-note">Fotos y precios de la colección Lugemi Kids. Confirma la disponibilidad de tu talla por WhatsApp.</p>
 </section>

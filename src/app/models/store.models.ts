@@ -1,4 +1,4 @@
-export type Audience = 'bebes' | 'ninas' | 'ninos';
+export type Audience = 'bebes' | 'ninas' | 'ninos' | 'infantil';
 export type ProductBadge = 'Nuevo' | 'Oferta' | 'Más vendido';
 
 export interface ProductImage { url: string; alt: string; colorId: string; view: 'full' | 'detail'; }
@@ -11,7 +11,7 @@ export interface Product {
   recommendedAge?: string; garmentLength?: string; chestMeasurement?: string;
   safetyStandard?: string; contents?: string;
   featured?: boolean; createdAt: number;
-  collections?: string[]; demo?: boolean;
+  collections?: string[]; stockUnconfirmed?: boolean;
 }
 export interface StoreSettings {
   name: string; whatsappNumber: string; email: string; location: string; instagramUrl: string; tiktokUrl?: string; facebookUrl: string; currency: 'PEN';

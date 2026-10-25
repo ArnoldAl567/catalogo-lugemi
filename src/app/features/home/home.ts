@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/catalog.service';
 import { SHOP_CATEGORIES } from '../../data/shop-navigation';
@@ -11,10 +11,7 @@ export class Home {
   readonly settings = this.catalog.settings;
 
   readonly categories = SHOP_CATEGORIES;
-  readonly featured = computed(() => {
-    const ids = ['polo-pique-clasico', 'polo-pique-marfil', 'short-denim-aventura', 'short-drill-arena'];
-    return ids.flatMap(id => { const product = this.catalog.getById(id); return product ? [product] : []; });
-  });
+  readonly featured = this.catalog.products;
   imageError(event: Event): void {
     const image = event.target as HTMLImageElement;
     if (!image.src.endsWith('image-fallback.svg')) {

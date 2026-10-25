@@ -10,7 +10,8 @@ describe('catálogo local', () => {
     try {
       const catalog = TestBed.inject(CatalogService);
       expect(catalog.products()).toHaveLength(PRODUCTS.length);
-      expect(catalog.getById('vestido-alma')?.name).toBe('Vestido Alma bebé');
+      expect(catalog.getById('polo-oversize-athletic-67')?.name).toBe('Polo Oversize Athletic 67');
+      expect(catalog.getById('vestido-alma')).toBeUndefined();
       expect(catalog.settings().whatsappNumber).toBe('51982226022');
       expect(fetchSpy).not.toHaveBeenCalled();
     } finally {

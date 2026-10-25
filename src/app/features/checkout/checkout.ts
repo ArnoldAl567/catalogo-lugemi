@@ -10,7 +10,6 @@ import { CartItem, Customer } from '../../models/store.models';
 export class Checkout {
   readonly cart = inject(CartService); readonly catalog = inject(CatalogService); readonly money = money;
   readonly errors = signal<Record<string,string>>({}); readonly submitError = signal('');
-  hasDemo(): boolean { return this.cart.items().some(item => this.productFor(item)?.demo); }
   customer: Customer = { fullName: '', phone: '', fulfillment: 'delivery', address: '', reference: '', notes: '' };
   productFor(item: CartItem) { return this.catalog.getById(item.productId); }
   colorFor(item: CartItem): string { return this.productFor(item)?.variants.find(variant => variant.colorId === item.colorId)?.colorName ?? item.colorId; }
