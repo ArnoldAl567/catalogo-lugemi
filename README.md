@@ -27,7 +27,7 @@ La composición de Skate y Focus Game 07 no figura en la ficha original y se mue
 
 - `src/app/data/catalog.data.ts` y `server/seed-products.json`: los ocho modelos iniciales.
 - `src/app/features/admin/`: panel administrativo.
-- `server/core.mjs` y `api/[...path].js`: API, contraseña, imágenes y PostgreSQL.
+- `server/core.mjs` y `api/`: API, contraseña, imágenes y PostgreSQL.
 - `public/images/productos/`: las 16 fotografías originales, una de frente y otra de espalda para cada modelo.
 - `src/app/features/home/`: portada y colección completa, con cuatro tarjetas por fila.
 - `src/app/features/catalog/` y `src/app/features/product/`: filtros y fichas.
