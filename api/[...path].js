@@ -1,2 +1,4 @@
-import { handle } from '../server/core.mjs';
-export default handle;
+module.exports = async function handler(req, res) {
+  const { handle } = await import('../server/core.mjs');
+  return handle(req, res);
+};
