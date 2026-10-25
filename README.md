@@ -7,7 +7,7 @@ Catálogo Angular de polos infantiles. La tienda muestra los ocho modelos del do
 - `npm start`: abre http://127.0.0.1:4301/ e inicia la API local en el puerto 4302
 - `npm run build`: genera `dist/catalogo-lugemi/browser`
 - `npm test -- --watch=false`: comprueba el catálogo, los filtros, el carrito y el mensaje de pedido
-- `node server/integration.test.mjs`: comprueba PostgreSQL, acceso administrativo y publicación de productos e imágenes con el servidor local en ejecución
+- `node server/integration.test.mjs`: comprueba PostgreSQL, acceso administrativo y publicación de productos e imágenes solo con una base local aislada
 
 La tienda lee los productos desde PostgreSQL mediante `/api/products`. Los ocho modelos incluidos en el código se muestran de inmediato mientras carga la API y sirven para inicializar una base vacía una sola vez. Sanity no participa en la tienda; la carpeta `studio/` permanece inactiva.
 

@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const origin = 'http://127.0.0.1:4302';
+const configuredUrl = readFileSync('.env.local', 'utf8').split(/\r?\n/).find(line => line.startsWith('DATABASE_URL='))?.slice('DATABASE_URL='.length).replace(/^"|"$/g, '');
+if (!configuredUrl || !['127.0.0.1', 'localhost'].includes(new URL(configuredUrl).hostname)) throw new Error('La prueba requiere una base PostgreSQL local aislada.');
 const password = readFileSync('.admin-credentials', 'utf8').trim();
 const request = (path, options = {}) => fetch(origin + path, options);
 const catalog = await (await request('/api/products')).json();

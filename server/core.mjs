@@ -8,7 +8,9 @@ const cookieName = 'lugemi_admin';
 
 function database() {
   if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL no configurada');
-  return pool ??= new Pool({ connectionString: process.env.DATABASE_URL, max: 3, ssl: process.env.DATABASE_URL.includes('localhost') || process.env.DATABASE_URL.includes('127.0.0.1') ? false : { rejectUnauthorized: false } });
+  const connection = new URL(process.env.DATABASE_URL);
+  if (connection.searchParams.get('sslmode') === 'require') connection.searchParams.set('sslmode', 'verify-full');
+  return pool ??= new Pool({ connectionString: connection.toString(), max: 3 });
 }
 
 async function ready() {
