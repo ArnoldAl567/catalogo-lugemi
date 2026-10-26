@@ -1,15 +1,22 @@
-<section class="hero">
-  <picture class="hero-visual">
-    <source media="(max-width: 700px)" srcset="/images/brand/lugemi-portada-movil-720.webp 720w, /images/brand/lugemi-portada-movil-1024.webp 1024w" sizes="100vw" width="1024" height="1536">
-    <img class="hero-photo" [src]="settings().heroImageUrl" srcset="/images/brand/lugemi-portada-aventura-960.webp 960w, /images/brand/lugemi-portada-aventura-1600.webp 1600w" sizes="(max-width: 1440px) 100vw, 1440px" [alt]="settings().heroImageAlt" width="1600" height="900" fetchpriority="high" decoding="async" (error)="imageError($event)">
-  </picture>
-  <div class="hero-copy">
-    <p class="hero-eyebrow">@for (line of settings().heroEyebrowLines; track line) { <span>{{ line }}</span> }</p>
-    <h1>@for (line of settings().heroTitleLines; track line) { <span>{{ line }}</span> }<em>{{ settings().heroAccent }}</em></h1>
-    <p class="hero-description">{{ settings().heroDescription }}</p>
-    <a class="button-dark" routerLink="/catalogo">Ver colección <span aria-hidden="true">→</span></a>
+<section class="hero" aria-label="Promociones de Lugemi Kids" (mouseenter)="pauseRotation()" (mouseleave)="resumeRotation()" (focusin)="pauseRotation()" (focusout)="resumeRotation()">
+  <div class="hero-slide" [class.is-active]="activeSlide() === 0" [attr.aria-hidden]="activeSlide() !== 0" [attr.inert]="activeSlide() === 0 ? null : ''">
+    <picture class="hero-visual">
+      <source media="(max-width: 700px)" srcset="/images/brand/lugemi-portada-movil-720.webp 720w, /images/brand/lugemi-portada-movil-1024.webp 1024w" sizes="100vw" width="1024" height="1536">
+      <img class="hero-photo" [src]="settings().heroImageUrl" srcset="/images/brand/lugemi-portada-aventura-960.webp 960w, /images/brand/lugemi-portada-aventura-1600.webp 1600w" sizes="(max-width: 1440px) 100vw, 1440px" [alt]="settings().heroImageAlt" width="1600" height="900" fetchpriority="high" decoding="async" (error)="imageError($event)">
+    </picture>
+    <div class="hero-copy">
+      <p class="hero-eyebrow">@for (line of settings().heroEyebrowLines; track line) { <span>{{ line }}</span> }</p>
+      <h1>@for (line of settings().heroTitleLines; track line) { <span>{{ line }}</span> }<em>{{ settings().heroAccent }}</em></h1>
+      <p class="hero-description">{{ settings().heroDescription }}</p>
+      <a class="button-dark" routerLink="/catalogo">Ver colección <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+  <div class="hero-slide hero-slide--express" [class.is-active]="activeSlide() === 1" [attr.aria-hidden]="activeSlide() !== 1" [attr.inert]="activeSlide() === 1 ? null : ''">
+    <div class="hero-express-visual"><img src="/images/brand/lugemi-envios-express.png" alt="Otto con un paquete Lugemi Kids. Envíos express a Lima y todo el Perú; los pedidos en Lima Metropolitana realizados antes de las 3 p. m. pueden despacharse el mismo día, sujeto a confirmación y disponibilidad." width="1600" height="800" decoding="async"></div>
+    <div class="hero-express-mobile-copy"><p class="hero-eyebrow">Un mundo por explorar</p><h2>¡Envíos <em>express!</em></h2><p>Consulta la disponibilidad y el tiempo de entrega de tu pedido.</p><a class="button-dark" [href]="'https://wa.me/' + settings().whatsappNumber" target="_blank" rel="noopener noreferrer">Consultar envío <span aria-hidden="true">→</span></a></div>
   </div>
 </section>
+<div class="hero-controls" role="group" aria-label="Controles de portada" (mouseenter)="pauseRotation()" (mouseleave)="resumeRotation()" (focusin)="pauseRotation()" (focusout)="resumeRotation()"><button type="button" aria-label="Mostrar portada anterior" (click)="selectSlide(activeSlide() - 1)">‹</button><button type="button" class="hero-dot" [class.is-active]="activeSlide() === 0" aria-label="Mostrar portada de la colección" [attr.aria-current]="activeSlide() === 0 ? 'true' : null" (click)="selectSlide(0)"></button><button type="button" class="hero-dot" [class.is-active]="activeSlide() === 1" aria-label="Mostrar portada de envíos express" [attr.aria-current]="activeSlide() === 1 ? 'true' : null" (click)="selectSlide(1)"></button><button type="button" aria-label="Mostrar portada siguiente" (click)="selectSlide(activeSlide() + 1)">›</button></div>
 
 <section class="shop-section" aria-labelledby="categories-title">
   <div class="shop-heading"><h2 id="categories-title">Explora por estilo</h2><a routerLink="/catalogo">Ver todos los polos <span aria-hidden="true">→</span></a></div>

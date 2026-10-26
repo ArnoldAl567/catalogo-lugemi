@@ -11,6 +11,35 @@
   overflow: hidden;
   background: #F3E7D5;
 }
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .7s ease, visibility .7s ease;
+}
+.hero-slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+.hero-slide--express { background: #EBDCC6; }
+.hero-express-visual { position: absolute; inset: 0; overflow: hidden; }
+.hero-express-visual::before {
+  content: '';
+  position: absolute;
+  inset: -24px;
+  background: url('/images/brand/lugemi-envios-express.png') center / cover;
+  filter: blur(22px);
+  opacity: .65;
+}
+.hero-express-visual img { position: relative; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.hero-express-mobile-copy { display: none; }
+.hero-controls { width: min(100%, 1440px); min-height: 48px; margin-inline: auto; display: flex; align-items: center; justify-content: center; gap: 8px; background: #F3E7D5; }
+.hero-controls button { width: 44px; height: 44px; padding: 0; border: 0; display: grid; place-items: center; background: transparent; color: #182D4D; font-size: 27px; line-height: 1; }
+.hero-controls .hero-dot { width: 44px; height: 44px; }
+.hero-dot::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #A9A093; transition: width .2s ease, background .2s ease; }
+.hero-dot.is-active::after { width: 22px; border-radius: 8px; background: #A47939; }
 .hero-visual {
   position: absolute;
   inset: 0;
@@ -83,6 +112,16 @@
 }
 @media (max-width: 700px) {
   .hero { display: flex; align-items: center; aspect-ratio: 2 / 3; padding: 0; }
+  .hero-slide--express { flex-direction: column; align-items: stretch; justify-content: flex-start; background: #F3E7D5; }
+  .hero-express-visual { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 2 / 1; flex: none; }
+  .hero-express-visual::before { display: none; }
+  .hero-express-visual img { object-fit: contain; }
+  .hero-express-mobile-copy { min-height: 0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: clamp(10px, 3cqw, 20px); padding: 5cqw 7cqw 8cqw; color: #082b47; }
+  .hero-express-mobile-copy .hero-eyebrow { font-size: clamp(11px, 2.8cqw, 17px); }
+  .hero-express-mobile-copy h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(31px, 8.2cqw, 55px); font-weight: 500; line-height: 1.05; letter-spacing: -.045em; }
+  .hero-express-mobile-copy h2 em { color: #A16D2B; }
+  .hero-express-mobile-copy p:not(.hero-eyebrow) { max-width: 27rem; margin: 0; font-size: clamp(14px, 3.4cqw, 20px); line-height: 1.4; }
+  .hero-express-mobile-copy .button-dark { margin: 0; }
   .hero-visual { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
   .hero-photo { width: 100%; height: 100%; object-fit: contain; object-position: center; }
   .hero-visual::after { background: linear-gradient(90deg, #F3E7D5f5 0%, #F3E7D5c9 14%, #F3E7D578 28%, #F3E7D524 37%, transparent 44%); }
@@ -93,6 +132,7 @@
   .hero .button-dark { margin: 0; min-height: 48px; padding: 12px; gap: 10px; font-size: clamp(12px, 2.5cqw, 16px); letter-spacing: .04em; }
   .hero .button-dark span { font-size: 20px; }
 }
+@media (prefers-reduced-motion: reduce) { .hero-slide { transition: none; } .hero-dot::after { transition: none; } }
 
 .shop-section, .shop-benefits { width: min(calc(100% - 48px), 1440px); margin-inline: auto; }
 .shop-section { padding-block: 26px; }
