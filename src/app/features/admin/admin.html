@@ -3,7 +3,7 @@
   @if (!configured()) { <p class="notice error" role="alert">El panel necesita una conexión PostgreSQL y sus claves de acceso. La tienda sigue mostrando el catálogo actual.</p> }
   @if (message()) { <p class="notice" role="status">{{ message() }}</p> }
   @if (!authenticated()) {
-    <form class="login-card" (ngSubmit)="login()"><h2>Acceso privado</h2><label for="admin-password">Contraseña</label><input id="admin-password" class="field" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" required><button class="button-dark" type="submit" [disabled]="busy() || !password">Ingresar</button></form>
+    <form class="login-card" (ngSubmit)="login()"><h2>Acceso privado</h2><label for="admin-username">Usuario</label><input id="admin-username" class="field" type="text" name="username" [(ngModel)]="username" autocomplete="username" placeholder="admin" required maxlength="80"><label for="admin-password">Contraseña</label><input id="admin-password" class="field" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" required><button class="button-dark" type="submit" [disabled]="busy() || !username.trim() || !password">Ingresar</button></form>
   } @else {
     <section class="category-manager" aria-labelledby="admin-categories-title">
       <div><h2 id="admin-categories-title">Categorías del catálogo</h2><p>Activa las categorías que deseas mostrar en el menú y en los filtros de la tienda.</p></div>

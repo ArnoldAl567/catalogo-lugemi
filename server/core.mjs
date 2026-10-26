@@ -84,10 +84,13 @@ function sameOrigin(req) {
 }
 function passwordMatches(password) {
   const [salt, hash] = (process.env.ADMIN_PASSWORD_HASH ?? '').split(':');
-  if (!salt || !hash || !password) return false;
+  if (!salt || !hash || typeof password !== 'string' || !password) return false;
   const expected = Buffer.from(hash, 'hex');
   const actual = scryptSync(password, salt, expected.length);
   return expected.length === actual.length && timingSafeEqual(expected, actual);
+}
+function usernameMatches(username) {
+  return typeof username === 'string' && username.trim().toLowerCase() === (process.env.ADMIN_USERNAME?.trim() || 'admin').toLowerCase();
 }
 async function loginAllowed(req) {
   const key = sign(String(req.headers['x-forwarded-for'] ?? req.socket?.remoteAddress ?? 'unknown').split(',')[0]);
@@ -143,7 +146,8 @@ export async function handle(req, res) {
       const attempt = await loginAllowed(req);
       if (!attempt.allowed) return json(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
       const input = await body(req, 1000);
-      if (!passwordMatches(input.password) || !process.env.SESSION_SECRET) { await failedLogin(attempt.key); return json(res, 401, { error: 'Contraseña incorrecta' }); }
+      const validPassword = passwordMatches(input.password);
+      if (!usernameMatches(input.username) || !validPassword || !process.env.SESSION_SECRET) { await failedLogin(attempt.key); return json(res, 401, { error: 'Usuario o contraseña incorrectos' }); }
       await database().query('DELETE FROM admin_login_attempts WHERE client_key = $1', [attempt.key]);
       const expiry = String(Date.now() + 12 * 60 * 60 * 1000);
       res.setHeader('Set-Cookie', `${cookieName}=${expiry}.${sign(expiry)}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=43200${req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : ''}`);

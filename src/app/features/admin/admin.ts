@@ -31,6 +31,7 @@ export class Admin {
   readonly busy = signal(false);
   readonly message = signal('');
   readonly editing = signal<ProductDraft | null>(null);
+  username = '';
   password = '';
   private original: Product | undefined;
 
@@ -48,7 +49,7 @@ export class Admin {
   async login(): Promise<void> {
     this.busy.set(true); this.message.set('');
     try {
-      const response = await fetch('/api/admin/login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: this.password }) });
+      const response = await fetch('/api/admin/login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: this.username.trim(), password: this.password }) });
       if (!response.ok) throw new Error((await response.json()).error ?? 'No se pudo ingresar');
       this.password = '';
       this.authenticated.set(true);
