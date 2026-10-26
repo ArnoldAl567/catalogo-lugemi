@@ -14,13 +14,15 @@ export class Home implements OnInit, OnDestroy {
   readonly featured = this.catalog.products;
   readonly activeSlide = signal(0);
   private timer?: ReturnType<typeof setInterval>;
+  private resumeTimer?: ReturnType<typeof setTimeout>;
   private manualSelection = false;
+  private swipeStart: { x: number; y: number } | null = null;
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.startRotation();
   }
 
-  ngOnDestroy(): void { this.stopRotation(); }
+  ngOnDestroy(): void { this.stopRotation(); if (this.resumeTimer) clearTimeout(this.resumeTimer); }
 
   @HostListener('document:visibilitychange') onVisibilityChange(): void {
     if (document.hidden) this.stopRotation();
@@ -40,6 +42,8 @@ export class Home implements OnInit, OnDestroy {
 
   pauseRotation(): void { this.stopRotation(); }
   resumeRotation(): void {
+    if (this.resumeTimer) clearTimeout(this.resumeTimer);
+    this.resumeTimer = undefined;
     this.manualSelection = false;
     if (typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.startRotation();
   }
@@ -48,7 +52,23 @@ export class Home implements OnInit, OnDestroy {
     this.manualSelection = true;
     this.stopRotation();
     this.activeSlide.set((slide + 2) % 2);
+    if (this.resumeTimer) clearTimeout(this.resumeTimer);
+    this.resumeTimer = setTimeout(() => this.resumeRotation(), 12000);
   }
+  onTouchStart(event: TouchEvent): void {
+    if ((event.target as Element).closest('a, button')) { this.swipeStart = null; return; }
+    const touch = event.changedTouches[0];
+    this.swipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }
+  onTouchEnd(event: TouchEvent): void {
+    if (!this.swipeStart) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - this.swipeStart.x;
+    const dy = touch.clientY - this.swipeStart.y;
+    this.swipeStart = null;
+    if (Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy) * 1.3) this.selectSlide(this.activeSlide() + (dx < 0 ? 1 : -1));
+  }
+  onTouchCancel(): void { this.swipeStart = null; }
   imageError(event: Event): void {
     const image = event.target as HTMLImageElement;
     if (!image.src.endsWith('image-fallback.svg')) {
