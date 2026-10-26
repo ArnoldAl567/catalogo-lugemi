@@ -5,15 +5,22 @@
   @if (!authenticated()) {
     <form class="login-card" (ngSubmit)="login()"><h2>Acceso privado</h2><label for="admin-password">Contraseña</label><input id="admin-password" class="field" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" required><button class="button-dark" type="submit" [disabled]="busy() || !password">Ingresar</button></form>
   } @else {
+    <section class="category-manager" aria-labelledby="admin-categories-title">
+      <div><h2 id="admin-categories-title">Categorías del catálogo</h2><p>Activa las categorías que deseas mostrar en el menú y en los filtros de la tienda.</p></div>
+      <div class="category-manager-grid">@for (item of menuCategories; track item.id) {
+        <label class="category-visibility"><span>{{ item.label }}</span><span class="category-state">{{ catalog.isCategoryEnabled(item.id) ? 'Visible' : 'Oculta' }}</span><input type="checkbox" [checked]="catalog.isCategoryEnabled(item.id)" [disabled]="busy()" [attr.aria-label]="'Mostrar ' + item.label + ' en el catálogo'" (change)="setCategoryEnabled(item.id, $any($event.target).checked)"></label>
+      }</div>
+    </section>
     <div class="admin-toolbar"><h2>Productos <span>{{ catalog.products().length }}</span></h2><button class="button-dark" type="button" (click)="create()">+ Nuevo producto</button></div>
     @if (!editing()) {
       <div class="product-list">@for (product of catalog.products(); track product.id) {
-        <article class="product-row"><img [src]="product.images[0]?.url || '/image-fallback.svg'" [alt]="product.name"><div><h3>{{ product.name }}</h3><p>{{ categoryLabel(product.categoryId) }} · {{ product.variants.length }} tallas y colores · S/ {{ product.price.toFixed(2) }}</p></div><div class="row-actions"><button type="button" (click)="edit(product)">Editar</button><button type="button" class="danger" (click)="remove(product)" [disabled]="busy()">Quitar</button></div></article>
+        <article class="product-row"><img [src]="product.images[0]?.url || '/image-fallback.svg'" [alt]="product.name"><div><h3>{{ product.name }}</h3><p>{{ categoriesForProduct(product) }} · {{ product.variants.length }} tallas y colores · S/ {{ product.price.toFixed(2) }}</p></div><div class="row-actions"><button type="button" (click)="edit(product)">Editar</button><button type="button" class="danger" (click)="remove(product)" [disabled]="busy()">Quitar</button></div></article>
       }</div>
     } @else {
       @let d = editing()!;
       <form class="editor" (ngSubmit)="save()"><div class="editor-title"><h2>{{ d.id ? 'Editar producto' : 'Nuevo producto' }}</h2><button type="button" class="admin-link" (click)="cancel()">Cancelar</button></div>
-        <div class="field-grid"><label>Nombre<input class="field" name="name" [(ngModel)]="d.name" required maxlength="120"></label><label>Categoría<select class="field" name="category" [(ngModel)]="d.categoryId"><option value="oversize">Polo oversize (anterior)</option><option value="raglan">Polo raglán (anterior)</option>@for (item of menuCategories; track item.id) { <option [value]="item.id">{{ item.label }}</option> }</select></label><label>Precio en soles<input class="field" type="number" min="0" step="0.01" name="price" [(ngModel)]="d.price" required></label><label>Material<input class="field" name="material" [(ngModel)]="d.material"></label></div>
+        <div class="field-grid"><label>Nombre<input class="field" name="name" [(ngModel)]="d.name" required maxlength="120"></label><label>Precio en soles<input class="field" type="number" min="0" step="0.01" name="price" [(ngModel)]="d.price" required></label><label>Material<input class="field" name="material" [(ngModel)]="d.material"></label></div>
+        <fieldset class="product-categories"><legend>Categorías de esta prenda</legend><p>Selecciona una o más categorías. La prenda aparecerá en cada una de ellas.</p><div class="product-categories-grid">@for (item of menuCategories; track item.id) { <label><input type="checkbox" [checked]="d.categoryIds.includes(item.id)" (change)="toggleDraftCategory(item.id, $any($event.target).checked)"><span>{{ item.label }}</span></label> }</div></fieldset>
         <label>Descripción<textarea class="field" rows="4" name="description" [(ngModel)]="d.description" required></textarea></label><label>Detalles <small>(uno por línea)</small><textarea class="field" rows="3" name="details" [(ngModel)]="d.details"></textarea></label>
         <div class="options"><label><input type="checkbox" name="featured" [(ngModel)]="d.featured"> Destacar en inicio</label><label><input type="checkbox" name="stockUnconfirmed" [(ngModel)]="d.stockUnconfirmed"> Confirmar disponibilidad por WhatsApp</label></div>
         <div class="colors-heading"><h3>Colores, tallas e imágenes</h3><button type="button" class="admin-link" (click)="addColor()">+ Agregar color</button></div>

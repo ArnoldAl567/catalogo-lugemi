@@ -32,6 +32,12 @@ describe('catálogo Lugemi Kids', () => {
     expect(filterProducts([...PRODUCTS, newProduct], { category: 'sudaderas-nino' }).map(product => product.id)).toEqual(['sudadera-prueba']);
     expect(filterProducts([...PRODUCTS, saleProduct], { category: 'ofertas' }).map(product => product.id)).toEqual(['oferta-prueba']);
   });
+  it('muestra una prenda en cada categoría asignada', () => {
+    const product: Product = { ...PRODUCTS[0], categoryIds: ['polos-nino', 'ofertas'] };
+    expect(filterProducts([product], { category: 'polos-nino' })).toHaveLength(1);
+    expect(filterProducts([product], { category: 'ofertas' })).toHaveLength(1);
+    expect(filterProducts([product], { category: 'accesorios' })).toHaveLength(0);
+  });
   it('solo acepta talla y color disponibles en la misma variante', () => {
     const product: Product = {...PRODUCTS[0], variants: [
       { colorId: 'rojo', colorName: 'Rojo', hex: '#BA3B32', size: '8', stock: 2 },

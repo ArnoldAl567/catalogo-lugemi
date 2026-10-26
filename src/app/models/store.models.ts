@@ -5,7 +5,7 @@ export interface ProductImage { url: string; alt: string; colorId: string; view:
 export interface ProductVariant { colorId: string; colorName: string; hex: string; size: string; stock: number; }
 export interface Category { id: string; name: string; }
 export interface Product {
-  id: string; name: string; categoryId: string; audience: Audience; price: number;
+  id: string; name: string; categoryId: string; categoryIds?: string[]; audience: Audience; price: number;
   previousPrice?: number; badge?: ProductBadge; description: string; material: string;
   details: string[]; images: ProductImage[]; variants: ProductVariant[];
   recommendedAge?: string; garmentLength?: string; chestMeasurement?: string;

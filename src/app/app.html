@@ -14,7 +14,7 @@
       <div class="category-menu-inner">
         <div class="category-menu-heading"><span class="eyebrow">Explora Lugemi Kids</span><h2 class="font-editorial">Compra por categoría</h2></div>
         <div class="category-menu-grid">
-          @for (item of menuCategories; track item.id) {
+          @for (item of menuCategories(); track item.id) {
             <a class="category-menu-item" routerLink="/catalogo" [queryParams]="{categoria:item.id}" (click)="closeNavigation()">
               <span class="category-menu-picture" [style.--art-x]="item.x" [style.--art-y]="item.y" aria-hidden="true"></span>
               <span class="category-menu-label">{{ item.label }}</span>
@@ -30,7 +30,7 @@
 <footer class="site-footer">
   <div class="page-shell footer-main">
     <div class="footer-brand"><a class="footer-logo" routerLink="/" aria-label="Lugemi Kids, ir al inicio"><img src="/images/brand/lugemi-kids-logo.png" alt="Lugemi Kids · Imagina, crece, explora" width="1080" height="1080" loading="lazy"></a><p>Un pequeño mundo de grandes aventuras. Ropa y detalles para acompañar a quienes nunca dejan de imaginar.</p><span class="eyebrow">{{ config().location }}</span></div>
-    <div><h3>Explora</h3><a routerLink="/catalogo">Todos los polos</a><a routerLink="/catalogo" [queryParams]="{categoria:'oversize'}">Polos oversize</a><a routerLink="/catalogo" [queryParams]="{categoria:'raglan'}">Polos raglán</a></div>
+    <div><h3>Explora</h3><a routerLink="/catalogo">Toda la colección</a>@for (item of menuCategories(); track item.id) { <a routerLink="/catalogo" [queryParams]="{categoria:item.id}">{{ item.label }}</a> }</div>
     <div><h3>Ayuda</h3><a routerLink="/contacto">Contacto</a><a routerLink="/contacto" fragment="preguntas">Preguntas frecuentes</a><a routerLink="/carrito">Mi carrito</a><a routerLink="/checkout">Cómo comprar</a></div>
     <div><h3>Conecta</h3>@if (config().instagramUrl) { <a [href]="config().instagramUrl" target="_blank" rel="noopener noreferrer">Instagram ↗</a> }@if (config().tiktokUrl) { <a [href]="config().tiktokUrl" target="_blank" rel="noopener noreferrer">TikTok ↗</a> }<a [href]="config().facebookUrl" target="_blank" rel="noopener noreferrer">Facebook ↗</a>@if (config().email) { <a [href]="'mailto:' + config().email">{{ config().email }}</a> }<span>Atención personalizada</span></div>
   </div><div class="page-shell footer-bottom"><span>© 2026 {{ config().name }}. Todos los derechos reservados.</span><span>La magia está en los pequeños momentos.</span></div>

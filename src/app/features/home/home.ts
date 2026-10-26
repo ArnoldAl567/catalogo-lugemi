@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/catalog.service';
 import { SHOP_CATEGORIES } from '../../data/shop-navigation';
@@ -10,7 +10,7 @@ export class Home implements OnInit, OnDestroy {
   readonly catalog = inject(CatalogService);
   readonly settings = this.catalog.settings;
 
-  readonly categories = SHOP_CATEGORIES;
+  readonly categories = computed(() => this.catalog.isCategoryEnabled('polos-nino') ? SHOP_CATEGORIES : []);
   readonly featured = this.catalog.products;
   readonly activeSlide = signal(0);
   private timer?: ReturnType<typeof setInterval>;

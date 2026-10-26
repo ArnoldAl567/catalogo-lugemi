@@ -18,17 +18,17 @@
 </section>
 <div class="hero-controls" role="group" aria-label="Controles de portada" (mouseenter)="pauseRotation()" (mouseleave)="resumeRotation()" (focusin)="pauseRotation()" (focusout)="resumeRotation()"><button type="button" aria-label="Mostrar portada anterior" (click)="selectSlide(activeSlide() - 1)">‹</button><button type="button" class="hero-dot" [class.is-active]="activeSlide() === 0" aria-label="Mostrar portada de la colección" [attr.aria-current]="activeSlide() === 0 ? 'true' : null" (click)="selectSlide(0)"></button><button type="button" class="hero-dot" [class.is-active]="activeSlide() === 1" aria-label="Mostrar portada de envíos express" [attr.aria-current]="activeSlide() === 1 ? 'true' : null" (click)="selectSlide(1)"></button><button type="button" aria-label="Mostrar portada siguiente" (click)="selectSlide(activeSlide() + 1)">›</button></div>
 
-<section class="shop-section" aria-labelledby="categories-title">
+@if (categories().length) { <section class="shop-section" aria-labelledby="categories-title">
   <div class="shop-heading"><h2 id="categories-title">Explora por estilo</h2><a routerLink="/catalogo">Ver todos los polos <span aria-hidden="true">→</span></a></div>
   <div class="shop-category-grid">
-    @for (category of categories; track category.category) {
+    @for (category of categories(); track category.category) {
       <a class="shop-category" routerLink="/catalogo" [queryParams]="{categoria: category.category}">
         <img [src]="category.image" [alt]="category.alt" width="800" height="800" loading="lazy" decoding="async">
         <h3>{{ category.label }} <span aria-hidden="true">→</span></h3>
       </a>
     }
   </div>
-</section>
+</section> }
 
 <section class="shop-benefits" aria-label="Comprar en Lugemi Kids">
   <div><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 28V16m0 8-6-6m6 6 6-6M8 24C0 23 2 13 7 12 5 4 14 1 17 7c6-4 12 1 10 7 7 6 1 13-11 11Z"/></svg><p>Calidad en<br>cada detalle</p></div>

@@ -5,6 +5,17 @@ import seedProducts from './seed-products.json' with { type: 'json' };
 let pool;
 let initialized;
 const cookieName = 'lugemi_admin';
+const categoryIds = ['polos-nino', 'polos-nina', 'sudaderas-nino', 'pantalones-nino', 'casacas-nina', 'joggers-basicos', 'accesorios', 'ofertas', 'conjuntos', 'short-bermudas'];
+const categoryIdSet = new Set(categoryIds);
+
+async function enabledCategories() {
+  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'enabled_categories'");
+  if (!result.rowCount) return categoryIds;
+  try {
+    const ids = JSON.parse(result.rows[0].value);
+    return Array.isArray(ids) ? categoryIds.filter(id => ids.includes(id)) : categoryIds;
+  } catch { return categoryIds; }
+}
 
 function database() {
   if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL no configurada');
@@ -93,6 +104,7 @@ function validProduct(p) {
   return p && typeof p.id === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.id) && p.id.length <= 100 &&
     typeof p.name === 'string' && p.name.trim().length > 0 && p.name.length <= 120 &&
     typeof p.categoryId === 'string' && p.categoryId.length <= 60 &&
+    (p.categoryIds === undefined || (Array.isArray(p.categoryIds) && p.categoryIds.length > 0 && p.categoryIds.length <= categoryIds.length && new Set(p.categoryIds).size === p.categoryIds.length && p.categoryIds.every(id => categoryIdSet.has(id)))) &&
     Number.isFinite(p.price) && p.price >= 0 &&
     typeof p.description === 'string' && typeof p.material === 'string' &&
     Array.isArray(p.details) && p.details.every(x => typeof x === 'string') &&
@@ -120,6 +132,10 @@ export async function handle(req, res) {
       await ready();
       const result = await database().query('SELECT data FROM catalog_products ORDER BY (data->>\'createdAt\')::bigint DESC, id');
       return json(res, 200, { products: result.rows.map(row => row.data) });
+    }
+    if (method === 'GET' && path === '/api/categories') {
+      await ready();
+      return json(res, 200, { enabledIds: await enabledCategories() });
     }
     if (method === 'POST' && path === '/api/admin/login') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
@@ -159,6 +175,14 @@ export async function handle(req, res) {
         if (!validProduct(product)) return json(res, 400, { error: 'Revisa los datos del producto, colores y tallas' });
         await database().query('INSERT INTO catalog_products (id, data) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = now()', [product.id, product]);
         return json(res, 200, { product });
+      }
+      if (method === 'PUT' && path === '/api/admin/categories') {
+        const input = await body(req, 2000);
+        const ids = input.enabledIds;
+        if (!Array.isArray(ids) || ids.length > categoryIds.length || new Set(ids).size !== ids.length || !ids.every(id => categoryIdSet.has(id))) return json(res, 400, { error: 'Lista de categorías no válida' });
+        const enabledIds = categoryIds.filter(id => ids.includes(id));
+        await database().query("INSERT INTO catalog_meta (key, value) VALUES ('enabled_categories', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(enabledIds)]);
+        return json(res, 200, { enabledIds });
       }
       if (method === 'DELETE' && path.startsWith('/api/admin/products/')) {
         const id = decodeURIComponent(path.slice('/api/admin/products/'.length));

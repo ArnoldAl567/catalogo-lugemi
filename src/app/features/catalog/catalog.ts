@@ -16,9 +16,11 @@ export class Catalog {
   readonly filtersOpen = signal(false);
   readonly sizes = computed(() => [...new Set(this.catalog.products().flatMap(product => product.variants.map(variant => variant.size)))]);
   readonly colors = computed(() => [...new Map(this.catalog.products().flatMap(product => product.variants.map(variant => [variant.colorId, {id: variant.colorId, name: variant.colorName, hex: variant.hex}] as const))).values()]);
-  readonly categories = MENU_CATEGORIES;
+  readonly categories = this.catalog.menuCategories;
   readonly categoryTitle = computed(() => MENU_CATEGORIES.find(item => item.id === this.category())?.label ?? (this.category() === 'oversize' ? 'Polos oversize' : this.category() === 'raglan' ? 'Polos raglán' : 'Toda la colección'));
+  readonly categoryUnavailable = computed(() => !!this.category() && (MENU_CATEGORIES.some(item => item.id === this.category()) && !this.catalog.isCategoryEnabled(this.category()) || ['oversize', 'raglan'].includes(this.category()) && !this.catalog.isCategoryEnabled('polos-nino')));
   readonly results = computed(() => {
+    if (this.categoryUnavailable()) return [];
     return filterProducts(this.catalog.products(), { query: this.query(), category: this.category(), size: this.size(), color: this.color(), minPrice: this.minPrice(), maxPrice: this.maxPrice(), sort: this.sort() });
   });
 
