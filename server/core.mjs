@@ -1,4 +1,4 @@
-import { createHmac, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
+import { createHmac, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import { Pool } from 'pg';
 import seedProducts from './seed-products.json' with { type: 'json' };
 
@@ -67,13 +67,17 @@ async function body(req, limit = 3_000_000) {
 }
 
 function sign(value) { return createHmac('sha256', process.env.SESSION_SECRET ?? '').update(value).digest('hex'); }
-function admin(req) {
+async function passwordHash() {
+  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'admin_password_hash'");
+  return result.rows[0]?.value ?? process.env.ADMIN_PASSWORD_HASH ?? '';
+}
+async function admin(req) {
   if (!process.env.SESSION_SECRET) return false;
   const token = req.headers.cookie?.split(';').map(part => part.trim()).find(part => part.startsWith(`${cookieName}=`))?.slice(cookieName.length + 1);
   if (!token) return false;
   const [expiry, signature] = token.split('.');
   if (!expiry || !signature || !/^\d+$/.test(expiry) || Number(expiry) < Date.now()) return false;
-  const expected = Buffer.from(sign(expiry), 'hex');
+  const expected = Buffer.from(sign(`${expiry}:${await passwordHash()}`), 'hex');
   const actual = Buffer.from(signature, 'hex');
   return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
@@ -82,8 +86,8 @@ function sameOrigin(req) {
   if (!origin) return false;
   try { return new URL(origin).host === req.headers.host; } catch { return false; }
 }
-function passwordMatches(password) {
-  const [salt, hash] = (process.env.ADMIN_PASSWORD_HASH ?? '').split(':');
+function passwordMatches(password, storedHash) {
+  const [salt, hash] = storedHash.split(':');
   if (!salt || !hash || typeof password !== 'string' || !password) return false;
   const expected = Buffer.from(hash, 'hex');
   const actual = scryptSync(password, salt, expected.length);
@@ -146,23 +150,49 @@ export async function handle(req, res) {
       const attempt = await loginAllowed(req);
       if (!attempt.allowed) return json(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
       const input = await body(req, 1000);
-      const validPassword = passwordMatches(input.password);
+      const currentHash = await passwordHash();
+      const validPassword = passwordMatches(input.password, currentHash);
       if (!usernameMatches(input.username) || !validPassword || !process.env.SESSION_SECRET) { await failedLogin(attempt.key); return json(res, 401, { error: 'Usuario o contraseña incorrectos' }); }
       await database().query('DELETE FROM admin_login_attempts WHERE client_key = $1', [attempt.key]);
       const expiry = String(Date.now() + 12 * 60 * 60 * 1000);
-      res.setHeader('Set-Cookie', `${cookieName}=${expiry}.${sign(expiry)}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=43200${req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : ''}`);
+      res.setHeader('Set-Cookie', `${cookieName}=${expiry}.${sign(`${expiry}:${currentHash}`)}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=43200${req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : ''}`);
       return json(res, 200, { ok: true });
     }
-    if (method === 'GET' && path === '/api/admin/session') return json(res, 200, { authenticated: admin(req), configured: !!process.env.DATABASE_URL && !!process.env.ADMIN_PASSWORD_HASH && !!process.env.SESSION_SECRET });
+    if (method === 'GET' && path === '/api/admin/session') {
+      const configured = !!process.env.DATABASE_URL && !!process.env.ADMIN_PASSWORD_HASH && !!process.env.SESSION_SECRET;
+      if (configured) await ready();
+      return json(res, 200, { authenticated: configured && await admin(req), configured });
+    }
     if (method === 'POST' && path === '/api/admin/logout') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
       res.setHeader('Set-Cookie', `${cookieName}=; HttpOnly; SameSite=Strict; Path=/api; Max-Age=0`);
       return json(res, 200, { ok: true });
     }
     if (path.startsWith('/api/admin/')) {
-      if (!admin(req)) return json(res, 401, { error: 'Inicia sesión para administrar el catálogo' });
-      if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
       await ready();
+      if (!await admin(req)) return json(res, 401, { error: 'Inicia sesión para administrar el catálogo' });
+      if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
+      if (method === 'POST' && path === '/api/admin/change-password') {
+        const attempt = await loginAllowed(req);
+        if (!attempt.allowed) return json(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
+        const input = await body(req, 1000);
+        const currentHash = await passwordHash();
+        if (!passwordMatches(input.currentPassword, currentHash)) {
+          await failedLogin(attempt.key);
+          return json(res, 401, { error: 'La contraseña actual no es correcta' });
+        }
+        if (typeof input.newPassword !== 'string' || input.newPassword.length < 12 || input.newPassword.length > 128)
+          return json(res, 400, { error: 'La nueva contraseña debe tener entre 12 y 128 caracteres' });
+        if (passwordMatches(input.newPassword, currentHash))
+          return json(res, 400, { error: 'Elige una contraseña distinta de la actual' });
+        const salt = randomBytes(32).toString('hex');
+        const newHash = `${salt}:${scryptSync(input.newPassword, salt, 64).toString('hex')}`;
+        const result = await database().query("INSERT INTO catalog_meta (key, value) VALUES ('admin_password_hash', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value WHERE catalog_meta.value = $2", [newHash, currentHash]);
+        if (!result.rowCount) return json(res, 409, { error: 'La contraseña cambió. Vuelve a iniciar sesión.' });
+        await database().query('DELETE FROM admin_login_attempts WHERE client_key = $1', [attempt.key]);
+        res.setHeader('Set-Cookie', `${cookieName}=; HttpOnly; SameSite=Strict; Path=/api; Max-Age=0${req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : ''}`);
+        return json(res, 200, { ok: true });
+      }
       if (method === 'POST' && path === '/api/admin/images') {
         const input = await body(req);
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(input.mimeType) || typeof input.base64 !== 'string' || input.base64.length > 2_800_000) return json(res, 400, { error: 'Usa una imagen JPG, PNG o WebP de hasta 2 MB' });

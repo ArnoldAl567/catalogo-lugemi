@@ -5,6 +5,15 @@
   @if (!authenticated()) {
     <form class="login-card" (ngSubmit)="login()"><h2>Acceso privado</h2><label for="admin-username">Usuario</label><input id="admin-username" class="field" type="text" name="username" [(ngModel)]="username" autocomplete="username" placeholder="admin" required maxlength="80"><label for="admin-password">Contraseña</label><input id="admin-password" class="field" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" required><button class="button-dark" type="submit" [disabled]="busy() || !username.trim() || !password">Ingresar</button></form>
   } @else {
+    <details class="password-manager"><summary>Cambiar mi contraseña</summary>
+      <form (ngSubmit)="changePassword()">
+        <p>Usa al menos 12 caracteres. Al guardar, todas las sesiones abiertas se cerrarán.</p>
+        <label for="current-admin-password">Contraseña actual</label><input id="current-admin-password" class="field" type="password" name="currentPassword" [(ngModel)]="currentPassword" autocomplete="current-password" required>
+        <label for="new-admin-password">Nueva contraseña</label><input id="new-admin-password" class="field" type="password" name="newPassword" [(ngModel)]="newPassword" autocomplete="new-password" minlength="12" maxlength="128" required>
+        <label for="confirm-admin-password">Confirmar nueva contraseña</label><input id="confirm-admin-password" class="field" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" autocomplete="new-password" minlength="12" maxlength="128" required>
+        <button class="button-dark" type="submit" [disabled]="busy() || !currentPassword || newPassword.length < 12 || newPassword !== confirmPassword">Guardar nueva contraseña</button>
+      </form>
+    </details>
     <section class="category-manager" aria-labelledby="admin-categories-title">
       <div><h2 id="admin-categories-title">Categorías del catálogo</h2><p>Activa las categorías que deseas mostrar en el menú y en los filtros de la tienda.</p></div>
       <div class="category-manager-grid">@for (item of menuCategories; track item.id) {

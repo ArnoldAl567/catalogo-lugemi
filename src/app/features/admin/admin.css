@@ -14,3 +14,8 @@
 .product-categories-grid label{display:flex;align-items:center;gap:.6rem;min-height:42px;padding:.35rem .5rem;cursor:pointer}
 .product-categories-grid input{width:18px;height:18px;accent-color:#082b47;cursor:pointer}
 @media(max-width:680px){.category-manager-grid,.product-categories-grid{grid-template-columns:1fr}.category-visibility{min-height:48px}}
+.password-manager{margin-top:2rem;padding:1.2rem;border:1px solid var(--line);background:var(--surface)}
+.password-manager summary{cursor:pointer;font-weight:700;color:var(--ink)}
+.password-manager form{display:grid;gap:.7rem;max-width:440px;margin-top:1rem}
+.password-manager p{margin:0 0 .4rem;color:#596579;line-height:1.5}
+.password-manager .button-dark{justify-self:start;margin-top:.6rem}

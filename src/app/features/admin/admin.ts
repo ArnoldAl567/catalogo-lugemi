@@ -33,6 +33,9 @@ export class Admin {
   readonly editing = signal<ProductDraft | null>(null);
   username = '';
   password = '';
+  currentPassword = '';
+  newPassword = '';
+  confirmPassword = '';
   private original: Product | undefined;
 
   constructor() { void this.checkSession(); }
@@ -61,6 +64,20 @@ export class Admin {
   async logout(): Promise<void> {
     await fetch('/api/admin/logout', { method: 'POST', credentials: 'same-origin' });
     this.authenticated.set(false); this.editing.set(null);
+  }
+
+  async changePassword(): Promise<void> {
+    if (this.newPassword !== this.confirmPassword) { this.message.set('Las contraseñas nuevas no coinciden.'); return; }
+    this.busy.set(true); this.message.set('');
+    try {
+      const response = await fetch('/api/admin/change-password', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ currentPassword: this.currentPassword, newPassword: this.newPassword }) });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error ?? 'No se pudo cambiar la contraseña');
+      this.authenticated.set(false);
+      this.editing.set(null);
+      this.message.set('Contraseña actualizada. Ingresa con tu nueva contraseña.');
+    } catch (error) { this.message.set((error as Error).message); }
+    finally { this.currentPassword = ''; this.newPassword = ''; this.confirmPassword = ''; this.busy.set(false); }
   }
 
   edit(product: Product): void { this.original = product; this.editing.set(draftFrom(product)); this.message.set(''); }
