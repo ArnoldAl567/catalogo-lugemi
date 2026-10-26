@@ -2,7 +2,7 @@ import { Component, computed, effect, HostListener, inject, signal } from '@angu
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/catalog.service';
 import { CartService } from '../../core/cart.service';
-import { getVariant, imagesForColor, money, whatsappUrl } from '../../core/store.utils';
+import { getVariant, imagesForColor, money, productSpecifications, whatsappUrl } from '../../core/store.utils';
 import { ProductCard } from '../../shared/product-card';
 import { ProductPhoto } from '../../shared/product-photo';
 import { FocusTrap } from '../../shared/focus-trap';
@@ -26,21 +26,8 @@ export class ProductPage {
   readonly variant = computed(() => { const product = this.product(); return product ? getVariant(product, this.selectedColor(), this.selectedSize()) : undefined; });
   readonly related = computed(() => this.product() ? this.catalog.related(this.product()!) : []);
   readonly sizeGuideUrl = computed(() => whatsappUrl(`Hola, Lugemi Kids. ¿Podrían compartirme las medidas del ${this.product()?.name ?? 'polo'}${this.selectedSize() ? ` en talla ${this.selectedSize()}` : ''}?`));
-  readonly detailRows = computed(() => {
-    const item = this.product();
-    if (!item) return [];
-    const rows = [
-      {label: 'Edad recomendada', value: item.recommendedAge},
-      {label: 'Tallas disponibles', value: [...new Set(item.variants.map(variant => variant.size))].join(' · ')},
-      {label: 'Material', value: item.material},
-      {label: 'Contenido', value: item.contents},
-      {label: 'Estilo', value: this.categoryName()},
-      {label: 'Pecho', value: item.chestMeasurement},
-      {label: 'Largo / medida', value: item.garmentLength},
-      {label: 'Seguridad / norma', value: item.safetyStandard},
-    ];
-    return rows.filter((row): row is {label: string; value: string} => !!row.value?.trim());
-  });
+  readonly detailRows = computed(() => this.product() ? productSpecifications(this.product()!, this.categoryName()) : []);
+  readonly hasMeasurements = computed(() => this.detailRows().some(row => /pecho|largo|medida/i.test(row.label)));
   private initializedProductId = '';
 
   constructor() {

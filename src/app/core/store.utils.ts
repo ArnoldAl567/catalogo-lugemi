@@ -1,4 +1,4 @@
-import { CartItem, Customer, Order, Product, ProductImage, ProductVariant } from '../models/store.models';
+import { CartItem, Customer, Order, Product, ProductImage, ProductSpecification, ProductVariant } from '../models/store.models';
 import { STORE_CONFIG } from './store.config';
 
 export const money = (value: number): string => `S/ ${value.toFixed(2)}`;
@@ -14,6 +14,19 @@ export function imagesForColor(product: Product, colorId: string): ProductImage[
 }
 export function mainImageForColor(product: Product, colorId: string): ProductImage | undefined {
   return imagesForColor(product, colorId).find(image => image.view === 'full');
+}
+export function productSpecifications(product: Product, categoryName: string): ProductSpecification[] {
+  if (product.specifications) return product.specifications;
+  return [
+    { label: 'Edad recomendada', value: product.recommendedAge },
+    { label: 'Tallas disponibles', value: [...new Set(product.variants.map(variant => variant.size))].join(' · ') },
+    { label: 'Material', value: product.material },
+    { label: 'Contenido', value: product.contents },
+    { label: 'Estilo', value: categoryName },
+    { label: 'Pecho', value: product.chestMeasurement },
+    { label: 'Largo / medida', value: product.garmentLength },
+    { label: 'Seguridad / norma', value: product.safetyStandard },
+  ].filter((row): row is ProductSpecification => !!row.value?.trim()).slice(0, 7);
 }
 export function validateQuantity(product: Product, colorId: string, size: string, quantity: number): boolean {
   const variant = getVariant(product, colorId, size);

@@ -107,7 +107,7 @@ async function failedLogin(key) {
     ON CONFLICT (client_key) DO UPDATE SET attempts = CASE WHEN admin_login_attempts.first_attempt < now() - interval '15 minutes' THEN 1 ELSE admin_login_attempts.attempts + 1 END,
     first_attempt = CASE WHEN admin_login_attempts.first_attempt < now() - interval '15 minutes' THEN now() ELSE admin_login_attempts.first_attempt END`, [key]);
 }
-function validProduct(p) {
+export function validProduct(p) {
   return p && typeof p.id === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.id) && p.id.length <= 100 &&
     typeof p.name === 'string' && p.name.trim().length > 0 && p.name.length <= 120 &&
     typeof p.categoryId === 'string' && p.categoryId.length <= 60 &&
@@ -115,7 +115,9 @@ function validProduct(p) {
     Number.isFinite(p.price) && p.price >= 0 &&
     typeof p.description === 'string' && typeof p.material === 'string' &&
     Array.isArray(p.details) && p.details.every(x => typeof x === 'string') &&
-    Array.isArray(p.images) && p.images.every(x => x && typeof x.url === 'string' && (/^\/api\/images\/[0-9a-f-]{36}$/i.test(x.url) || /^\/images\/productos\/[a-z0-9-]+\.jpeg$/.test(x.url)) && typeof x.colorId === 'string' && ['full', 'detail'].includes(x.view)) &&
+    (p.specifications === undefined || (Array.isArray(p.specifications) && p.specifications.length <= 7 && p.specifications.every(x => x && typeof x.label === 'string' && x.label.trim().length > 0 && x.label.length <= 60 && typeof x.value === 'string' && x.value.trim().length > 0 && x.value.length <= 200))) &&
+    Array.isArray(p.images) && p.images.length >= 1 && p.images.length <= 3 && p.images.every(x => x && typeof x.url === 'string' && (/^\/api\/images\/[0-9a-f-]{36}$/i.test(x.url) || /^\/images\/productos\/[a-z0-9-]+\.jpeg$/.test(x.url)) && typeof x.colorId === 'string' && ['full', 'detail', 'extra'].includes(x.view)) &&
+    new Set(p.images.map(x => `${x.colorId}:${x.view}`)).size === p.images.length &&
     Array.isArray(p.variants) && p.variants.length > 0 && p.variants.every(x => x && typeof x.colorId === 'string' && typeof x.colorName === 'string' && typeof x.hex === 'string' && typeof x.size === 'string' && Number.isInteger(x.stock) && x.stock >= 0);
 }
 

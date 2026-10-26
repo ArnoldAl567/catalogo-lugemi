@@ -21,3 +21,9 @@
 .password-manager .button-dark{justify-self:start;margin-top:.6rem}
 .admin-heading-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 @media(max-width:680px){.admin-heading{flex-wrap:wrap}.admin-heading-actions{width:100%;justify-content:flex-end}}
+.spec-editor{margin:1.5rem 0;padding:1.2rem;border:1px solid var(--line);background:#fbf7f0}
+.spec-editor .colors-heading{border:0;padding:0}.spec-editor h3{margin:0}.spec-editor p,.colors-heading p{margin:.35rem 0 0;color:#596579;font-size:.9rem;line-height:1.5}
+.spec-editor-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) auto;align-items:end;gap:.8rem;margin-top:1rem}
+.spec-editor-row label{display:grid;gap:.4rem;font-weight:600}.spec-editor-row .danger{min-height:44px}.spec-editor>small{display:block;margin-top:1rem;color:#596579}
+.image-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.image-grid>div{align-content:start}.image-grid .admin-link{justify-self:start}
+@media(max-width:760px){.image-grid{grid-template-columns:1fr}.spec-editor-row{grid-template-columns:1fr}.spec-editor-row .danger{justify-self:start}.spec-editor .colors-heading{align-items:flex-start;flex-wrap:wrap}}

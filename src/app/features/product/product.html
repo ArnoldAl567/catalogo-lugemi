@@ -14,8 +14,8 @@
       </section>
       <section class="product-specs" aria-labelledby="product-specs-heading">
         <h2 id="product-specs-heading">Detalles del producto</h2>
-        <dl>@for (row of detailRows(); track row.label) { <div class="spec-row"><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div> }</dl>
-        @if (!item.chestMeasurement && !item.garmentLength) { <p class="measurement-note">Las medidas exactas de esta prenda aún no están registradas. Consúltalas por WhatsApp antes de comprar.</p> }
+        <dl>@for (row of detailRows(); track $index) { <div class="spec-row"><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div> }</dl>
+        @if (!hasMeasurements()) { <p class="measurement-note">Las medidas exactas de esta prenda aún no están registradas. Consúltalas por WhatsApp antes de comprar.</p> }
       </section>
       <div class="selection-header quantity-heading"><span>Cantidad</span></div><div class="quantity-control"><button type="button" (click)="changeQuantity(-1)" aria-label="Disminuir cantidad" [disabled]="quantity()<=1">−</button><span>{{ quantity() }}</span><button type="button" (click)="changeQuantity(1)" aria-label="Aumentar cantidad" [disabled]="!variant()?.stock || quantity()>=(variant()?.stock ?? 0)">+</button></div>
       @if (error()) { <p class="product-error" role="alert">{{ error() }}</p> }
