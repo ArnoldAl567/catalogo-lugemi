@@ -1,4 +1,5 @@
 <a class="skip-link" href="#main-content">Saltar al contenido</a>
+@if (!isAdminRoute()) {
 <header class="site-header" [class.scrolled]="scrolled()" [class.menu-open]="mobileOpen()">
   <div class="page-shell header-inner">
     <button class="icon-button mobile-toggle" type="button" [attr.aria-label]="mobileOpen() ? 'Cerrar menú' : 'Abrir menú'" [attr.aria-expanded]="mobileOpen()" (click)="mobileOpen.set(!mobileOpen())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
@@ -26,7 +27,9 @@
     </nav>
   }
 </header>
+}
 <main id="main-content" tabindex="-1"><router-outlet /></main>
+@if (!isAdminRoute()) {
 <footer class="site-footer">
   <div class="page-shell footer-main">
     <div class="footer-brand"><a class="footer-logo" routerLink="/" aria-label="Lugemi Kids, ir al inicio"><img src="/images/brand/lugemi-kids-logo.png" alt="Lugemi Kids · Imagina, crece, explora" width="1080" height="1080" loading="lazy"></a><p>Un pequeño mundo de grandes aventuras. Ropa y detalles para acompañar a quienes nunca dejan de imaginar.</p><span class="eyebrow">{{ config().location }}</span></div>
@@ -59,3 +62,4 @@
 }
 <app-store-mascot [blocked]="cart.drawerOpen() || mobileOpen() || searchOpen()" />
 <div class="sr-only" role="status" aria-live="polite">{{ cart.feedback() }}</div>
+}

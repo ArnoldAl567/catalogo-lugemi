@@ -19,3 +19,5 @@
 .password-manager form{display:grid;gap:.7rem;max-width:440px;margin-top:1rem}
 .password-manager p{margin:0 0 .4rem;color:#596579;line-height:1.5}
 .password-manager .button-dark{justify-self:start;margin-top:.6rem}
+.admin-heading-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+@media(max-width:680px){.admin-heading{flex-wrap:wrap}.admin-heading-actions{width:100%;justify-content:flex-end}}

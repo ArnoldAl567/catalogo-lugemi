@@ -1,5 +1,5 @@
-<main class="admin-page page-shell" id="main-content">
-  <div class="admin-heading"><div><p class="eyebrow">Lugemi Kids</p><h1 class="font-editorial">Administrador</h1><p>Gestiona los productos que ven tus clientes.</p></div>@if (authenticated()) { <button type="button" class="admin-link" (click)="logout()">Cerrar sesión</button> }</div>
+<section class="admin-page page-shell">
+  <div class="admin-heading"><div><p class="eyebrow">Lugemi Kids</p><h1 class="font-editorial">Administrador</h1><p>Gestiona los productos que ven tus clientes.</p></div><div class="admin-heading-actions"><a class="admin-link" href="/">Ver tienda</a>@if (authenticated()) { <button type="button" class="admin-link" (click)="logout()">Cerrar sesión</button> }</div></div>
   @if (!configured()) { <p class="notice error" role="alert">El panel necesita una conexión PostgreSQL y sus claves de acceso. La tienda sigue mostrando el catálogo actual.</p> }
   @if (message()) { <p class="notice" role="status">{{ message() }}</p> }
   @if (!authenticated()) {
@@ -41,4 +41,4 @@
       </form>
     }
   }
-</main>
+</section>

@@ -1,6 +1,8 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { filter, map } from 'rxjs';
 import { CartService } from './core/cart.service';
 import { CatalogService } from './core/catalog.service';
 import { mainImageForColor, money } from './core/store.utils';
@@ -15,6 +17,10 @@ export class App {
   readonly catalog = inject(CatalogService);
   readonly menuCategories = this.catalog.menuCategories;
   private readonly router = inject(Router);
+  readonly isAdminRoute = toSignal(this.router.events.pipe(
+    filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+    map(event => event.urlAfterRedirects.split(/[?#]/)[0] === '/administrador'),
+  ), { initialValue: this.router.url.split(/[?#]/)[0] === '/administrador' });
   readonly config = this.catalog.settings;
   readonly scrolled = signal(false);
   readonly mobileOpen = signal(false);
