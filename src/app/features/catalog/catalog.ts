@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CatalogService } from '../../core/catalog.service';
 import { filterProducts } from '../../core/store.utils';
 import { ProductCard } from '../../shared/product-card';
+import { MENU_CATEGORIES } from '../../data/shop-navigation';
 
 @Component({ selector: 'app-catalog', standalone: true, imports: [FormsModule, ProductCard], templateUrl: './catalog.html', styleUrl: './catalog.css' })
 export class Catalog {
@@ -15,7 +16,8 @@ export class Catalog {
   readonly filtersOpen = signal(false);
   readonly sizes = computed(() => [...new Set(this.catalog.products().flatMap(product => product.variants.map(variant => variant.size)))]);
   readonly colors = computed(() => [...new Map(this.catalog.products().flatMap(product => product.variants.map(variant => [variant.colorId, {id: variant.colorId, name: variant.colorName, hex: variant.hex}] as const))).values()]);
-  readonly categories = this.catalog.categories;
+  readonly categories = MENU_CATEGORIES;
+  readonly categoryTitle = computed(() => MENU_CATEGORIES.find(item => item.id === this.category())?.label ?? (this.category() === 'oversize' ? 'Polos oversize' : this.category() === 'raglan' ? 'Polos raglán' : 'Toda la colección'));
   readonly results = computed(() => {
     return filterProducts(this.catalog.products(), { query: this.query(), category: this.category(), size: this.size(), color: this.color(), minPrice: this.minPrice(), maxPrice: this.maxPrice(), sort: this.sort() });
   });

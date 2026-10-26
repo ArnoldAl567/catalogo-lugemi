@@ -19,7 +19,11 @@ export function filterProducts(products: Product[], filters: { query?: string; c
   const query = (filters.query ?? '').trim().toLocaleLowerCase('es');
   const found = products.filter(product => {
     if (query && !`${product.name} ${product.categoryId} ${product.description}`.toLocaleLowerCase('es').includes(query)) return false;
-    if (filters.category && product.categoryId !== filters.category) return false;
+    if (filters.category === 'polos-nino') {
+      if (!['polos-nino', 'oversize', 'raglan'].includes(product.categoryId)) return false;
+    } else if (filters.category === 'ofertas') {
+      if (product.categoryId !== 'ofertas' && product.badge !== 'Oferta' && !(product.previousPrice && product.previousPrice > product.price)) return false;
+    } else if (filters.category && product.categoryId !== filters.category) return false;
     if (filters.audience && product.audience !== filters.audience) return false;
     if (filters.collection && !(product.collections?.includes(filters.collection) || (filters.collection === 'nueva' && product.badge === 'Nuevo'))) return false;
     if ((filters.size || filters.color) && !product.variants.some(variant => (!filters.size || variant.size === filters.size) && (!filters.color || variant.colorId === filters.color) && variant.stock > 0)) return false;

@@ -30,8 +30,6 @@
 .search-bar { display: flex; gap: 12px; padding-block: 0 20px; }
 .search-bar input { flex: 1; min-width: 0; min-height: 44px; border: 0; border-bottom: 1px solid #bca581; background: transparent; }
 .search-bar button { padding-inline: 12px; border: 0; background: transparent; font-size: .875rem; }
-.mobile-nav { display: flex; flex-direction: column; max-height: calc(100dvh - 115px); overflow: auto; padding: 10px max(24px, calc((100vw - 1280px) / 2)) 24px; border-top: 1px solid #e5dacc; background: #F3E7D5; }
-.mobile-nav a { padding: 13px 0; border-bottom: 1px solid #e5dacc; font-family: var(--font-serif); font-size: 21px; }
 .drawer-head .icon-button { min-width: 44px; min-height: 44px; }
 
 @media (max-width: 700px) {
@@ -43,7 +41,6 @@
   .header-actions { gap: 0; }
   .header-actions .icon-button, .mobile-toggle { width: 36px; height: 44px; }
   .header-actions svg, .mobile-toggle svg { width: 23px; height: 23px; }
-  .mobile-nav { max-height: calc(100dvh - 78px); }
 }
 @media (max-width: 400px) {
   .brand-name small { display: none; }
@@ -57,11 +54,26 @@
 .footer-brand p { font-size: 1rem; }
 .footer-main h3 { font-size: .875rem; }
 
-.shop-nav { display: flex; justify-content: space-between; gap: 28px; max-width: 1440px; margin: auto; padding: 0 28px; border-top: 1px solid #182d4d0d; overflow-x: auto; scrollbar-width: thin; }
-.shop-nav a { display: flex; align-items: center; flex: none; min-height: 48px; padding: 8px 0; color: #182d4d; font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
-.shop-nav a:hover, .shop-nav a:focus-visible { color: #94621f; }
+
+/* Illustrated category panel opened by the header menu. */
+.site-header.menu-open { z-index: 80; }
+.category-menu { position: fixed; inset: 115px 0 0; overflow-y: auto; overscroll-behavior: contain; background: #fbf7f1; border-top: 1px solid #e9dfd2; box-shadow: 0 20px 35px #182d4d1b; }
+.category-menu-inner { width: min(100% - 48px, 1250px); margin: 0 auto; padding: 30px 0 60px; }
+.category-menu-heading { margin: 0 0 24px; text-align: center; }
+.category-menu-heading .eyebrow { color: #a47939; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+.category-menu-heading h2 { margin: 5px 0 0; color: #102e4b; font-size: clamp(28px, 3vw, 40px); font-weight: 400; }
+.category-menu-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 30px 24px; }
+.category-menu-item { display: flex; flex-direction: column; align-items: center; gap: 11px; min-width: 0; color: #142f4d; text-align: center; }
+.category-menu-picture { display: block; width: min(100%, 200px); aspect-ratio: 1; border-radius: 50%; background-color: #e9ddcd; background-image: url('/images/brand/lugemi-category-menu.png'); background-repeat: no-repeat; background-size: 530% 562%; background-position: var(--art-x) var(--art-y); transition: transform .25s ease, box-shadow .25s ease; }
+.category-menu-item:hover .category-menu-picture, .category-menu-item:focus-visible .category-menu-picture { transform: translateY(-5px); box-shadow: 0 12px 25px #182d4d24; }
+.category-menu-label { max-width: 190px; font-size: clamp(15px, 1.6vw, 20px); line-height: 1.25; font-weight: 500; }
+.category-menu-all { display: flex; align-items: center; justify-content: center; gap: 12px; width: fit-content; min-height: 44px; margin: 36px auto 0; padding: 0 20px; border: 1px solid #a47939; color: #142f4d; font-size: 15px; }
+.category-menu-all:hover { background: #efe3d2; }
+@media (max-width: 900px) { .category-menu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 700px) {
-  .shop-nav { justify-content: flex-start; gap: 22px; padding-inline: 16px; }
-  .shop-nav a { font-size: 12px; min-height: 44px; }
-  .mobile-nav { max-height: calc(100dvh - 122px); }
+  .category-menu { top: 78px; }
+  .category-menu-inner { width: min(100% - 28px, 520px); padding-top: 22px; }
+  .category-menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 25px 14px; }
+  .category-menu-picture { width: min(100%, 180px); }
+  .category-menu-label { font-size: 16px; }
 }

@@ -7,12 +7,12 @@ import { mainImageForColor, money } from './core/store.utils';
 import { CartItem } from './models/store.models';
 import { ProductPhoto } from './shared/product-photo';
 import { FocusTrap } from './shared/focus-trap';
-import { SHOP_NAVIGATION } from './data/shop-navigation';
+import { MENU_CATEGORIES } from './data/shop-navigation';
 import { StoreMascot } from './shared/store-mascot';
 
 @Component({ selector: 'app-root', standalone: true, imports: [RouterOutlet, RouterLink, FormsModule, ProductPhoto, FocusTrap, StoreMascot], templateUrl: './app.html', styleUrl: './app.css' })
 export class App {
-  readonly shopNavigation = SHOP_NAVIGATION;
+  readonly menuCategories = MENU_CATEGORIES;
   readonly cart = inject(CartService);
   readonly catalog = inject(CatalogService);
   private readonly router = inject(Router);

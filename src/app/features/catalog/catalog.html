@@ -2,7 +2,7 @@
   <div class="page-shell">
     <span class="eyebrow text-olive">La colección Lugemi Kids</span>
     <div class="flex flex-wrap items-end justify-between gap-4">
-      <div><h1 class="font-editorial">Polos para imaginar y explorar</h1><p>Descubre los diseños oversize y raglán en tallas 6, 8, 10, 12, 14 y 16.</p></div>
+      <div><h1 class="font-editorial">{{ categoryTitle() }}</h1><p>Prendas para acompañar cada aventura. Explora modelos, tallas y colores disponibles.</p></div>
       <span class="text-xs tracking-[.1em] text-[#78695F]">{{ results().length }} modelos</span>
     </div>
   </div>
@@ -12,7 +12,7 @@
   <aside class="filters" [class.filters-open]="filtersOpen()" aria-label="Filtros del catálogo">
     <div class="filters-mobile-head"><h2 class="font-editorial text-2xl">Filtros</h2><button type="button" aria-label="Cerrar filtros" (click)="filtersOpen.set(false)">✕</button></div>
     <div class="filter-group"><h3>Buscar</h3><label class="sr-only" for="catalog-search">Buscar productos</label><input id="catalog-search" class="field" type="search" [ngModel]="query()" (ngModelChange)="query.set($event)" placeholder="Nombre o diseño" /></div>
-    <div class="filter-group"><h3>Estilo</h3><div class="filter-options"><button type="button" [class.selected]="!category()" (click)="category.set('')">Todos los polos</button>@for (item of categories(); track item.id) { <button type="button" [class.selected]="category()===item.id" [attr.aria-pressed]="category()===item.id" (click)="category.set(item.id)">{{ item.name }}</button> }</div></div>
+    <div class="filter-group"><h3>Categoría</h3><div class="filter-options"><button type="button" [class.selected]="!category()" (click)="category.set('')">Toda la colección</button>@for (item of categories; track item.id) { <button type="button" [class.selected]="category()===item.id" [attr.aria-pressed]="category()===item.id" (click)="category.set(item.id)">{{ item.label }}</button> }</div></div>
     <div class="filter-group"><h3>Talla</h3><div class="size-options">@for (option of sizes(); track option) { <button type="button" [class.selected]="size()===option" [attr.aria-pressed]="size()===option" (click)="size.set(size()===option?'':option)">{{ option }}</button> }</div></div>
     <div class="filter-group"><h3>Color</h3><div class="color-options">@for (option of colors(); track option.id) { <button type="button" [class.selected]="color()===option.id" [attr.aria-label]="'Filtrar por ' + option.name" [attr.aria-pressed]="color()===option.id" [title]="option.name" (click)="color.set(color()===option.id?'':option.id)"><span [style.background]="option.hex"></span></button> }</div><span class="selected-color">{{ color() || 'Todos los colores' }}</span></div>
     <div class="filter-group"><h3>Precio en soles</h3><div class="price-fields"><label>Mínimo<input class="field" type="number" min="0" [ngModel]="minPrice()" (ngModelChange)="minPrice.set($event === '' || $event == null ? undefined : +$event)" placeholder="S/ 0" /></label><label>Máximo<input class="field" type="number" min="0" [ngModel]="maxPrice()" (ngModelChange)="maxPrice.set($event === '' || $event == null ? undefined : +$event)" placeholder="Sin límite" /></label></div></div>
@@ -21,7 +21,7 @@
   <div class="catalog-results">
     <div class="catalog-toolbar"><button class="filter-toggle" type="button" (click)="filtersOpen.set(true)">☷ &nbsp; Filtros</button><span class="text-xs text-[#78695F]">{{ results().length }} resultados</span><label>Ordenar por <select [ngModel]="sort()" (ngModelChange)="sort.set($event)"><option value="newest">Orden de la colección</option><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="name">Nombre</option></select></label></div>
     @if (results().length) { <div class="grid grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-10 md:gap-x-5">@for (product of results(); track product.id) { <app-product-card [product]="product" [preferredColor]="color()" /> }</div> }
-    @else { <div class="empty-results"><span class="font-editorial">Aún no encontramos esa combinación.</span><p>Prueba otra talla, color o estilo para descubrir más polos.</p><button class="button-outline" type="button" (click)="reset()">Ver toda la colección</button></div> }
+    @else { <div class="empty-results"><span class="font-editorial">No hay prendas disponibles en esta selección.</span><p>Prueba otra categoría, talla o color. Publicaremos aquí los nuevos modelos cuando estén disponibles.</p><button class="button-outline" type="button" (click)="reset()">Ver toda la colección</button></div> }
   </div>
 </div>
 @if (filtersOpen()) { <div class="filter-backdrop" (click)="filtersOpen.set(false)" aria-hidden="true"></div> }

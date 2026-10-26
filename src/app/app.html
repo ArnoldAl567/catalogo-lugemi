@@ -1,5 +1,5 @@
 <a class="skip-link" href="#main-content">Saltar al contenido</a>
-<header class="site-header" [class.scrolled]="scrolled()">
+<header class="site-header" [class.scrolled]="scrolled()" [class.menu-open]="mobileOpen()">
   <div class="page-shell header-inner">
     <button class="icon-button mobile-toggle" type="button" [attr.aria-label]="mobileOpen() ? 'Cerrar menú' : 'Abrir menú'" [attr.aria-expanded]="mobileOpen()" (click)="mobileOpen.set(!mobileOpen())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <a class="wordmark" routerLink="/" (click)="closeNavigation()" [attr.aria-label]="config().name + ', ir al inicio'"><svg class="brand-symbol" viewBox="320 250 475 430" aria-hidden="true" focusable="false"><defs><clipPath id="header-brand-symbol-clip" clipPathUnits="userSpaceOnUse"><rect x="320" y="250" width="475" height="430" /></clipPath></defs><image href="/images/brand/lugemi-kids-logo.png" width="1080" height="1080" clip-path="url(#header-brand-symbol-clip)" /></svg><span class="brand-name">{{ config().name }}<small>IMAGINA · CRECE · EXPLORA</small></span></a>
@@ -8,13 +8,23 @@
       <button class="icon-button bag-button" type="button" aria-label="Abrir carrito" (click)="cart.drawerOpen.set(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 8h15l-1 13h-13l-1-13Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>@if (cart.count() > 0) { <span class="bag-count">{{ cart.count() }}</span> }</button>
     </div>
   </div>
-  <nav class="shop-nav" aria-label="Categorías de la tienda">
-    @for (item of shopNavigation; track item.label) {
-      <a routerLink="/catalogo" [queryParams]="item.query" (click)="closeNavigation()">{{ item.label }}</a>
-    }
-  </nav>
   @if (searchOpen()) { <form class="search-bar page-shell" (ngSubmit)="submitSearch()" role="search"><label class="sr-only" for="header-search">Buscar prendas</label><input id="header-search" name="search" [(ngModel)]="searchTerm" placeholder="¿Qué estás buscando?" autocomplete="off" /><button type="submit">Buscar ↗</button></form> }
-  @if (mobileOpen()) { <nav class="mobile-nav" aria-label="Navegación móvil"><a routerLink="/" (click)="closeNavigation()">Inicio</a><a routerLink="/catalogo" (click)="closeNavigation()">Toda la colección</a><a routerLink="/catalogo" [queryParams]="{categoria:'oversize'}" (click)="closeNavigation()">Polos oversize</a><a routerLink="/catalogo" [queryParams]="{categoria:'raglan'}" (click)="closeNavigation()">Polos raglán</a><a routerLink="/contacto" (click)="closeNavigation()">Contacto</a></nav> }
+  @if (mobileOpen()) {
+    <nav class="category-menu" aria-label="Categorías de la tienda">
+      <div class="category-menu-inner">
+        <div class="category-menu-heading"><span class="eyebrow">Explora Lugemi Kids</span><h2 class="font-editorial">Compra por categoría</h2></div>
+        <div class="category-menu-grid">
+          @for (item of menuCategories; track item.id) {
+            <a class="category-menu-item" routerLink="/catalogo" [queryParams]="{categoria:item.id}" (click)="closeNavigation()">
+              <span class="category-menu-picture" [style.--art-x]="item.x" [style.--art-y]="item.y" aria-hidden="true"></span>
+              <span class="category-menu-label">{{ item.label }}</span>
+            </a>
+          }
+        </div>
+        <a class="category-menu-all" routerLink="/catalogo" (click)="closeNavigation()">Ver toda la colección <span aria-hidden="true">→</span></a>
+      </div>
+    </nav>
+  }
 </header>
 <main id="main-content" tabindex="-1"><router-outlet /></main>
 <footer class="site-footer">

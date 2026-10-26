@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CatalogService } from '../../core/catalog.service';
 import { Product, ProductImage, ProductVariant } from '../../models/store.models';
+import { MENU_CATEGORIES } from '../../data/shop-navigation';
 
 interface ColorDraft { id: string; name: string; hex: string; sizes: string; stock: number; front: string; back: string; }
 interface ProductDraft { id: string; name: string; categoryId: string; price: number; description: string; material: string; details: string; colors: ColorDraft[]; featured: boolean; stockUnconfirmed: boolean; }
@@ -15,11 +16,13 @@ function draftFrom(product: Product): ProductDraft {
   return { id: product.id, name: product.name, categoryId: product.categoryId, price: product.price, description: product.description, material: product.material, details: product.details.join('\n'), colors, featured: !!product.featured, stockUnconfirmed: !!product.stockUnconfirmed };
 }
 function blank(): ProductDraft {
-  return { id: '', name: '', categoryId: 'oversize', price: 35, description: '', material: '', details: '', colors: [{ id: 'marfil', name: 'Marfil', hex: '#F2EDE1', sizes: '6, 8, 10, 12, 14, 16', stock: 99, front: '', back: '' }], featured: true, stockUnconfirmed: true };
+  return { id: '', name: '', categoryId: 'polos-nino', price: 35, description: '', material: '', details: '', colors: [{ id: 'marfil', name: 'Marfil', hex: '#F2EDE1', sizes: '6, 8, 10, 12, 14, 16', stock: 99, front: '', back: '' }], featured: true, stockUnconfirmed: true };
 }
 
 @Component({ selector: 'app-admin', standalone: true, imports: [FormsModule], templateUrl: './admin.html', styleUrl: './admin.css' })
 export class Admin {
+  readonly menuCategories = MENU_CATEGORIES;
+  categoryLabel(id: string): string { return MENU_CATEGORIES.find(item => item.id === id)?.label ?? (id === 'raglan' ? 'Polo raglán' : id === 'oversize' ? 'Polo oversize' : id); }
   readonly catalog = inject(CatalogService);
   readonly authenticated = signal(false);
   readonly configured = signal(true);
