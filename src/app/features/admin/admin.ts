@@ -71,6 +71,7 @@ export class Admin {
     this.busy.set(true); this.message.set('');
     try {
       const response = await fetch('/api/admin/change-password', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ currentPassword: this.currentPassword, newPassword: this.newPassword }) });
+      if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('El servicio no está disponible. Recarga la página e inténtalo de nuevo.');
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error ?? 'No se pudo cambiar la contraseña');
       this.authenticated.set(false);
