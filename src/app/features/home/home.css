@@ -1,4 +1,13 @@
 :host { display: block; background: #F3E7D5; }
+.home-quick-categories{background:#fbf7f1;border-bottom:1px solid #e8dccb}
+.home-quick-categories-track{box-sizing:border-box;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;width:min(calc(100% - 48px),1200px);margin-inline:auto;padding:16px 0 14px}
+.home-quick-category{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0;min-height:128px;color:#142f4d;text-align:center;text-decoration:none}
+.home-quick-category-picture{display:block;width:clamp(76px,7vw,104px);aspect-ratio:1;flex:none;border-radius:50%;background-color:#e9ddcd;background-image:url('/images/brand/lugemi-category-menu.png');background-repeat:no-repeat;background-size:530% 562%;background-position:var(--art-x) var(--art-y);transition:transform .2s ease,box-shadow .2s ease}
+.home-quick-category-label{font-size:clamp(14px,1.25vw,17px);font-weight:600;line-height:1.25}
+.home-quick-category:hover .home-quick-category-picture,.home-quick-category:focus-visible .home-quick-category-picture{transform:translateY(-3px);box-shadow:0 8px 18px #182d4d24}
+.home-quick-category:focus-visible{outline:3px solid #a47939;outline-offset:3px;border-radius:8px}
+@media(max-width:700px){.home-quick-categories-track{display:flex;gap:14px;width:100%;padding:10px 12px 12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin}.home-quick-category{flex:0 0 78px;min-height:100px;scroll-snap-align:start}.home-quick-category-picture{width:72px}.home-quick-category-label{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.home-quick-category-picture{transition:none}}
 .hero {
   position: relative;
   isolation: isolate;

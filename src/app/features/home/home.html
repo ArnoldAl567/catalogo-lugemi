@@ -1,3 +1,15 @@
+@if (topCategories().length) {
+  <nav class="home-quick-categories" aria-label="Comprar por categoría">
+    <div class="home-quick-categories-track">
+      @for (item of topCategories(); track item.id) {
+        <a class="home-quick-category" routerLink="/catalogo" [queryParams]="{categoria: item.id}">
+          <span class="home-quick-category-picture" [style.--art-x]="item.x" [style.--art-y]="item.y" aria-hidden="true"></span>
+          <span class="home-quick-category-label">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+  </nav>
+}
 <section class="hero" aria-label="Promociones de Lugemi Kids" (mouseenter)="pauseRotation()" (mouseleave)="resumeRotation()" (focusin)="pauseRotation()" (focusout)="resumeRotation()" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)" (touchcancel)="onTouchCancel()">
   <div class="hero-slide" [class.is-active]="activeSlide() === 0" [attr.aria-hidden]="activeSlide() !== 0" [attr.inert]="activeSlide() === 0 ? null : ''">
     <picture class="hero-visual">
