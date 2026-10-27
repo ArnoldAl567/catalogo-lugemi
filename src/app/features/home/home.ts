@@ -1,7 +1,6 @@
 import { Component, computed, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/catalog.service';
-import { MENU_CATEGORIES } from '../../data/shop-navigation';
 import { ProductCard } from '../../shared/product-card';
 
 
@@ -13,17 +12,7 @@ export class Home implements OnInit, OnDestroy {
   readonly categories = computed(() => this.catalog.styleSection().cards.filter(card =>
     this.catalog.isCategoryEnabled(['oversize', 'raglan'].includes(card.category) ? 'polos-nino' : card.category)));
   readonly styleSection = this.catalog.styleSection;
-  readonly topCategories = computed(() => [
-    { id: 'polos-nino', label: 'Polos', artId: 'polos-nino' },
-    { id: 'casacas-nina', label: 'Casacas', artId: 'casacas-nina' },
-    { id: 'joggers-basicos', label: 'Joggers', artId: 'joggers-basicos' },
-    { id: 'pantalones-nino', label: 'Denim', artId: 'denim' },
-    { id: 'accesorios', label: 'Accesorios', artId: 'accesorios' },
-    { id: 'ofertas', label: 'Promos', artId: 'ofertas' },
-  ].filter(item => this.catalog.isCategoryEnabled(item.id)).map(item => {
-    const art = item.artId === 'denim' ? { x: '50%', y: '53%' } : MENU_CATEGORIES.find(category => category.id === item.artId)!;
-    return { ...item, x: art.x, y: art.y };
-  }));
+  readonly topCategories = this.catalog.menuCategories;
   readonly featured = this.catalog.products;
   readonly activeSlide = signal(0);
   private timer?: ReturnType<typeof setInterval>;
