@@ -116,7 +116,7 @@ export class Admin {
     if (!file) return;
     const draft = this.editing();
     if (!draft || (!color[view] && this.imageCount(draft) >= 3)) { this.message.set('Cada producto puede tener como máximo 3 imágenes.'); input.value = ''; return; }
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 2_000_000) { this.message.set('Usa una imagen JPG, PNG o WebP de hasta 2 MB.'); return; }
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 2_000_000) { this.message.set('Usa una imagen JPG, PNG o WebP de hasta 2 MB.'); input.value = ''; return; }
     this.busy.set(true); this.message.set('');
     try {
       const base64 = await new Promise<string>((resolve, reject) => {

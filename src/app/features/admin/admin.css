@@ -44,3 +44,29 @@
 .row-actions button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 @media(max-width:680px){.admin-toolbar .new-product-button{font-size:.875rem;padding:.7rem 1rem}.row-actions{justify-content:stretch}.row-actions button{flex:1;min-width:0}.product-row{gap:.8rem}}
 @media(prefers-reduced-motion:reduce){.row-actions button{transition:none}}
+
+/* Controles del editor y carga de imágenes. */
+.editor-add-button,.editor-cancel-button,.photo-remove{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:44px;padding:.6rem .9rem;border:1px solid #c8d8e5;border-radius:8px;background:#edf3f7;color:#182d4d;font:inherit;font-size:.9rem;font-weight:700;text-decoration:none;cursor:pointer;white-space:nowrap}
+.editor-add-button:hover,.editor-cancel-button:hover{background:#dceaf3;border-color:#8baec5}
+.editor-add-button span{font-size:1.3rem;line-height:1}
+.editor-add-button:disabled,.photo-upload.is-disabled{opacity:.5;cursor:not-allowed}
+.editor-save-button{min-height:48px;border-radius:8px;padding:.8rem 1.25rem}
+.editor-cancel-button{background:transparent}
+.image-grid{gap:1rem;margin-top:1.4rem}
+.image-grid .photo-field{display:flex;flex-direction:column;align-items:stretch;gap:.65rem;min-width:0;padding:1rem;border:1px solid #e5d8c8;border-radius:9px;background:#fffdf9}
+.photo-field strong{display:flex;align-items:center;justify-content:space-between;gap:.4rem;font-size:.95rem}
+.required-label,.optional-label{font-size:.72rem;font-weight:600;white-space:nowrap;color:#6a7481}
+.required-label{color:#875c27}
+.photo-preview{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;max-height:190px;border:1px dashed #d5c8b5;border-radius:7px;background:#f5eee3;overflow:hidden;color:#697483;font-size:.85rem}
+.image-grid .photo-preview img{width:100%;height:100%;object-fit:contain;background:transparent}
+.photo-upload{position:relative;display:flex;align-items:center;justify-content:center;gap:.55rem;min-height:46px;padding:.65rem;border:1px solid #183658;border-radius:7px;background:#183658;color:#fff;font-weight:700;text-align:center;cursor:pointer;transition:background .18s,border-color .18s}
+.photo-upload:not(.is-disabled):hover{background:#0b2949;border-color:#0b2949}
+.photo-upload:focus-within,.editor-add-button:focus-visible,.editor-cancel-button:focus-visible,.editor-save-button:focus-visible,.photo-remove:focus-visible{outline:3px solid #a47939;outline-offset:3px}
+.photo-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.photo-upload input:disabled{cursor:not-allowed}
+.photo-upload svg{width:20px;height:20px;flex:none}
+.photo-remove{align-self:stretch;min-height:40px;background:#fff7f3;border-color:#edd7d0;color:#923c35}
+.photo-remove:hover{background:#fbe9e3;border-color:#cf9b8e}
+.image-grid .photo-field small{line-height:1.4}
+@media(max-width:760px){.image-grid{grid-template-columns:1fr}.colors-heading{flex-wrap:wrap;gap:.8rem}.editor-add-button{width:100%}.editor-actions{flex-wrap:wrap;gap:.7rem}.editor-save-button,.editor-cancel-button{flex:1;min-width:150px}}
+@media(prefers-reduced-motion:reduce){.photo-upload{transition:none}}
