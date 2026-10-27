@@ -2,7 +2,7 @@ import { computed, Injectable, signal } from '@angular/core';
 import { CATEGORIES, PRODUCTS } from '../data/catalog.data';
 import { Category, Product, StoreSettings } from '../models/store.models';
 import { STORE_CONFIG } from './store.config';
-import { MENU_CATEGORIES } from '../data/shop-navigation';
+import { DEFAULT_STYLE_SECTION, MENU_CATEGORIES, StyleSection } from '../data/shop-navigation';
 import { productCategoryIds } from './store.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -14,8 +14,21 @@ export class CatalogService {
   readonly enabledCategoryIds = this.enabledCategoryState.asReadonly();
   readonly menuCategories = computed(() => MENU_CATEGORIES.filter(item => this.enabledCategoryState().includes(item.id)));
   readonly settings = signal<StoreSettings>(STORE_CONFIG).asReadonly();
+  private readonly styleSectionState = signal<StyleSection>(DEFAULT_STYLE_SECTION);
+  readonly styleSection = this.styleSectionState.asReadonly();
 
-  constructor() { void this.refresh(); void this.refreshCategories(); }
+  constructor() { void this.refresh(); void this.refreshCategories(); void this.refreshStyleSection(); }
+
+  async refreshStyleSection(): Promise<void> {
+    try {
+      const response = await fetch('/api/style-section');
+      if (!response.ok) return;
+      const result = await response.json() as { section?: StyleSection };
+      if (result.section && Array.isArray(result.section.cards)) this.styleSectionState.set(result.section);
+    } catch { /* Keep the supplied style cards visible while the API is unavailable. */ }
+  }
+
+  setStyleSection(section: StyleSection): void { this.styleSectionState.set(section); }
 
   async refreshCategories(): Promise<void> {
     try {

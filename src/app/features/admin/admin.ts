@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CatalogService } from '../../core/catalog.service';
 import { Product, ProductImage, ProductSpecification, ProductVariant } from '../../models/store.models';
-import { MENU_CATEGORIES } from '../../data/shop-navigation';
+import { MENU_CATEGORIES, StyleSection } from '../../data/shop-navigation';
 import { productCategoryIds, productSpecifications } from '../../core/store.utils';
 
 interface ColorDraft { id: string; name: string; hex: string; sizes: string; stock: number; front: string; back: string; third: string; }
@@ -32,6 +32,8 @@ export class Admin {
   readonly busy = signal(false);
   readonly message = signal('');
   readonly editing = signal<ProductDraft | null>(null);
+  readonly styleEditing = signal<StyleSection | null>(null);
+  readonly styleCategories = [{ id: 'oversize', label: 'Polos oversize' }, { id: 'raglan', label: 'Polos raglán' }, ...MENU_CATEGORIES];
   username = '';
   password = '';
   currentPassword = '';
@@ -85,6 +87,44 @@ export class Admin {
   edit(product: Product): void { this.original = product; this.editing.set(draftFrom(product)); this.message.set(''); }
   create(): void { this.original = undefined; this.editing.set(blank()); this.message.set(''); }
   cancel(): void { this.editing.set(null); this.message.set(''); }
+  async editStyleSection(): Promise<void> {
+    await this.catalog.refreshStyleSection();
+    const section = this.catalog.styleSection();
+    this.styleEditing.set({ ...section, cards: section.cards.map(card => ({ ...card })) });
+    this.message.set('');
+  }
+  cancelStyleSection(): void { this.styleEditing.set(null); this.message.set(''); }
+  addStyleCard(): void { const section = this.styleEditing(); if (section && section.cards.length < 4) section.cards.push({ label: '', category: 'oversize', image: '', alt: '' }); }
+  removeStyleCard(index: number): void { const section = this.styleEditing(); if (section && section.cards.length > 1) section.cards.splice(index, 1); }
+  async uploadStyleImage(event: Event, index: number): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    const card = this.styleEditing()?.cards[index];
+    if (!file || !card) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 2_000_000) { this.message.set('Usa una imagen JPG, PNG o WebP de hasta 2 MB.'); input.value = ''; return; }
+    this.busy.set(true); this.message.set('');
+    try {
+      card.image = await this.uploadImageFile(file);
+      this.message.set('Imagen cargada. Guarda la sección para publicarla.');
+    } catch (error) { this.message.set((error as Error).message); }
+    finally { this.busy.set(false); input.value = ''; }
+  }
+  async saveStyleSection(): Promise<void> {
+    const section = this.styleEditing(); if (!section) return;
+    if (!section.title.trim() || !section.linkLabel.trim() || section.cards.some(card => !card.label.trim() || !card.image || !card.alt.trim())) {
+      this.message.set('Completa el título, el enlace y los datos de cada tarjeta.'); return;
+    }
+    this.busy.set(true); this.message.set('');
+    try {
+      const response = await fetch('/api/admin/style-section', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(section) });
+      const result = await response.json() as { section?: StyleSection; error?: string };
+      if (!response.ok || !result.section) throw new Error(result.error ?? 'No se pudo guardar la sección');
+      this.catalog.setStyleSection(result.section);
+      this.styleEditing.set(null);
+      this.message.set('La sección Explora por estilo ya está publicada.');
+    } catch (error) { this.message.set((error as Error).message); }
+    finally { this.busy.set(false); }
+  }
   addColor(): void { this.editing()?.colors.push({ id: '', name: '', hex: '#182D4D', sizes: '6, 8, 10, 12, 14, 16', stock: 99, front: '', back: '', third: '' }); }
   removeColor(index: number): void { this.editing()?.colors.splice(index, 1); }
   imageCount(draft: ProductDraft): number { return draft.colors.reduce((count, color) => count + Number(!!color.front) + Number(!!color.back) + Number(!!color.third), 0); }
@@ -119,16 +159,20 @@ export class Admin {
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 2_000_000) { this.message.set('Usa una imagen JPG, PNG o WebP de hasta 2 MB.'); input.value = ''; return; }
     this.busy.set(true); this.message.set('');
     try {
-      const base64 = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = reject; reader.readAsDataURL(file);
-      });
-      const response = await fetch('/api/admin/images', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mimeType: file.type, base64 }) });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error ?? 'No se pudo subir la imagen');
-      color[view] = result.url;
+      color[view] = await this.uploadImageFile(file);
       this.message.set('Imagen cargada. Guarda el producto para publicarla.');
     } catch (error) { this.message.set((error as Error).message); }
     finally { this.busy.set(false); input.value = ''; }
+  }
+
+  private async uploadImageFile(file: File): Promise<string> {
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = reject; reader.readAsDataURL(file);
+    });
+    const response = await fetch('/api/admin/images', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mimeType: file.type, base64 }) });
+    const result = await response.json() as { url?: string; error?: string };
+    if (!response.ok || !result.url) throw new Error(result.error ?? 'No se pudo subir la imagen');
+    return result.url;
   }
 
   async save(): Promise<void> {

@@ -7,6 +7,31 @@ let initialized;
 const cookieName = 'lugemi_admin';
 const categoryIds = ['polos-nino', 'polos-nina', 'sudaderas-nino', 'pantalones-nino', 'casacas-nina', 'joggers-basicos', 'accesorios', 'ofertas', 'conjuntos', 'short-bermudas'];
 const categoryIdSet = new Set(categoryIds);
+const styleCategoryIds = new Set([...categoryIds, 'oversize', 'raglan']);
+const defaultStyleSection = {
+  title: 'Explora por estilo', linkLabel: 'Ver todos los polos',
+  cards: [
+    { label: 'Polos oversize', category: 'oversize', image: '/images/productos/athletic-67-frente.jpeg', alt: 'Polo oversize Athletic 67 marfil, vista frontal' },
+    { label: 'Polos raglán', category: 'raglan', image: '/images/productos/lion-frente.jpeg', alt: 'Polo raglán Lion con mangas terracota, vista frontal' },
+  ],
+};
+
+export function validStyleSection(section) {
+  return section && typeof section.title === 'string' && section.title.trim().length > 0 && section.title.length <= 80 &&
+    typeof section.linkLabel === 'string' && section.linkLabel.trim().length > 0 && section.linkLabel.length <= 80 &&
+    Array.isArray(section.cards) && section.cards.length >= 1 && section.cards.length <= 4 &&
+    section.cards.every(card => card && typeof card.label === 'string' && card.label.trim().length > 0 && card.label.length <= 80 &&
+      typeof card.alt === 'string' && card.alt.trim().length > 0 && card.alt.length <= 160 &&
+      styleCategoryIds.has(card.category) && typeof card.image === 'string' &&
+      (/^\/api\/images\/[0-9a-f-]{36}$/i.test(card.image) || /^\/images\/productos\/[a-z0-9-]+\.jpeg$/.test(card.image)));
+}
+
+async function styleSection() {
+  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'style_section'");
+  if (!result.rowCount) return defaultStyleSection;
+  try { const section = JSON.parse(result.rows[0].value); return validStyleSection(section) ? section : defaultStyleSection; }
+  catch { return defaultStyleSection; }
+}
 
 async function enabledCategories() {
   const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'enabled_categories'");
@@ -146,6 +171,10 @@ export async function handle(req, res) {
       await ready();
       return json(res, 200, { enabledIds: await enabledCategories() });
     }
+    if (method === 'GET' && path === '/api/style-section') {
+      await ready();
+      return json(res, 200, { section: await styleSection() });
+    }
     if (method === 'POST' && path === '/api/admin/login') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
       await ready();
@@ -219,6 +248,12 @@ export async function handle(req, res) {
         const enabledIds = categoryIds.filter(id => ids.includes(id));
         await database().query("INSERT INTO catalog_meta (key, value) VALUES ('enabled_categories', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(enabledIds)]);
         return json(res, 200, { enabledIds });
+      }
+      if (method === 'PUT' && path === '/api/admin/style-section') {
+        const section = await body(req, 5000);
+        if (!validStyleSection(section)) return json(res, 400, { error: 'Revisa el título, las imágenes y los enlaces de la sección' });
+        await database().query("INSERT INTO catalog_meta (key, value) VALUES ('style_section', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(section)]);
+        return json(res, 200, { section });
       }
       if (method === 'DELETE' && path.startsWith('/api/admin/products/')) {
         const id = decodeURIComponent(path.slice('/api/admin/products/'.length));

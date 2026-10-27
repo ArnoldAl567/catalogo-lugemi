@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import products from './seed-products.json' with { type: 'json' };
-import { validProduct } from './core.mjs';
+import { validProduct, validStyleSection } from './core.mjs';
 
 test('acepta hasta siete detalles editables y tres fotos por prenda', () => {
   const product = {
@@ -14,4 +14,15 @@ test('acepta hasta siete detalles editables y tres fotos por prenda', () => {
   assert.equal(validProduct({ ...product, specifications: [{ label: '', value: 'Valor' }] }), false);
   assert.equal(validProduct({ ...product, images: [...product.images, { ...product.images[0], colorId: 'azul' }] }), false);
   assert.equal(validProduct({ ...product, images: [...product.images, product.images[0]] }), false);
+});
+
+test('valida las tarjetas editables de Explora por estilo', () => {
+  const section = { title: 'Explora por estilo', linkLabel: 'Ver catálogo', cards: [
+    { label: 'Polos oversize', category: 'oversize', image: '/images/productos/athletic-67-frente.jpeg', alt: 'Polo marfil' },
+    { label: 'Conjuntos', category: 'conjuntos', image: '/api/images/123e4567-e89b-12d3-a456-426614174000', alt: 'Conjunto infantil' },
+  ] };
+  assert.equal(validStyleSection(section), true);
+  assert.equal(validStyleSection({ ...section, cards: [...section.cards, ...section.cards, section.cards, section.cards] }), false);
+  assert.equal(validStyleSection({ ...section, cards: [{ ...section.cards[0], image: 'https://example.com/imagen.jpg' }] }), false);
+  assert.equal(validStyleSection({ ...section, cards: [{ ...section.cards[0], category: 'desconocida' }] }), false);
 });

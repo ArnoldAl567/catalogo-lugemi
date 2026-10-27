@@ -1,7 +1,13 @@
-export const SHOP_CATEGORIES = [
-  { label: 'Polos oversize', category: 'oversize', image: '/images/productos/athletic-67-frente.jpeg', alt: 'Polo oversize Athletic 67 marfil, vista frontal' },
-  { label: 'Polos raglán', category: 'raglan', image: '/images/productos/lion-frente.jpeg', alt: 'Polo raglán Lion con mangas terracota, vista frontal' },
-];
+export interface StyleCard { label: string; category: string; image: string; alt: string; }
+export interface StyleSection { title: string; linkLabel: string; cards: StyleCard[]; }
+export const DEFAULT_STYLE_SECTION: StyleSection = {
+  title: 'Explora por estilo',
+  linkLabel: 'Ver todos los polos',
+  cards: [
+    { label: 'Polos oversize', category: 'oversize', image: '/images/productos/athletic-67-frente.jpeg', alt: 'Polo oversize Athletic 67 marfil, vista frontal' },
+    { label: 'Polos raglán', category: 'raglan', image: '/images/productos/lion-frente.jpeg', alt: 'Polo raglán Lion con mangas terracota, vista frontal' },
+  ],
+};
 
 // The circle positions use the category artwork supplied for the store.
 export const MENU_CATEGORIES = [

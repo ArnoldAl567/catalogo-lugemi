@@ -70,3 +70,17 @@
 .image-grid .photo-field small{line-height:1.4}
 @media(max-width:760px){.image-grid{grid-template-columns:1fr}.colors-heading{flex-wrap:wrap;gap:.8rem}.editor-add-button{width:100%}.editor-actions{flex-wrap:wrap;gap:.7rem}.editor-save-button,.editor-cancel-button{flex:1;min-width:150px}}
 @media(prefers-reduced-motion:reduce){.photo-upload{transition:none}}
+
+.style-manager{margin-top:2rem;padding:clamp(1.2rem,3vw,2rem);border:1px solid var(--line);background:var(--surface)}
+.style-manager-heading,.style-form-actions{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.style-manager h2{margin:0;color:#082b47;font-family:var(--font-serif);font-size:clamp(1.5rem,3vw,2rem);font-weight:500}
+.style-manager p{margin:.45rem 0 0;color:#596579;line-height:1.5}
+.style-form{margin-top:1.2rem;border-top:1px solid var(--line)}
+.style-card-editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.style-card-editor{display:grid;align-content:start;gap:.8rem;min-width:0;padding:1rem;border:1px solid #e5d8c8;border-radius:9px;background:#fbf7f0}
+.style-card-editor>label:not(.photo-upload){display:grid;gap:.4rem;font-weight:600}
+.style-card-editor .photo-preview img{width:100%;height:100%;object-fit:contain}
+.style-card-editor small{color:#596579}
+.style-card-editor .photo-remove{min-height:40px}
+.style-form-actions{justify-content:flex-start;margin-top:1.2rem}
+@media(max-width:760px){.style-card-editor-grid{grid-template-columns:1fr}.style-manager-heading .editor-add-button,.style-form-actions .editor-add-button{width:auto}.style-form-actions>*{flex:1;min-width:150px}}
