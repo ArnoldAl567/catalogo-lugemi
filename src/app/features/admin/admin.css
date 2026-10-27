@@ -27,3 +27,20 @@
 .spec-editor-row label{display:grid;gap:.4rem;font-weight:600}.spec-editor-row .danger{min-height:44px}.spec-editor>small{display:block;margin-top:1rem;color:#596579}
 .image-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.image-grid>div{align-content:start}.image-grid .admin-link{justify-self:start}
 @media(max-width:760px){.image-grid{grid-template-columns:1fr}.spec-editor-row{grid-template-columns:1fr}.spec-editor-row .danger{justify-self:start}.spec-editor .colors-heading{align-items:flex-start;flex-wrap:wrap}}
+
+/* Acciones claras y cómodas de usar en el listado de productos. */
+.admin-toolbar{gap:1rem;flex-wrap:wrap}
+.new-product-button{min-height:48px;padding:.75rem 1.1rem;border-radius:8px;letter-spacing:.035em;box-shadow:0 4px 12px #182d4d1a}
+.new-product-button svg,.row-actions svg{width:18px;height:18px;flex:none}
+.product-row{gap:1.2rem;padding:1rem;border-radius:8px;box-shadow:0 2px 9px #182d4d0a}
+.product-row div:nth-child(2){min-width:0}
+.row-actions{flex:none;gap:.65rem}
+.row-actions button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:44px;min-width:100px;padding:.6rem .8rem;border:1px solid transparent;border-radius:7px;text-decoration:none;font-size:.9rem;font-weight:700;transition:background .18s,border-color .18s,transform .18s}
+.row-actions .edit-action{background:#edf3f7;border-color:#c8d8e5;color:#182d4d}
+.row-actions .edit-action:hover{background:#dceaf3;border-color:#8baec5;transform:translateY(-1px)}
+.row-actions .remove-action{background:#fff7f3;border-color:#edd7d0;color:#923c35}
+.row-actions .remove-action:hover{background:#fbe9e3;border-color:#cf9b8e;transform:translateY(-1px)}
+.row-actions button:focus-visible,.new-product-button:focus-visible{outline:3px solid #a47939;outline-offset:3px}
+.row-actions button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+@media(max-width:680px){.admin-toolbar .new-product-button{font-size:.875rem;padding:.7rem 1rem}.row-actions{justify-content:stretch}.row-actions button{flex:1;min-width:0}.product-row{gap:.8rem}}
+@media(prefers-reduced-motion:reduce){.row-actions button{transition:none}}
