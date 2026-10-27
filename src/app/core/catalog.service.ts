@@ -21,10 +21,10 @@ export class CatalogService {
 
   async refreshStyleSection(): Promise<void> {
     try {
-      const response = await fetch('/api/style-section');
+      const response = await fetch('/api/categories');
       if (!response.ok) return;
-      const result = await response.json() as { section?: StyleSection };
-      if (result.section && Array.isArray(result.section.cards)) this.styleSectionState.set(result.section);
+      const result = await response.json() as { styleSection?: StyleSection };
+      if (result.styleSection && Array.isArray(result.styleSection.cards)) this.styleSectionState.set(result.styleSection);
     } catch { /* Keep the supplied style cards visible while the API is unavailable. */ }
   }
 

@@ -116,7 +116,7 @@ export class Admin {
     }
     this.busy.set(true); this.message.set('');
     try {
-      const response = await fetch('/api/admin/style-section', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(section) });
+      const response = await fetch('/api/admin/categories', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ styleSection: section }) });
       const result = await response.json() as { section?: StyleSection; error?: string };
       if (!response.ok || !result.section) throw new Error(result.error ?? 'No se pudo guardar la sección');
       this.catalog.setStyleSection(result.section);

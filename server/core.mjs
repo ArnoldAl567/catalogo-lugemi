@@ -169,11 +169,7 @@ export async function handle(req, res) {
     }
     if (method === 'GET' && path === '/api/categories') {
       await ready();
-      return json(res, 200, { enabledIds: await enabledCategories() });
-    }
-    if (method === 'GET' && path === '/api/style-section') {
-      await ready();
-      return json(res, 200, { section: await styleSection() });
+      return json(res, 200, { enabledIds: await enabledCategories(), styleSection: await styleSection() });
     }
     if (method === 'POST' && path === '/api/admin/login') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
@@ -242,18 +238,18 @@ export async function handle(req, res) {
         return json(res, 200, { product });
       }
       if (method === 'PUT' && path === '/api/admin/categories') {
-        const input = await body(req, 2000);
+        const input = await body(req, 4000);
+        if (input.styleSection !== undefined) {
+          const section = input.styleSection;
+          if (!validStyleSection(section)) return json(res, 400, { error: 'Revisa el título, las imágenes y los enlaces de la sección' });
+          await database().query("INSERT INTO catalog_meta (key, value) VALUES ('style_section', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(section)]);
+          return json(res, 200, { section });
+        }
         const ids = input.enabledIds;
         if (!Array.isArray(ids) || ids.length > categoryIds.length || new Set(ids).size !== ids.length || !ids.every(id => categoryIdSet.has(id))) return json(res, 400, { error: 'Lista de categorías no válida' });
         const enabledIds = categoryIds.filter(id => ids.includes(id));
         await database().query("INSERT INTO catalog_meta (key, value) VALUES ('enabled_categories', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(enabledIds)]);
         return json(res, 200, { enabledIds });
-      }
-      if (method === 'PUT' && path === '/api/admin/style-section') {
-        const section = await body(req, 5000);
-        if (!validStyleSection(section)) return json(res, 400, { error: 'Revisa el título, las imágenes y los enlaces de la sección' });
-        await database().query("INSERT INTO catalog_meta (key, value) VALUES ('style_section', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(section)]);
-        return json(res, 200, { section });
       }
       if (method === 'DELETE' && path.startsWith('/api/admin/products/')) {
         const id = decodeURIComponent(path.slice('/api/admin/products/'.length));
