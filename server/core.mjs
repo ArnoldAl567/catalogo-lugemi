@@ -7,6 +7,23 @@ let initialized;
 const cookieName = 'lugemi_admin';
 const categoryIds = ['polos-nino', 'polos-nina', 'sudaderas-nino', 'pantalones-nino', 'casacas-nina', 'joggers-basicos', 'accesorios', 'ofertas', 'conjuntos', 'short-bermudas'];
 const categoryIdSet = new Set(categoryIds);
+const defaultCategoryLabels = {
+  'polos-nino': 'Polos Niño', 'polos-nina': 'Polos Niña', 'sudaderas-nino': 'Sudaderas Niño',
+  'pantalones-nino': 'Pantalones Niño', 'casacas-nina': 'Casacas Niña',
+  'joggers-basicos': 'Joggers y Básicos', accesorios: 'Accesorios', ofertas: 'Ofertas',
+  conjuntos: 'Conjuntos', 'short-bermudas': 'Short y Bermudas',
+};
+export function validCategoryLabels(labels) {
+  return labels && typeof labels === 'object' && !Array.isArray(labels) &&
+    Object.keys(labels).length === categoryIds.length &&
+    categoryIds.every(id => typeof labels[id] === 'string' && labels[id].trim().length > 0 && labels[id].length <= 60);
+}
+async function categoryLabels() {
+  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'category_labels'");
+  if (!result.rowCount) return defaultCategoryLabels;
+  try { const labels = JSON.parse(result.rows[0].value); return validCategoryLabels(labels) ? labels : defaultCategoryLabels; }
+  catch { return defaultCategoryLabels; }
+}
 const styleCategoryIds = new Set([...categoryIds, 'oversize', 'raglan']);
 const defaultStyleSection = {
   title: 'Explora por estilo', linkLabel: 'Ver todos los polos',
@@ -169,7 +186,7 @@ export async function handle(req, res) {
     }
     if (method === 'GET' && path === '/api/categories') {
       await ready();
-      return json(res, 200, { enabledIds: await enabledCategories(), styleSection: await styleSection() });
+      return json(res, 200, { enabledIds: await enabledCategories(), labels: await categoryLabels(), styleSection: await styleSection() });
     }
     if (method === 'POST' && path === '/api/admin/login') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
@@ -244,6 +261,12 @@ export async function handle(req, res) {
           if (!validStyleSection(section)) return json(res, 400, { error: 'Revisa el título, las imágenes y los enlaces de la sección' });
           await database().query("INSERT INTO catalog_meta (key, value) VALUES ('style_section', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(section)]);
           return json(res, 200, { section });
+        }
+        if (input.categoryLabels !== undefined) {
+          if (!validCategoryLabels(input.categoryLabels)) return json(res, 400, { error: 'Completa los diez nombres de categoría (máximo 60 caracteres cada uno)' });
+          const labels = Object.fromEntries(categoryIds.map(id => [id, input.categoryLabels[id].trim()]));
+          await database().query("INSERT INTO catalog_meta (key, value) VALUES ('category_labels', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [JSON.stringify(labels)]);
+          return json(res, 200, { labels });
         }
         const ids = input.enabledIds;
         if (!Array.isArray(ids) || ids.length > categoryIds.length || new Set(ids).size !== ids.length || !ids.every(id => categoryIdSet.has(id))) return json(res, 400, { error: 'Lista de categorías no válida' });

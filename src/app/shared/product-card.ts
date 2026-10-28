@@ -5,7 +5,6 @@ import { imagesForColor, money, productCategoryIds } from '../core/store.utils';
 import { CatalogService } from '../core/catalog.service';
 import { ProductPhoto } from './product-photo';
 import { AUDIENCES } from '../data/catalog.data';
-import { MENU_CATEGORIES } from '../data/shop-navigation';
 
 @Component({
   selector: 'app-product-card', standalone: true, imports: [RouterLink, ProductPhoto],
@@ -42,7 +41,7 @@ export class ProductCard {
   readonly money = money;
   private readonly catalog = inject(CatalogService);
   readonly audienceName = computed(() => AUDIENCES.find(item => item.id === this.product().audience)?.name ?? '');
-  readonly categoryName = computed(() => this.catalog.categories().find(item => item.id === this.product().categoryId)?.name ?? MENU_CATEGORIES.find(item => item.id === productCategoryIds(this.product())[0])?.label ?? 'Prendas');
+  readonly categoryName = computed(() => this.catalog.allMenuCategories().find(item => item.id === productCategoryIds(this.product())[0])?.label ?? this.catalog.categories().find(item => item.id === this.product().categoryId)?.name ?? 'Prendas');
   readonly colors = computed(() => this.product().variants.filter((variant, index, variants) => variants.findIndex(item => item.colorId === variant.colorId) === index));
   readonly selectedColor = computed(() => {
     const candidate = this.manualColor() || this.preferredColor();

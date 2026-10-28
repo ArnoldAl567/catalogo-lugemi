@@ -1,20 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CatalogService } from '../../core/catalog.service';
 import { Product, ProductImage, ProductSpecification, ProductVariant } from '../../models/store.models';
-import { MENU_CATEGORIES, StyleSection } from '../../data/shop-navigation';
+import { StyleSection } from '../../data/shop-navigation';
 import { productCategoryIds, productSpecifications } from '../../core/store.utils';
 
 interface ColorDraft { id: string; name: string; hex: string; sizes: string; stock: number; front: string; back: string; third: string; }
 interface ProductDraft { id: string; name: string; categoryIds: string[]; price: number; description: string; material: string; details: string; specifications: ProductSpecification[]; colors: ColorDraft[]; featured: boolean; stockUnconfirmed: boolean; }
 
-function draftFrom(product: Product): ProductDraft {
+function draftFrom(product: Product, categoryName: string): ProductDraft {
   const colors = [...new Set(product.variants.map(variant => variant.colorId))].map(id => {
     const variants = product.variants.filter(variant => variant.colorId === id);
     const image = (view: 'full' | 'detail' | 'extra') => product.images.find(item => item.colorId === id && item.view === view)?.url ?? '';
     return { id, name: variants[0].colorName, hex: variants[0].hex, sizes: variants.map(variant => variant.size).join(', '), stock: variants[0].stock, front: image('full'), back: image('detail'), third: image('extra') };
   });
-  const categoryName = product.categoryId === 'oversize' ? 'Polos oversize' : product.categoryId === 'raglan' ? 'Polos raglán' : MENU_CATEGORIES.find(item => item.id === product.categoryId)?.label ?? product.categoryId;
   return { id: product.id, name: product.name, categoryIds: [...productCategoryIds(product)], price: product.price, description: product.description, material: product.material, details: product.details.join('\n'), specifications: productSpecifications(product, categoryName).map(row => ({ ...row })), colors, featured: !!product.featured, stockUnconfirmed: !!product.stockUnconfirmed };
 }
 function blank(): ProductDraft {
@@ -23,17 +22,18 @@ function blank(): ProductDraft {
 
 @Component({ selector: 'app-admin', standalone: true, imports: [FormsModule], templateUrl: './admin.html', styleUrl: './admin.css' })
 export class Admin {
-  readonly menuCategories = MENU_CATEGORIES;
-  categoryLabel(id: string): string { return MENU_CATEGORIES.find(item => item.id === id)?.label ?? (id === 'raglan' ? 'Polo raglán' : id === 'oversize' ? 'Polo oversize' : id); }
-  categoriesForProduct(product: Product): string { return productCategoryIds(product).map(id => this.categoryLabel(id)).join(' · '); }
   readonly catalog = inject(CatalogService);
+  readonly menuCategories = this.catalog.allMenuCategories;
+  categoryLabel(id: string): string { return this.menuCategories().find(item => item.id === id)?.label ?? (id === 'raglan' ? 'Polos raglán' : id === 'oversize' ? 'Polos oversize' : id); }
+  categoriesForProduct(product: Product): string { return productCategoryIds(product).map(id => this.categoryLabel(id)).join(' · '); }
   readonly authenticated = signal(false);
   readonly configured = signal(true);
   readonly busy = signal(false);
   readonly message = signal('');
   readonly editing = signal<ProductDraft | null>(null);
   readonly styleEditing = signal<StyleSection | null>(null);
-  readonly styleCategories = [{ id: 'oversize', label: 'Polos oversize' }, { id: 'raglan', label: 'Polos raglán' }, ...MENU_CATEGORIES];
+  readonly styleCategories = computed(() => [{ id: 'oversize', label: 'Polos oversize' }, { id: 'raglan', label: 'Polos raglán' }, ...this.menuCategories()]);
+  readonly categoryNamesDraft = signal<Record<string, string> | null>(null);
   username = '';
   password = '';
   currentPassword = '';
@@ -84,7 +84,7 @@ export class Admin {
     finally { this.currentPassword = ''; this.newPassword = ''; this.confirmPassword = ''; this.busy.set(false); }
   }
 
-  edit(product: Product): void { this.original = product; this.editing.set(draftFrom(product)); this.message.set(''); }
+  edit(product: Product): void { this.original = product; this.editing.set(draftFrom(product, this.categoryLabel(product.categoryId))); this.message.set(''); }
   create(): void { this.original = undefined; this.editing.set(blank()); this.message.set(''); }
   cancel(): void { this.editing.set(null); this.message.set(''); }
   async editStyleSection(): Promise<void> {
@@ -94,6 +94,27 @@ export class Admin {
     this.message.set('');
   }
   cancelStyleSection(): void { this.styleEditing.set(null); this.message.set(''); }
+  async editCategoryNames(): Promise<void> {
+    await this.catalog.refreshCategories();
+    this.categoryNamesDraft.set(Object.fromEntries(this.menuCategories().map(item => [item.id, item.label])));
+    this.message.set('');
+  }
+  cancelCategoryNames(): void { this.categoryNamesDraft.set(null); this.message.set(''); }
+  async saveCategoryNames(): Promise<void> {
+    const draft = this.categoryNamesDraft(); if (!draft) return;
+    const labels = Object.fromEntries(this.menuCategories().map(item => [item.id, draft[item.id]?.trim() ?? '']));
+    if (Object.values(labels).some(label => !label || label.length > 60)) { this.message.set('Completa los diez nombres de categoría (máximo 60 caracteres).'); return; }
+    this.busy.set(true); this.message.set('');
+    try {
+      const response = await fetch('/api/admin/categories', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ categoryLabels: labels }) });
+      const result = await response.json() as { labels?: Record<string, string>; error?: string };
+      if (!response.ok || !result.labels) throw new Error(result.error ?? 'No se pudieron guardar los nombres');
+      this.catalog.setCategoryLabels(result.labels);
+      this.categoryNamesDraft.set(null);
+      this.message.set('Nombres de categorías actualizados en la tienda.');
+    } catch (error) { this.message.set((error as Error).message); }
+    finally { this.busy.set(false); }
+  }
   addStyleCard(): void { const section = this.styleEditing(); if (section && section.cards.length < 4) section.cards.push({ label: '', category: 'oversize', image: '', alt: '' }); }
   removeStyleCard(index: number): void { const section = this.styleEditing(); if (section && section.cards.length > 1) section.cards.splice(index, 1); }
   async uploadStyleImage(event: Event, index: number): Promise<void> {

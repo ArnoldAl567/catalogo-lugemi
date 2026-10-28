@@ -22,7 +22,7 @@
           <div class="style-card-editor-grid">@for (card of section.cards; track $index; let i = $index) {
             <div class="style-card-editor"><div class="color-heading"><strong>Tarjeta {{ i + 1 }}</strong>@if (section.cards.length > 1) { <button type="button" class="photo-remove" (click)="removeStyleCard(i)">Quitar tarjeta</button> }</div>
               <label>Nombre visible<input class="field" [name]="'styleLabel'+i" [(ngModel)]="card.label" maxlength="80" required></label>
-              <label>Abre la categoría<select class="field" [name]="'styleCategory'+i" [(ngModel)]="card.category">@for (option of styleCategories; track option.id) { <option [value]="option.id">{{ option.label }}</option> }</select></label>
+              <label>Abre la categoría<select class="field" [name]="'styleCategory'+i" [(ngModel)]="card.category">@for (option of styleCategories(); track option.id) { <option [value]="option.id">{{ option.label }}</option> }</select></label>
               <div class="photo-preview">@if (card.image) { <img [src]="card.image" [alt]="card.alt || card.label"> } @else { <span>Imagen de la tarjeta</span> }</div>
               <label class="photo-upload" [class.is-disabled]="busy()"><input type="file" accept="image/jpeg,image/png,image/webp" [disabled]="busy()" [attr.aria-label]="'Subir imagen para la tarjeta '+(i+1)" (change)="uploadStyleImage($event, i)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>{{ card.image ? 'Cambiar imagen' : 'Subir imagen' }}</label>
               <label>Descripción de la imagen<input class="field" [name]="'styleAlt'+i" [(ngModel)]="card.alt" maxlength="160" placeholder="Describe la prenda de la foto" required></label>
@@ -34,8 +34,15 @@
       }
     </section>
     <section class="category-manager" aria-labelledby="admin-categories-title">
-      <div><h2 id="admin-categories-title">Categorías del catálogo</h2><p>Activa las categorías que deseas mostrar en el menú y en los filtros de la tienda.</p></div>
-      <div class="category-manager-grid">@for (item of menuCategories; track item.id) {
+      <div class="category-manager-heading"><div><h2 id="admin-categories-title">Categorías del catálogo</h2><p>Activa las categorías que deseas mostrar en el menú y en los filtros de la tienda.</p></div>@if (!categoryNamesDraft()) { <button type="button" class="editor-add-button" (click)="editCategoryNames()">Editar nombres</button> }</div>
+      @if (categoryNamesDraft(); as names) {
+        <form class="category-names-form" (ngSubmit)="saveCategoryNames()">
+          <p>Los nombres cambian en la tienda. Las prendas conservan sus categorías.</p>
+          <div class="category-names-grid">@for (item of menuCategories(); track item.id) { <label>{{ item.label }}<input class="field" [name]="'categoryName'+item.id" [(ngModel)]="names[item.id]" maxlength="60" required></label> }</div>
+          <div class="category-names-actions"><button class="button-dark editor-save-button" type="submit" [disabled]="busy()">{{ busy() ? 'Guardando…' : 'Guardar nombres' }}</button><button type="button" class="editor-cancel-button" (click)="cancelCategoryNames()">Cancelar</button></div>
+        </form>
+      }
+      <div class="category-manager-grid">@for (item of menuCategories(); track item.id) {
         <label class="category-visibility"><span>{{ item.label }}</span><span class="category-state">{{ catalog.isCategoryEnabled(item.id) ? 'Visible' : 'Oculta' }}</span><input type="checkbox" [checked]="catalog.isCategoryEnabled(item.id)" [disabled]="busy()" [attr.aria-label]="'Mostrar ' + item.label + ' en el catálogo'" (change)="setCategoryEnabled(item.id, $any($event.target).checked)"></label>
       }</div>
     </section>
@@ -48,7 +55,7 @@
       @let d = editing()!;
       <form class="editor" (ngSubmit)="save()"><div class="editor-title"><h2>{{ d.id ? 'Editar producto' : 'Nuevo producto' }}</h2><button type="button" class="admin-link" (click)="cancel()">Cancelar</button></div>
         <div class="field-grid"><label>Nombre<input class="field" name="name" [(ngModel)]="d.name" required maxlength="120"></label><label>Precio en soles<input class="field" type="number" min="0" step="0.01" name="price" [(ngModel)]="d.price" required></label></div>
-        <fieldset class="product-categories"><legend>Categorías de esta prenda</legend><p>Selecciona una o más categorías. La prenda aparecerá en cada una de ellas.</p><div class="product-categories-grid">@for (item of menuCategories; track item.id) { <label><input type="checkbox" [checked]="d.categoryIds.includes(item.id)" (change)="toggleDraftCategory(item.id, $any($event.target).checked)"><span>{{ item.label }}</span></label> }</div></fieldset>
+        <fieldset class="product-categories"><legend>Categorías de esta prenda</legend><p>Selecciona una o más categorías. La prenda aparecerá en cada una de ellas.</p><div class="product-categories-grid">@for (item of menuCategories(); track item.id) { <label><input type="checkbox" [checked]="d.categoryIds.includes(item.id)" (change)="toggleDraftCategory(item.id, $any($event.target).checked)"><span>{{ item.label }}</span></label> }</div></fieldset>
         <label>Descripción<textarea class="field" rows="4" name="description" [(ngModel)]="d.description" required></textarea></label><label>Puntos de la descripción <small>(uno por línea)</small><textarea class="field" rows="3" name="details" [(ngModel)]="d.details"></textarea></label>
         <section class="spec-editor" aria-labelledby="spec-editor-title"><div class="colors-heading"><div><h3 id="spec-editor-title">Detalles del producto</h3><p>Estas filas aparecen en la ficha de la prenda. Puedes agregar hasta 7.</p></div><button type="button" class="editor-add-button" (click)="addSpecification()" [disabled]="d.specifications.length >= 7"><span aria-hidden="true">+</span> Agregar detalle</button></div>
           @for (row of d.specifications; track $index; let i = $index) { <div class="spec-editor-row"><label>Nombre del detalle<input class="field" [name]="'specLabel'+i" [(ngModel)]="row.label" placeholder="Ej. Material" maxlength="60" required></label><label>Valor<input class="field" [name]="'specValue'+i" [(ngModel)]="row.value" placeholder="Ej. Jersey Pima" maxlength="200" required></label><button type="button" class="danger" (click)="removeSpecification(i)" [attr.aria-label]="'Quitar detalle ' + (i+1)">Quitar</button></div> }

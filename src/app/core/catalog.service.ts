@@ -12,7 +12,9 @@ export class CatalogService {
   readonly categories = signal<Category[]>(CATEGORIES).asReadonly();
   private readonly enabledCategoryState = signal<string[]>(MENU_CATEGORIES.map(item => item.id));
   readonly enabledCategoryIds = this.enabledCategoryState.asReadonly();
-  readonly menuCategories = computed(() => MENU_CATEGORIES.filter(item => this.enabledCategoryState().includes(item.id)));
+  private readonly categoryLabelsState = signal<Record<string, string>>({});
+  readonly allMenuCategories = computed(() => MENU_CATEGORIES.map(item => ({ ...item, label: this.categoryLabelsState()[item.id] ?? item.label })));
+  readonly menuCategories = computed(() => this.allMenuCategories().filter(item => this.enabledCategoryState().includes(item.id)));
   readonly settings = signal<StoreSettings>(STORE_CONFIG).asReadonly();
   private readonly styleSectionState = signal<StyleSection>(DEFAULT_STYLE_SECTION);
   readonly styleSection = this.styleSectionState.asReadonly();
@@ -34,12 +36,14 @@ export class CatalogService {
     try {
       const response = await fetch('/api/categories');
       if (!response.ok) return;
-      const result = await response.json() as { enabledIds?: string[] };
+      const result = await response.json() as { enabledIds?: string[]; labels?: Record<string, string> };
       if (Array.isArray(result.enabledIds) && result.enabledIds.every(id => typeof id === 'string')) this.enabledCategoryState.set(result.enabledIds);
+      if (result.labels && typeof result.labels === 'object') this.categoryLabelsState.set(result.labels);
     } catch { /* Keep all categories visible if the API is unavailable. */ }
   }
 
   setEnabledCategoryIds(ids: string[]): void { this.enabledCategoryState.set(ids); }
+  setCategoryLabels(labels: Record<string, string>): void { this.categoryLabelsState.set(labels); }
   isCategoryEnabled(id: string): boolean { return this.enabledCategoryState().includes(id); }
 
   async refresh(): Promise<void> {
