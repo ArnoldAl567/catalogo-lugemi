@@ -14,8 +14,21 @@ describe('catálogo local', () => {
       expect(catalog.getById('vestido-alma')).toBeUndefined();
       expect(catalog.settings().whatsappNumber).toBe('51982226022');
       expect(fetchSpy).toHaveBeenCalledWith('/api/products');
+      expect(fetchSpy.mock.calls.filter(([url]) => url === '/api/categories')).toHaveLength(1);
     } finally {
       fetchSpy.mockRestore();
     }
+  });
+
+  it('el administrador solicita datos actuales por una ruta sin caché pública', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => new Response(JSON.stringify({ products: [], enabledIds: [], labels: {}, styleSection: { title: 'Estilos', linkLabel: 'Ver todo', cards: [] } }), { status: 200 }));
+    try {
+      const catalog = TestBed.inject(CatalogService);
+      await catalog.refresh(true);
+      await catalog.refreshCategories(true);
+      expect(fetchSpy).toHaveBeenCalledWith('/api/products?admin=1');
+      expect(fetchSpy).toHaveBeenCalledWith('/api/categories?admin=1');
+      expect(catalog.styleSection().title).toBe('Estilos');
+    } finally { fetchSpy.mockRestore(); }
   });
 });

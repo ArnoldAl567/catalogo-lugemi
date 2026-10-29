@@ -1,7 +1,18 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import products from './seed-products.json' with { type: 'json' };
-import { validCategoryLabels, validImageUrl, validProduct, validStyleSection } from './core.mjs';
+import { json, validCategoryLabels, validImageUrl, validProduct, validStyleSection } from './core.mjs';
+
+test('solo las lecturas públicas del catálogo permiten caché compartida', () => {
+  const response = () => ({ headers: {}, setHeader(key, value) { this.headers[key] = value; }, end() {} });
+  const publicResponse = response();
+  json(publicResponse, 200, { products: [] }, true);
+  assert.equal(publicResponse.headers['Vercel-CDN-Cache-Control'], 'public, max-age=60');
+  const privateResponse = response();
+  json(privateResponse, 200, { authenticated: true });
+  assert.equal(privateResponse.headers['Cache-Control'], 'no-store');
+  assert.equal(privateResponse.headers['Vercel-CDN-Cache-Control'], undefined);
+});
 
 test('acepta enlaces de imágenes del almacén Blob y rechaza dominios externos', () => {
   const blob = 'https://abc123.public.blob.vercel-storage.com/catalogo/123e4567-e89b-12d3-a456-426614174000.webp';

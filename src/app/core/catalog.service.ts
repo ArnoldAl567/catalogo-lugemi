@@ -19,26 +19,20 @@ export class CatalogService {
   private readonly styleSectionState = signal<StyleSection>(DEFAULT_STYLE_SECTION);
   readonly styleSection = this.styleSectionState.asReadonly();
 
-  constructor() { void this.refresh(); void this.refreshCategories(); void this.refreshStyleSection(); }
+  constructor() { void this.refresh(); void this.refreshCategories(); }
 
-  async refreshStyleSection(): Promise<void> {
-    try {
-      const response = await fetch('/api/categories');
-      if (!response.ok) return;
-      const result = await response.json() as { styleSection?: StyleSection };
-      if (result.styleSection && Array.isArray(result.styleSection.cards)) this.styleSectionState.set(result.styleSection);
-    } catch { /* Keep the supplied style cards visible while the API is unavailable. */ }
-  }
+  async refreshStyleSection(fresh = false): Promise<void> { await this.refreshCategories(fresh); }
 
   setStyleSection(section: StyleSection): void { this.styleSectionState.set(section); }
 
-  async refreshCategories(): Promise<void> {
+  async refreshCategories(fresh = false): Promise<void> {
     try {
-      const response = await fetch('/api/categories');
+      const response = await fetch('/api/categories' + (fresh ? '?admin=1' : ''));
       if (!response.ok) return;
-      const result = await response.json() as { enabledIds?: string[]; labels?: Record<string, string> };
+      const result = await response.json() as { enabledIds?: string[]; labels?: Record<string, string>; styleSection?: StyleSection };
       if (Array.isArray(result.enabledIds) && result.enabledIds.every(id => typeof id === 'string')) this.enabledCategoryState.set(result.enabledIds);
       if (result.labels && typeof result.labels === 'object') this.categoryLabelsState.set(result.labels);
+      if (result.styleSection && Array.isArray(result.styleSection.cards)) this.styleSectionState.set(result.styleSection);
     } catch { /* Keep all categories visible if the API is unavailable. */ }
   }
 
@@ -46,9 +40,9 @@ export class CatalogService {
   setCategoryLabels(labels: Record<string, string>): void { this.categoryLabelsState.set(labels); }
   isCategoryEnabled(id: string): boolean { return this.enabledCategoryState().includes(id); }
 
-  async refresh(): Promise<void> {
+  async refresh(fresh = false): Promise<void> {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch('/api/products' + (fresh ? '?admin=1' : ''));
       if (!response.ok) return;
       const result = await response.json() as { products?: Product[] };
       if (Array.isArray(result.products)) this.productState.set(result.products);

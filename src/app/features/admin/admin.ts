@@ -4,6 +4,7 @@ import { CatalogService } from '../../core/catalog.service';
 import { Product, ProductImage, ProductSpecification, ProductVariant } from '../../models/store.models';
 import { StyleSection } from '../../data/shop-navigation';
 import { productCategoryIds, productSpecifications } from '../../core/store.utils';
+import { prepareUploadImage } from '../../core/image-upload';
 
 interface ColorDraft { id: string; name: string; hex: string; sizes: string; stock: number; front: string; back: string; third: string; }
 interface ProductDraft { id: string; name: string; categoryIds: string[]; price: number; description: string; material: string; details: string; specifications: ProductSpecification[]; colors: ColorDraft[]; featured: boolean; stockUnconfirmed: boolean; }
@@ -49,6 +50,7 @@ export class Admin {
       const data = await response.json() as { authenticated: boolean; configured: boolean };
       this.authenticated.set(data.authenticated);
       this.configured.set(data.configured);
+      if (data.authenticated) await Promise.all([this.catalog.refresh(true), this.catalog.refreshCategories(true)]);
     } catch { this.configured.set(false); }
   }
 
@@ -59,7 +61,7 @@ export class Admin {
       if (!response.ok) throw new Error((await response.json()).error ?? 'No se pudo ingresar');
       this.password = '';
       this.authenticated.set(true);
-      await Promise.all([this.catalog.refresh(), this.catalog.refreshCategories()]);
+      await Promise.all([this.catalog.refresh(true), this.catalog.refreshCategories(true)]);
     } catch (error) { this.message.set((error as Error).message); }
     finally { this.busy.set(false); }
   }
@@ -88,14 +90,14 @@ export class Admin {
   create(): void { this.original = undefined; this.editing.set(blank()); this.message.set(''); }
   cancel(): void { this.editing.set(null); this.message.set(''); }
   async editStyleSection(): Promise<void> {
-    await this.catalog.refreshStyleSection();
+    await this.catalog.refreshStyleSection(true);
     const section = this.catalog.styleSection();
     this.styleEditing.set({ ...section, cards: section.cards.map(card => ({ ...card })) });
     this.message.set('');
   }
   cancelStyleSection(): void { this.styleEditing.set(null); this.message.set(''); }
   async editCategoryNames(): Promise<void> {
-    await this.catalog.refreshCategories();
+    await this.catalog.refreshCategories(true);
     this.categoryNamesDraft.set(Object.fromEntries(this.menuCategories().map(item => [item.id, item.label])));
     this.message.set('');
   }
@@ -187,10 +189,11 @@ export class Admin {
   }
 
   private async uploadImageFile(file: File): Promise<string> {
+    const optimized = await prepareUploadImage(file);
     const base64 = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = reject; reader.readAsDataURL(file);
+      const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = reject; reader.readAsDataURL(optimized);
     });
-    const response = await fetch('/api/admin/images', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mimeType: file.type, base64 }) });
+    const response = await fetch('/api/admin/images', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mimeType: optimized.type, base64 }) });
     const result = await response.json() as { url?: string; error?: string };
     if (!response.ok || !result.url) throw new Error(result.error ?? 'No se pudo subir la imagen');
     return result.url;
@@ -220,7 +223,7 @@ export class Admin {
       const response = await fetch('/api/admin/products', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(product) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error ?? 'No se pudo guardar');
-      await this.catalog.refresh(); this.original = product; this.editing.set(null); this.message.set('Producto publicado en la tienda.');
+      await this.catalog.refresh(true); this.original = product; this.editing.set(null); this.message.set('Producto publicado en la tienda.');
     } catch (error) { this.message.set((error as Error).message); }
     finally { this.busy.set(false); }
   }
@@ -231,7 +234,7 @@ export class Admin {
     try {
       const response = await fetch(`/api/admin/products/${encodeURIComponent(product.id)}`, { method: 'DELETE', credentials: 'same-origin' });
       if (!response.ok) throw new Error('No se pudo quitar el producto');
-      await this.catalog.refresh(); this.editing.set(null); this.message.set('Producto quitado de la tienda.');
+      await this.catalog.refresh(true); this.editing.set(null); this.message.set('Producto quitado de la tienda.');
     } catch (error) { this.message.set((error as Error).message); }
     finally { this.busy.set(false); }
   }

@@ -19,12 +19,6 @@ export function validCategoryLabels(labels) {
     Object.keys(labels).length === categoryIds.length &&
     categoryIds.every(id => typeof labels[id] === 'string' && labels[id].trim().length > 0 && labels[id].length <= 60);
 }
-async function categoryLabels() {
-  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'category_labels'");
-  if (!result.rowCount) return defaultCategoryLabels;
-  try { const labels = JSON.parse(result.rows[0].value); return validCategoryLabels(labels) ? labels : defaultCategoryLabels; }
-  catch { return defaultCategoryLabels; }
-}
 const styleCategoryIds = new Set([...categoryIds, 'oversize', 'raglan']);
 const defaultStyleSection = {
   title: 'Explora por estilo', linkLabel: 'Ver todos los polos',
@@ -55,32 +49,33 @@ export function validImageUrl(value) {
   } catch { return false; }
 }
 
-async function styleSection() {
-  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'style_section'");
-  if (!result.rowCount) return defaultStyleSection;
-  try { const section = JSON.parse(result.rows[0].value); return validStyleSection(section) ? section : defaultStyleSection; }
-  catch { return defaultStyleSection; }
-}
-
-async function enabledCategories() {
-  const result = await database().query("SELECT value FROM catalog_meta WHERE key = 'enabled_categories'");
-  if (!result.rowCount) return categoryIds;
-  try {
-    const ids = JSON.parse(result.rows[0].value);
-    return Array.isArray(ids) ? categoryIds.filter(id => ids.includes(id)) : categoryIds;
-  } catch { return categoryIds; }
+async function categorySettings() {
+  const result = await database().query("SELECT key, value FROM catalog_meta WHERE key IN ('enabled_categories', 'category_labels', 'style_section')");
+  const values = Object.fromEntries(result.rows.map(row => {
+    try { return [row.key, JSON.parse(row.value)]; } catch { return [row.key, null]; }
+  }));
+  return {
+    enabledIds: Array.isArray(values.enabled_categories) ? categoryIds.filter(id => values.enabled_categories.includes(id)) : categoryIds,
+    labels: validCategoryLabels(values.category_labels) ? values.category_labels : defaultCategoryLabels,
+    styleSection: validStyleSection(values.style_section) ? values.style_section : defaultStyleSection,
+  };
 }
 
 function database() {
   if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL no configurada');
   const connection = new URL(process.env.DATABASE_URL);
   if (connection.searchParams.get('sslmode') === 'require') connection.searchParams.set('sslmode', 'verify-full');
-  return pool ??= new Pool({ connectionString: connection.toString(), max: 3 });
+  return pool ??= new Pool({ connectionString: connection.toString(), max: 3, idleTimeoutMillis: 10_000, connectionTimeoutMillis: 10_000, allowExitOnIdle: true });
 }
 
 async function ready() {
   if (!initialized) initialized = (async () => {
     const db = database();
+    // Existing databases only need one inexpensive readiness check per instance.
+    try {
+      const marker = await db.query("SELECT value FROM catalog_meta WHERE key = 'seeded'");
+      if (marker.rowCount) return;
+    } catch (error) { if (error.code !== '42P01') throw error; }
     await db.query('CREATE TABLE IF NOT EXISTS catalog_products (id text PRIMARY KEY, data jsonb NOT NULL, updated_at timestamptz NOT NULL DEFAULT now())');
     await db.query('CREATE TABLE IF NOT EXISTS catalog_images (id uuid PRIMARY KEY, mime_type text NOT NULL, content bytea NOT NULL, created_at timestamptz NOT NULL DEFAULT now())');
     await db.query('CREATE TABLE IF NOT EXISTS catalog_meta (key text PRIMARY KEY, value text NOT NULL)');
@@ -100,10 +95,11 @@ async function ready() {
   await initialized;
 }
 
-function json(res, status, data) {
+export function json(res, status, data, publicCatalog = false) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Cache-Control', publicCatalog ? 'public, max-age=0, must-revalidate' : 'no-store');
+  if (publicCatalog) res.setHeader('Vercel-CDN-Cache-Control', 'public, max-age=60');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.end(JSON.stringify(data));
 }
@@ -177,7 +173,8 @@ export function validProduct(p) {
 
 export async function handle(req, res) {
   try {
-    const path = new URL(req.url, 'http://localhost').pathname;
+    const url = new URL(req.url, 'http://localhost');
+    const path = url.pathname;
     const method = req.method;
     if (method === 'GET' && path.startsWith('/api/images/')) {
       await ready();
@@ -193,12 +190,16 @@ export async function handle(req, res) {
     }
     if (method === 'GET' && path === '/api/products') {
       await ready();
+      const fresh = url.searchParams.has('admin');
+      if (fresh && !await admin(req)) return json(res, 401, { error: 'Inicia sesión para administrar el catálogo' });
       const result = await database().query('SELECT data FROM catalog_products ORDER BY (data->>\'createdAt\')::bigint DESC, id');
-      return json(res, 200, { products: result.rows.map(row => row.data) });
+      return json(res, 200, { products: result.rows.map(row => row.data) }, !fresh);
     }
     if (method === 'GET' && path === '/api/categories') {
       await ready();
-      return json(res, 200, { enabledIds: await enabledCategories(), labels: await categoryLabels(), styleSection: await styleSection() });
+      const fresh = url.searchParams.has('admin');
+      if (fresh && !await admin(req)) return json(res, 401, { error: 'Inicia sesión para administrar el catálogo' });
+      return json(res, 200, await categorySettings(), !fresh);
     }
     if (method === 'POST' && path === '/api/admin/login') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'Origen no permitido' });
