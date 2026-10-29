@@ -1,5 +1,6 @@
 import { createHmac, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import { Pool } from 'pg';
+import { put } from '@vercel/blob';
 import seedProducts from './seed-products.json' with { type: 'json' };
 
 let pool;
@@ -40,7 +41,18 @@ export function validStyleSection(section) {
     section.cards.every(card => card && typeof card.label === 'string' && card.label.trim().length > 0 && card.label.length <= 80 &&
       typeof card.alt === 'string' && card.alt.trim().length > 0 && card.alt.length <= 160 &&
       styleCategoryIds.has(card.category) && typeof card.image === 'string' &&
-      (/^\/api\/images\/[0-9a-f-]{36}$/i.test(card.image) || /^\/images\/productos\/[a-z0-9-]+\.jpeg$/.test(card.image)));
+      validImageUrl(card.image));
+}
+
+export function validImageUrl(value) {
+  if (typeof value !== 'string') return false;
+  if (/^\/api\/images\/[0-9a-f-]{36}$/i.test(value) || /^\/images\/productos\/[a-z0-9-]+\.jpeg$/.test(value)) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash &&
+      /^[a-z0-9-]+\.public\.blob\.vercel-storage\.com$/i.test(url.hostname) &&
+      /^\/catalogo\/[0-9a-f-]{36}\.(?:jpg|png|webp)$/i.test(url.pathname);
+  } catch { return false; }
 }
 
 async function styleSection() {
@@ -158,7 +170,7 @@ export function validProduct(p) {
     typeof p.description === 'string' && typeof p.material === 'string' &&
     Array.isArray(p.details) && p.details.every(x => typeof x === 'string') &&
     (p.specifications === undefined || (Array.isArray(p.specifications) && p.specifications.length <= 7 && p.specifications.every(x => x && typeof x.label === 'string' && x.label.trim().length > 0 && x.label.length <= 60 && typeof x.value === 'string' && x.value.trim().length > 0 && x.value.length <= 200))) &&
-    Array.isArray(p.images) && p.images.length >= 1 && p.images.length <= 3 && p.images.every(x => x && typeof x.url === 'string' && (/^\/api\/images\/[0-9a-f-]{36}$/i.test(x.url) || /^\/images\/productos\/[a-z0-9-]+\.jpeg$/.test(x.url)) && typeof x.colorId === 'string' && ['full', 'detail', 'extra'].includes(x.view)) &&
+    Array.isArray(p.images) && p.images.length >= 1 && p.images.length <= 3 && p.images.every(x => x && validImageUrl(x.url) && typeof x.colorId === 'string' && ['full', 'detail', 'extra'].includes(x.view)) &&
     new Set(p.images.map(x => `${x.colorId}:${x.view}`)).size === p.images.length &&
     Array.isArray(p.variants) && p.variants.length > 0 && p.variants.every(x => x && typeof x.colorId === 'string' && typeof x.colorName === 'string' && typeof x.hex === 'string' && typeof x.size === 'string' && Number.isInteger(x.stock) && x.stock >= 0);
 }
@@ -238,6 +250,7 @@ export async function handle(req, res) {
         return json(res, 200, { ok: true });
       }
       if (method === 'POST' && path === '/api/admin/images') {
+        if (!process.env.BLOB_READ_WRITE_TOKEN) return json(res, 503, { error: 'El almacén de imágenes no está configurado en Vercel Blob' });
         const input = await body(req);
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(input.mimeType) || typeof input.base64 !== 'string' || input.base64.length > 2_800_000) return json(res, 400, { error: 'Usa una imagen JPG, PNG o WebP de hasta 2 MB' });
         const bytes = Buffer.from(input.base64, 'base64');
@@ -245,8 +258,9 @@ export async function handle(req, res) {
         const magic = input.mimeType === 'image/jpeg' ? bytes[0] === 0xff && bytes[1] === 0xd8 : input.mimeType === 'image/png' ? bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) : bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP';
         if (!magic) return json(res, 400, { error: 'El archivo no coincide con el formato de imagen' });
         const id = randomUUID();
-        await database().query('INSERT INTO catalog_images (id, mime_type, content) VALUES ($1, $2, $3)', [id, input.mimeType, bytes]);
-        return json(res, 201, { url: `/api/images/${id}` });
+        const extension = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[input.mimeType];
+        const blob = await put(`catalogo/${id}.${extension}`, bytes, { access: 'public', contentType: input.mimeType, addRandomSuffix: false });
+        return json(res, 201, { url: blob.url });
       }
       if (method === 'PUT' && path === '/api/admin/products') {
         const product = await body(req, 50_000);

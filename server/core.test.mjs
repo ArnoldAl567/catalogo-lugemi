@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import products from './seed-products.json' with { type: 'json' };
-import { validCategoryLabels, validProduct, validStyleSection } from './core.mjs';
+import { validCategoryLabels, validImageUrl, validProduct, validStyleSection } from './core.mjs';
+
+test('acepta enlaces de imágenes del almacén Blob y rechaza dominios externos', () => {
+  const blob = 'https://abc123.public.blob.vercel-storage.com/catalogo/123e4567-e89b-12d3-a456-426614174000.webp';
+  assert.equal(validImageUrl(blob), true);
+  assert.equal(validImageUrl(blob.replace('public.blob.vercel-storage.com', 'example.com')), false);
+  assert.equal(validImageUrl(`${blob}?redirect=1`), false);
+  assert.equal(validProduct({ ...products[0], images: [{ ...products[0].images[0], url: blob }] }), true);
+});
 
 test('acepta hasta siete detalles editables y tres fotos por prenda', () => {
   const product = {
