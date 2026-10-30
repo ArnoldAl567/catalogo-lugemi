@@ -47,7 +47,6 @@
       }</div>
     </section>
     <div class="admin-toolbar"><h2>Productos <span>{{ catalog.products().length }} / {{ maxProducts }}</span></h2><button class="button-dark new-product-button" type="button" [disabled]="busy() || catalog.products().length >= maxProducts" (click)="create()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nuevo producto</button></div>
-    <p class="product-limit">El catálogo admite hasta {{ maxProducts }} productos en total. Las tallas, colores y categorías de una misma prenda cuentan como un solo producto.</p>
     @if (catalog.products().length >= maxProducts) { <p class="notice" role="status">Alcanzaste el límite de {{ maxProducts }} productos. Puedes editar los existentes o quitar uno para agregar otro.</p> }
     @if (!editing()) {
       <div class="product-list">@for (product of catalog.products(); track product.id) {
