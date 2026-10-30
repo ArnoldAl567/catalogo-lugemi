@@ -23,6 +23,7 @@ function blank(): ProductDraft {
 
 @Component({ selector: 'app-admin', standalone: true, imports: [FormsModule], templateUrl: './admin.html', styleUrl: './admin.css' })
 export class Admin {
+  readonly maxProducts = 200;
   readonly catalog = inject(CatalogService);
   readonly menuCategories = this.catalog.allMenuCategories;
   categoryLabel(id: string): string { return this.menuCategories().find(item => item.id === id)?.label ?? (id === 'raglan' ? 'Polos raglán' : id === 'oversize' ? 'Polos oversize' : id); }
@@ -87,7 +88,10 @@ export class Admin {
   }
 
   edit(product: Product): void { this.original = product; this.editing.set(draftFrom(product, this.categoryLabel(product.categoryId))); this.message.set(''); }
-  create(): void { this.original = undefined; this.editing.set(blank()); this.message.set(''); }
+  create(): void {
+    if (this.catalog.products().length >= this.maxProducts) { this.message.set('Alcanzaste el límite de 200 productos. Quita uno antes de agregar otro.'); return; }
+    this.original = undefined; this.editing.set(blank()); this.message.set('');
+  }
   cancel(): void { this.editing.set(null); this.message.set(''); }
   async editStyleSection(): Promise<void> {
     await this.catalog.refreshStyleSection(true);

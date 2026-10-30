@@ -1,6 +1,7 @@
 import { createHmac, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import { Pool } from 'pg';
 import { put } from '@vercel/blob';
+import { saveProduct } from './products.mjs';
 import seedProducts from './seed-products.json' with { type: 'json' };
 
 let pool;
@@ -266,7 +267,7 @@ export async function handle(req, res) {
       if (method === 'PUT' && path === '/api/admin/products') {
         const product = await body(req, 50_000);
         if (!validProduct(product)) return json(res, 400, { error: 'Revisa los datos del producto, colores y tallas' });
-        await database().query('INSERT INTO catalog_products (id, data) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = now()', [product.id, product]);
+        await saveProduct(database(), product);
         return json(res, 200, { product });
       }
       if (method === 'PUT' && path === '/api/admin/categories') {

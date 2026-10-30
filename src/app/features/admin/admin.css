@@ -93,3 +93,5 @@
 .category-names-grid label{display:grid;gap:.4rem;font-weight:600}
 .category-names-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.2rem}
 @media(max-width:680px){.category-names-grid{grid-template-columns:1fr}.category-manager-heading .editor-add-button{width:100%}.category-names-actions>*{flex:1;min-width:150px}}
+
+.product-limit{color:#596579;margin:0 0 1.25rem}
