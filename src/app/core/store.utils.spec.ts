@@ -66,12 +66,13 @@ describe('catálogo Lugemi Kids', () => {
     }
     expect(urls.size).toBe(16);
   });
-  it('muestra los detalles editados y la tercera foto de un producto', () => {
+  it('muestra los detalles editados y las cuatro fotos de un producto', () => {
     const original = PRODUCTS[0];
     const extra = { ...original.images[0], url: '/images/productos/foto-adicional.jpeg', view: 'extra' as const };
-    const product: Product = { ...original, specifications: [{ label: 'Tela', value: 'Jersey Pima' }], images: [...original.images, extra] };
+    const fourth = { ...extra, url: '/images/productos/cuarta-foto.jpeg', view: 'extra2' as const };
+    const product: Product = { ...original, specifications: [{ label: 'Tela', value: 'Jersey Pima' }], images: [...original.images, extra, fourth] };
     expect(productSpecifications(product, 'Polos oversize')).toEqual([{ label: 'Tela', value: 'Jersey Pima' }]);
-    expect(imagesForColor(product, extra.colorId).map(image => image.view)).toEqual(['full', 'detail', 'extra']);
+    expect(imagesForColor(product, extra.colorId).map(image => image.view)).toEqual(['full', 'detail', 'extra', 'extra2']);
     expect(productSpecifications(original, 'Polos oversize').find(row => row.label === 'Tallas disponibles')?.value).toContain('16');
   });
 });

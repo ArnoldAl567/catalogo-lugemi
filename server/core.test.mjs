@@ -22,11 +22,11 @@ test('acepta enlaces de imágenes del almacén Blob y rechaza dominios externos'
   assert.equal(validProduct({ ...products[0], images: [{ ...products[0].images[0], url: blob }] }), true);
 });
 
-test('acepta hasta siete detalles editables y tres fotos por prenda', () => {
+test('acepta hasta siete detalles editables y cuatro fotos por prenda', () => {
   const product = {
     ...products[0],
     specifications: Array.from({ length: 7 }, (_, index) => ({ label: `Detalle ${index + 1}`, value: 'Valor' })),
-    images: [...products[0].images, { ...products[0].images[0], view: 'extra' }],
+    images: [...products[0].images, { ...products[0].images[0], view: 'extra' }, { ...products[0].images[0], view: 'extra2' }],
   };
   assert.equal(validProduct(product), true);
   assert.equal(validProduct({ ...product, specifications: [...product.specifications, { label: 'Octavo', value: 'Valor' }] }), false);

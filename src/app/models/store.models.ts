@@ -1,7 +1,7 @@
 export type Audience = 'bebes' | 'ninas' | 'ninos' | 'infantil';
 export type ProductBadge = 'Nuevo' | 'Oferta' | 'Más vendido';
 
-export interface ProductImage { url: string; alt: string; colorId: string; view: 'full' | 'detail' | 'extra'; }
+export interface ProductImage { url: string; alt: string; colorId: string; view: 'full' | 'detail' | 'extra' | 'extra2'; }
 export interface ProductSpecification { label: string; value: string; }
 export interface ProductVariant { colorId: string; colorName: string; hex: string; size: string; stock: number; }
 export interface Category { id: string; name: string; }

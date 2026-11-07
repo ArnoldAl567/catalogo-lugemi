@@ -167,7 +167,7 @@ export function validProduct(p) {
     typeof p.description === 'string' && typeof p.material === 'string' &&
     Array.isArray(p.details) && p.details.every(x => typeof x === 'string') &&
     (p.specifications === undefined || (Array.isArray(p.specifications) && p.specifications.length <= 7 && p.specifications.every(x => x && typeof x.label === 'string' && x.label.trim().length > 0 && x.label.length <= 60 && typeof x.value === 'string' && x.value.trim().length > 0 && x.value.length <= 200))) &&
-    Array.isArray(p.images) && p.images.length >= 1 && p.images.length <= 3 && p.images.every(x => x && validImageUrl(x.url) && typeof x.colorId === 'string' && ['full', 'detail', 'extra'].includes(x.view)) &&
+    Array.isArray(p.images) && p.images.length >= 1 && p.images.length <= 4 && p.images.every(x => x && validImageUrl(x.url) && typeof x.colorId === 'string' && ['full', 'detail', 'extra', 'extra2'].includes(x.view)) &&
     new Set(p.images.map(x => `${x.colorId}:${x.view}`)).size === p.images.length &&
     Array.isArray(p.variants) && p.variants.length > 0 && p.variants.every(x => x && typeof x.colorId === 'string' && typeof x.colorName === 'string' && typeof x.hex === 'string' && typeof x.size === 'string' && Number.isInteger(x.stock) && x.stock >= 0);
 }

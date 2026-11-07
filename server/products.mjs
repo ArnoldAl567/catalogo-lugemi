@@ -1,4 +1,4 @@
-export const MAX_PRODUCTS = 200;
+export const MAX_PRODUCTS = 150;
 
 export async function saveProduct(db, product) {
   const client = await db.connect();
